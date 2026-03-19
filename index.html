@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"> 
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -572,7 +572,7 @@ function App(){
     }finally{setLoading(false);}
   };
 
-  const submitFeedback=async()=>{
+ const submitFeedback=async()=>{
     try{
       await fetch('/',{
         method:'POST',
@@ -581,6 +581,7 @@ function App(){
       });
     }catch{}
     setFbDone(true);
+    setTimeout(()=>setShowFb(false),2200);
   };
 
   const tapSit=(msg)=>{setTab('talk');setTimeout(()=>send(msg),80);};
