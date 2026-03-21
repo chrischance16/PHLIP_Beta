@@ -992,7 +992,7 @@ function BlockGame(){
         <div className="block-result" style={{marginTop:'0'}}>
           <div className="br-phlip">{phlipSays(result.diff)}</div>
           {pb!==null&&<div className="br-pb">Best: <span>{pb<=0?'Perfect':pb+'ms off'}</span></div>}
-          <button className="br-again" onClick={e=>{e.stopPropagation();reset();}}>Again</button>
+        <button className="br-again" onClick={e=>{e.stopPropagation();reset();}}>Try Again</button>
         </div>
       )}
     </div>
