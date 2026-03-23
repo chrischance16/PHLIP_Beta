@@ -22,6 +22,12 @@
 </head>
 <body>
 <div id="root"></div>
+<form name="phlip-feedback" netlify netlify-honeypot="bot-field" hidden>
+  <input name="bot-field"/>
+  <input name="q1"/>
+  <input name="q2"/>
+  <input name="q3"/>
+</form>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
@@ -857,9 +863,6 @@ function App(){
 
       </div>
 
-      <form name="phlip-feedback" data-netlify="true" hidden>
-        <input name="q1"/><input name="q2"/><input name="q3"/>
-      </form>
     </>
   );
 }
