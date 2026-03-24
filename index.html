@@ -1,164 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Phlip | Your 24/7 Swim Companion</title>
-<link rel="icon" type="image/png" href="/icon.png">
-<link rel="apple-touch-icon" href="/icon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-<style>
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-  html,body{height:100%;background:#071E38;display:flex;align-items:center;justify-content:center;overflow:hidden;font-family:'Barlow', sans-serif;}
-  #root{width:100%;max-width:430px;height:100vh;max-height:780px;position:relative;background:#071E38;display:flex;flex-direction:column;}
-  
-  /* Loading Animation for "Phlip is Thinking" */
-  .bubbles { display: inline-block; margin-left: 5px; }
-  .bubble { display: inline-block; width: 4px; height: 4px; background: #C4882B; border-radius: 50%; margin: 0 2px; animation: bubbleUp 0.6s infinite alternate; }
-  .bubble:nth-child(2) { animation-delay: 0.2s; }
-  .bubble:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes bubbleUp { from { transform: translateY(0); opacity: 0.3; } to { transform: translateY(-5px); opacity: 1; } }
-
-  /* Input Styling with Disabled States */
-  .input-container { padding: 15px; border-top: 1px solid rgba(196,136,43,0.2); background: #071E38; display: flex; gap: 10px; }
-  input { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid rgba(196,136,43,0.3); color: white; padding: 12px; border-radius: 8px; font-size: 16px; outline: none; }
-  input:disabled { opacity: 0.5; cursor: not-allowed; }
-  button { background: #C4882B; color: #071E38; border: none; padding: 0 20px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-  button:disabled { background: #555; cursor: not-allowed; opacity: 0.7; }
-  
-  /* Existing Animations */
-  @keyframes shimmer{0%{transform:translateX(-100%) translateY(-100%) rotate(15deg)}100%{transform:translateX(200%) translateY(200%) rotate(15deg)}}
-  @keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phlip Beta</title>
+    <style>
+        body { background: #071E38; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        #root { width: 100%; max-width: 400px; text-align: center; padding: 20px; }
+        .logo { color: #C4882B; font-size: 50px; font-weight: 800; letter-spacing: 5px; margin-bottom: 10px; }
+        .btn { display: block; width: 100%; background: rgba(196,136,43,0.2); border: 1px solid #C4882B; color: white; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #C4882B; color: #071E38; }
+    </style>
 </head>
 <body>
-<div id="root"></div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
-
-<script type="text/babel">
-const { useState, useEffect, useRef } = React;
-
-// --- MEMORY BOX (LocalStorage) ---
-const PhlipMemory = {
-  save: (key, val) => localStorage.setItem('phlip_beta_' + key, val),
-  load: (key) => localStorage.getItem('phlip_beta_' + key),
-};
-
-const LANES = [
-  {id:'young',   label:'9 & Under'},
-  {id:'middle',  label:'10 to 14'},
-  {id:'senior',  label:'15 to 18'},
-  {id:'college', label:'College Swimmer'},
-  {id:'masters', label:'Masters Swimmer'},
-  {id:'parent',  label:'Swim Supporter Zone', sup:true},
-];
-
-// --- CORE LOGIC ---
-function App() {
-  const [lane, setLane] = useState(null);
-  const [msgs, setMsgs] = useState([]);
-  const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [userName, setUserName] = useState(PhlipMemory.load('name') || '');
-  const [msgCount, setMsgCount] = useState(0);
-
-  // Rate Limiter: Reset count every 60 seconds
-  useEffect(() => {
-    const timer = setInterval(() => setMsgCount(0), 60000);
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleSend = async (textOverride) => {
-    const content = textOverride || input;
-    if (!content.trim() || loading) return;
-
-    // Rate Limiter Check (Max 5 per minute)
-    if (msgCount >= 5) {
-      alert("Whoa there, Swimmer! Phlip is catching his breath. Try again in a minute.");
-      return;
-    }
-
-    setLoading(true);
-    setMsgCount(prev => prev + 1);
-    
-    const userMsg = { role: 'user', content };
-    const newMsgs = [...msgs, userMsg];
-    setMsgs(newMsgs);
-    setInput('');
-
-    try {
-      // Logic to extract name if they introduce themselves
-      if (content.toLowerCase().includes("my name is")) {
-        const namePart = content.split(/is/i)[1].trim().split(' ')[0];
-        if (namePart) {
-          setUserName(namePart);
-          PhlipMemory.save('name', namePart);
-        }
-      }
-
-      const systemPrompt = getSystem(lane) + (userName ? ` The swimmer's name is ${userName}.` : "");
-      
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          model: 'claude-sonnet-4-20250514',
-          max_tokens: 900,
-          system: systemPrompt,
-          messages: newMsgs
-        }),
-      });
-
-      const data = await response.json();
-      const rawText = data.content?.[0]?.text || "Water in the goggles. Try again?";
-      
-      // Handle Tags (Unlocks, Community)
-      const cleanText = rawText.replace(/\[UNLOCK:(intro|crib|cheat|article)\]/g,'').replace(/\[COMMUNITY\]/g,'').trim();
-      
-      setMsgs([...newMsgs, { role: 'assistant', content: cleanText }]);
-
-    } catch (err) {
-      setMsgs(prev => [...prev, { role: 'assistant', content: "Something got in the lane line. Try again. Streamline on." }]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // UI rendering would go here - focusing on the send-logic updates
-  return (
-    <div className="app">
-      {/* ... (Welcome Screen or Chat View) ... */}
-      <div className="input-container">
-        <input 
-          placeholder={loading ? "Phlip is thinking..." : "Talk to Phlip..."}
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          disabled={loading}
-          onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-        />
-        <button onClick={() => handleSend()} disabled={loading || !input.trim()}>
-          {loading ? (
-            <div className="bubbles">
-              <span className="bubble"></span>
-              <span className="bubble"></span>
-              <span className="bubble"></span>
-            </div>
-          ) : "SEND"}
-        </button>
-      </div>
+    <div id="root">
+        <div class="logo">PHLIP</div>
+        <p style="font-style: italic; color: rgba(196,136,43,0.8);">Welcome to the Deck</p>
+        <div id="lanes">
+            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">9 & Under</button>
+            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">10 to 14</button>
+            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">15 to 18</button>
+            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">College</button>
+            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">Masters</button>
+            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">Parent Zone</button>
+        </div>
     </div>
-  );
-}
-
-// ... include your getSystem, LANES, and SITS data from previous block ...
-// This tells React to take your "App" and put it into the "root" div
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(<App />);
-</script>
 </body>
 </html>
