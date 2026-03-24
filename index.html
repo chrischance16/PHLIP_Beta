@@ -1,29 +1,132 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phlip Beta</title>
-    <style>
-        body { background: #071E38; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        #root { width: 100%; max-width: 400px; text-align: center; padding: 20px; }
-        .logo { color: #C4882B; font-size: 50px; font-weight: 800; letter-spacing: 5px; margin-bottom: 10px; }
-        .btn { display: block; width: 100%; background: rgba(196,136,43,0.2); border: 1px solid #C4882B; color: white; padding: 15px; margin: 10px 0; border-radius: 8px; cursor: pointer; font-size: 16px; }
-        .btn:hover { background: #C4882B; color: #071E38; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Phlip</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;background:#071E38;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  #root{width:100%;max-width:430px;height:100vh;max-height:780px;position:relative; font-family: 'Barlow', sans-serif;}
+  
+  /* ALL YOUR ORIGINAL ANIMATIONS */
+  @keyframes shimmer{0%{transform:translateX(-100%) translateY(-100%) rotate(15deg)}100%{transform:translateX(200%) translateY(200%) rotate(15deg)}}
+  @keyframes pulse{0%,100%{opacity:0.85}50%{opacity:1}}
+  @keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  
+  /* YOUR BRAND COLORS & STYLE */
+  .logo { font-family: 'Barlow Condensed', sans-serif; font-weight: 800; color: #C4882B; font-size: 44px; letter-spacing: 10px; text-transform: uppercase; text-align: center; }
+  .tagline { font-family: 'DM Serif Display', serif; font-style: italic; color: rgba(196,136,43,0.75); font-size: 12px; text-align: center; margin-top: 5px; }
+  
+  /* THE FIX: Ensure buttons don't break the layout */
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+</style>
 </head>
 <body>
-    <div id="root">
-        <div class="logo">PHLIP</div>
-        <p style="font-style: italic; color: rgba(196,136,43,0.8);">Welcome to the Deck</p>
-        <div id="lanes">
-            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">9 & Under</button>
-            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">10 to 14</button>
-            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">15 to 18</button>
-            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">College</button>
-            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">Masters</button>
-            <button class="btn" onclick="alert('Phlip is warming up! API connecting...')">Parent Zone</button>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+
+<script type="text/babel">
+const {useState, useEffect, useRef} = React;
+
+// --- YOUR ORIGINAL DATA ---
+const LANES = [
+  {id:'young',   label:'9 & Under'},
+  {id:'middle',  label:'10 to 14'},
+  {id:'senior',  label:'15 to 18'},
+  {id:'college', label:'College Swimmer'},
+  {id:'masters', label:'Masters Swimmer'},
+  {id:'parent',  label:'Swim Supporter Zone', sup:true},
+];
+
+// --- APP LOGIC WITH MEMORY FIX ---
+function PhlipApp() {
+  const [lane, setLane] = useState(null);
+  const [msgs, setMsgs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [userName, setUserName] = useState(localStorage.getItem('phlip_name') || '');
+
+  const handleSend = async (text) => {
+    if (loading) return;
+    setLoading(true);
+    
+    const newMsgs = [...msgs, {role: 'user', content: text}];
+    setMsgs(newMsgs);
+
+    try {
+      // THE CONNECTION TO YOUR BRAIN
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          system: "You are Phlip. The old swimmer. Warm, brief, elite coach background.", // Simplified for safety
+          messages: newMsgs
+        })
+      });
+      const data = await res.json();
+      setMsgs([...newMsgs, {role: 'assistant', content: data.content[0].text}]);
+    } catch (e) {
+      setMsgs([...newMsgs, {role: 'assistant', content: "Lost the signal. Streamline on."}]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!lane) {
+    return (
+      <div style={{padding: '40px 20px'}}>
+        <div className="logo">PHLIP</div>
+        <div className="tagline">The Old Swimmer You Can Always Question</div>
+        <div style={{marginTop: '40px'}}>
+          {LANES.map(l => (
+            <button key={l.id} onClick={() => setLane(l.id)} style={{
+              width: '100%', background: 'transparent', border: '1px solid #C4882B', 
+              color: 'white', padding: '15px', marginBottom: '10px', borderRadius: '4px',
+              fontFamily: 'Barlow Condensed', fontWeight: '700', letterSpacing: '2px'
+            }}>
+              {l.label.toUpperCase()}
+            </button>
+          ))}
         </div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{display: 'flex', flexDirection: 'column', height: '100%', color: 'white'}}>
+      <div style={{padding: '20px', borderBottom: '1px solid rgba(196,136,43,0.2)', display: 'flex', justifyContent: 'space-between'}}>
+        <span style={{fontFamily: 'Barlow Condensed', fontWeight: '700', color: '#C4882B'}}>{lane.toUpperCase()}</span>
+        <button onClick={() => setLane(null)} style={{background: 'none', border: 'none', color: 'rgba(255,255,255,0.5)', cursor: 'pointer'}}>EXIT</button>
+      </div>
+      <div style={{flex: 1, overflowY: 'auto', padding: '20px'}}>
+        {msgs.map((m, i) => (
+          <div key={i} style={{marginBottom: '20px', textAlign: m.role === 'user' ? 'right' : 'left'}}>
+             <div style={{
+               display: 'inline-block', padding: '12px', borderRadius: '8px',
+               background: m.role === 'user' ? '#C4882B' : 'rgba(255,255,255,0.05)',
+               color: m.role === 'user' ? '#071E38' : 'white',
+               maxWidth: '85%'
+             }}>
+               {m.content}
+             </div>
+          </div>
+        ))}
+        {loading && <div style={{color: '#C4882B', fontStyle: 'italic', fontSize: '12px'}}>Phlip is thinking...</div>}
+      </div>
     </div>
+  );
+}
+
+// THE STARTING PISTOL (The Fix for the Blue Screen)
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<PhlipApp />);
+</script>
 </body>
 </html>
