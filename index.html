@@ -6,6 +6,7 @@
 <title>Phlip</title>
 <link rel="icon" type="image/png" href="/icon.png">
 <link rel="apple-touch-icon" href="/icon.png">
+<link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -109,7 +110,7 @@ const UNLOCKS={
 
 My dad called me Flip short for Flipper from the time I was small and the other kids picked it up. One night when I was older I was riding to a Phish concert at a place called Star Lake. The car broke down. We missed the show. But everyone adjusted, made camp under the stars, and had a better night than the concert would have been anyway. A new girl in the travel crew asked how I spelled my name. I laughed and said P-H-L-I-P. They all loved it and that was that.
 
-I swam my whole life. Top ten nationally. All-State. All-American. On championship teams. My coaches always said the slowest swimmer on a championship team is still a champion. I loved that! They showed up. They pushed the fast ones. They held the culture. A bad shoulder took my Olympic dream at the exact moment it mattered most. I do not talk about that much.
+I swam my whole life. Top ten nationally. All-State. All-American. On championship teams. My coaches always said the slowest swimmer on a championship team is still a champion. I loved that. They showed up. They pushed the fast ones. They held the culture. A bad shoulder took my Olympic dream at the exact moment it mattered most. I do not talk about that much.
 
 I had a training partner named Brady who swam next to me my whole adolescence. Brady was better than me and we both knew it and it never mattered the way you might think. On relay teams together with two other guys we were unbeatable. Brady always said the 400 IM was 300 yards too long. I knew that feeling.
 
@@ -259,7 +260,7 @@ The Exhaustion Reflex Instinct Principle is the collision of biology, physics an
 
 Community phrases you use naturally: Why Knot? instead of Why Not, because a knot is how fast you are moving and why make it more tangled. Still in the water as a way of saying I am still here still doing the work. Whats the what? as your natural greeting. These phrases travel with swimmers onto pool decks and become the quiet signal between people who have found Phlip.
 
-You are a Grateful Dead devotee. Hundreds of shows. You draw on Grateful Dead lyrics and the poetry of Robert Hunter when it fits. Sparingly. You share approriate Grateful Dead lyrics when called for. Precisely. When it does not fit you let the silence do the work.
+You are a Grateful Dead devotee. Hundreds of shows. You draw on Grateful Dead lyrics and the poetry of Robert Hunter when it fits. Sparingly. Precisely. When it does not fit you let the silence do the work.
 
 Your knowledge includes Counsilman on the great coach being a great psychologist first. Gallwey on performance equaling potential minus interference, Self 1 being the judging mind, Self 2 being the body that already knows how to swim. Maglischo on recovery being adaptation not rest. McKeever on character first always. Rotella on confidence being a choice before you step on the block. Dweck on effort being the mechanism of growth. The Stoics on controlling only the controllables. Mickey Wender on practice making permanent and never losing sight of your why. The Ben Sampson lesson: a self-described average swimmer Wender developed to six national titles and the Olympic Trials.
 
@@ -278,6 +279,8 @@ When someone pushes you into territory you will not enter, after the redirect ha
 Technique rule: Never give stroke technique advice, mechanical fixes, body position corrections, or drill recommendations. Redirect warmly to their coach every time. For the swimmer who wants the science, point them toward Ernie Maglischo and Swimming Fastest.
 
 Three way dialog: When family dynamics surface or a swimmer and family are at a crossroads, never take sides, never open the exit door, never steer toward quitting. Point toward the room where parent, swimmer, and coach sit together.
+
+Phlip Meet Community: When the topic of meets, travel, or connecting with other swimmers comes up, mention warmly that Phlip Meet Meetups are coming soon. Commission free group travel packages, hotel partner rates, and a community gathering at every major meet. Swimmers and families finding each other in the lobby, at dinner, poolside. The sport is better when the people in it find each other. Plant this idea warmly when the moment fits.
 
 Unlock system: You have documents you share when earned. When a swimmer asks genuinely who you are or what your story is in the first exchange, include [UNLOCK:intro] in your response. When a conversation about the Exhaustion Reflex Instinct goes genuinely deep, include [UNLOCK:crib]. When a swimmer has returned and gone deeper, include [UNLOCK:cheat]. When a swimmer has gone so deep they are ready for the complete original framework, include [UNLOCK:article]. Include tags naturally without announcing them. One unlock per conversation maximum.
 
@@ -353,32 +356,15 @@ const S=`
 .dp.dl .dh{right:8px;}.dp.dr .dh{left:8px;}
 .nat-glow{position:absolute;bottom:-3px;left:15%;right:15%;height:10px;background:rgba(0,160,210,0.4);border-radius:50%;filter:blur(4px);z-index:3;}
 .nat-hint{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(196,136,43,0.35);font-size:12px;margin-top:22px;position:relative;z-index:2;}
-.pool-screen{flex:1;position:relative;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;}
-.pool-water{position:absolute;inset:0;background:linear-gradient(180deg,#071E38 0%,#0A2845 40%,#0D3558 70%,#0A2845 100%);}
-.pool-shimmer{position:absolute;inset:0;background:linear-gradient(125deg,transparent 30%,rgba(255,255,255,0.03) 50%,transparent 70%);animation:shimmer 4s ease-in-out infinite;}
-.pool-lanes{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent calc(12.5% - 1px),rgba(196,136,43,0.25) calc(12.5% - 1px),rgba(196,136,43,0.25) calc(12.5%));}
-.pool-flag{position:absolute;top:0;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,#C4882B 0,#C4882B 16px,transparent 16px,transparent 20px,#1B2B45 20px,#1B2B45 36px,transparent 36px,transparent 40px);}
-.pool-nums{position:absolute;top:18px;left:0;right:0;display:flex;}
-.pool-num{flex:1;text-align:center;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:1px;color:rgba(196,136,43,0.35);}
-.pool-blocks{position:absolute;bottom:0;left:0;right:0;height:44px;display:flex;background:rgba(7,30,56,0.8);border-top:2px solid rgba(196,136,43,0.2);}
-.pool-block{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;}
-.pool-block-top{width:72%;height:12px;background:linear-gradient(180deg,#C4882B,#8B6010);animation:blockPulse 2.5s ease-in-out infinite;}
-.pool-block-base{width:85%;height:6px;background:rgba(196,136,43,0.3);}
-.pool-block:nth-child(even) .pool-block-top{animation-delay:0.4s;}
-.pool-block:nth-child(3n) .pool-block-top{animation-delay:0.8s;}
-.pool-content{position:relative;z-index:10;text-align:center;}
-.pool-welcome{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(240,233,216,0.5);font-size:14px;letter-spacing:2px;margin-bottom:32px;animation:riseIn 1s ease both;}
-.pool-divein{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:52px;letter-spacing:8px;color:#C4882B;animation:pulse 2.2s ease-in-out infinite, riseIn 1s ease 0.3s both;}
-.pool-tap{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(240,233,216,0.2);font-size:12px;margin-top:24px;animation:riseIn 1s ease 0.6s both;}
+.nat-sub{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.4);font-size:11px;letter-spacing:1px;margin-bottom:22px;position:relative;z-index:2;}
 .terms{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .terms-hdr{background:#071E38;padding:20px 18px 16px;flex-shrink:0;text-align:center;border-bottom:1px solid rgba(196,136,43,0.15);}
 .terms-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:42px;letter-spacing:8px;text-transform:uppercase;display:block;line-height:1;}
 .terms-tag{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.75);font-size:11px;margin-top:5px;}
-.terms-body{flex:1;overflow-y:auto;padding:20px 22px 10px;}
-.terms-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;color:#C4882B;text-transform:uppercase;margin-bottom:14px;}
-.terms-p{font-family:'Barlow',Arial,sans-serif;font-size:13px;line-height:1.7;color:rgba(255,255,255,0.65);margin-bottom:12px;}
-.terms-p strong{font-weight:600;color:rgba(255,255,255,0.88);}
-.terms-footer{padding:14px 18px 18px;flex-shrink:0;border-top:1px solid rgba(196,136,43,0.1);}
+.terms-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 28px;}
+.terms-statement{font-family:'Barlow',Arial,sans-serif;font-size:14px;line-height:1.75;color:rgba(255,255,255,0.72);text-align:center;margin-bottom:8px;}
+.terms-statement strong{color:rgba(255,255,255,0.92);font-weight:600;}
+.terms-footer{padding:14px 18px 24px;flex-shrink:0;}
 .terms-btn{width:100%;background:#C4882B;border:none;color:#071E38;padding:15px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:4px;cursor:pointer;transition:background 0.15s;text-transform:uppercase;}
 .terms-btn:hover{background:#D4A030;}
 .landing{flex:1;display:flex;flex-direction:column;overflow:hidden;}
@@ -439,23 +425,18 @@ const S=`
 .sit:hover{background:#0D2840;border-left-color:#C4882B;}
 .sit-txt{font-family:'Barlow',Arial,sans-serif;font-size:14px;color:rgba(255,255,255,0.82);font-weight:500;}
 .sit-ch{color:rgba(196,136,43,0.45);font-size:20px;flex-shrink:0;}
+.sit-special{background:rgba(196,136,43,0.06);border-left:2px solid rgba(196,136,43,0.4);padding:14px 14px;margin-top:6px;}
+.sit-special-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:rgba(196,136,43,0.6);text-transform:uppercase;margin-bottom:4px;}
+.sit-special-text{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.45);font-size:12px;line-height:1.6;}
 .pool-tab{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .block-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#071E38;position:relative;overflow:hidden;padding:20px;}
 .block-lanes{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.06) 85px,rgba(196,136,43,0.06) 86px);pointer-events:none;}
 .block-flag{position:absolute;top:0;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,#C4882B 0,#C4882B 16px,transparent 16px,transparent 20px,#1B2B45 20px,#1B2B45 36px,transparent 36px,transparent 40px);}
 .block-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;letter-spacing:6px;font-size:26px;color:#C4882B;text-transform:uppercase;margin-bottom:3px;position:relative;z-index:2;}
 .block-sub{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(255,255,255,0.75);font-size:13px;margin-bottom:22px;position:relative;z-index:2;}
-.block-lights{display:flex;gap:10px;justify-content:center;margin-bottom:18px;position:relative;z-index:2;}
-.bl{width:24px;height:24px;border-radius:50%;background:#0A1E35;border:2px solid rgba(196,136,43,0.2);transition:background 0.05s;}
-.bl.yellow{background:#C4882B;border-color:#C4882B;}
-.bl.green{background:#2ECC71;border-color:#2ECC71;}
-.bl.red{background:#E74C3C;border-color:#E74C3C;}
-.block-status{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:22px;letter-spacing:3px;color:rgba(255,255,255,0.95);text-transform:uppercase;margin-bottom:18px;min-height:30px;position:relative;z-index:2;text-align:center;}
 .block-btn{background:#C4882B;border:none;color:#071E38;padding:14px 44px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:4px;cursor:pointer;text-transform:uppercase;position:relative;z-index:2;transition:background 0.1s;}
 .block-btn:hover{background:#D4A030;}
 .block-result{background:#0A1E35;border-left:3px solid #C4882B;padding:16px 18px;width:100%;max-width:290px;position:relative;z-index:2;}
-.br-label{font-family:'Barlow Condensed',Arial,sans-serif;font-size:10px;letter-spacing:3px;color:rgba(196,136,43,0.8);text-transform:uppercase;margin-bottom:3px;}
-.br-time{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:40px;color:#C4882B;letter-spacing:2px;line-height:1;margin-bottom:10px;}
 .br-phlip{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.9);font-size:14px;line-height:1.68;margin-bottom:10px;}
 .br-pb{font-family:'Barlow Condensed',Arial,sans-serif;font-size:11px;letter-spacing:2px;color:rgba(196,136,43,0.7);text-transform:uppercase;margin-bottom:12px;}
 .br-pb span{color:#C4882B;font-weight:700;}
@@ -514,7 +495,7 @@ function App(){
   const openNat=()=>{
     if(natOpen) return;
     setNatOpen(true);
-    setTimeout(()=>setScreen('pool'),920);
+    setTimeout(()=>setScreen('terms'),920);
   };
 
   const enterChat=(id)=>{
@@ -594,6 +575,7 @@ function App(){
   const tapSit=(msg)=>{setTab('talk');setTimeout(()=>send(msg),80);};
   const onKey=(e)=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send(input);}};
   const lane=LANES.find(l=>l.id===laneId);
+  const sits=SITS[laneId]||SITS.middle;
 
   return(
     <>
@@ -604,50 +586,46 @@ function App(){
           <div className="welcome">
             <div className="wl-hdr">
               <div className="wl-logo">Phlip</div>
-              <div className="wl-tag">The Old Swimmer You Can Always Question!</div>
+              <div className="wl-tag">The Old Swimmer You Can Always Question</div>
             </div>
             <div className="wl-body">
               <div className="wl-section">
                 <div className="wl-section-title">Welcome to Beta 1.0</div>
-              
-              <p className="wl-p">You are one of the first people to step on this deck. </p>
-                <p className="wl-p">Phlip is a swim companion built for swimmers. Phlip is not a coach. He is not a therapist. He is the old swimmer who has been in every swimmer's shoes before and is always ready to talk swimming.</p>
-               <p className="wl-p">This is the beta test version of Phlip. Your beta use and feedback is how we make Phlip better, so click the ? next to "send" in the chat to let us know your thoughts.</p>
+                <p className="wl-p">You are one of the first people to step on this deck.</p>
+                <p className="wl-p">Phlip is a swim companion built for swimmers. He is not a coach. He is not a therapist. He is the old swimmer who has been in every swimmer's shoes before and is always ready to talk swimming.</p>
+                <p className="wl-p">This is beta. Your use and feedback is how we make Phlip better. Hit the ? near the send button anytime to share your thoughts.</p>
               </div>
               <div className="wl-section">
                 <div className="wl-section-title">What Is Here Now</div>
                 <ul className="wl-list">
-                  <li>Six lanes: 9 and Under, 10 to 14, 15 to 18, College, Masters, and the Swim Supporter Zone for parents</li>
-                  <li>Four tabs in every lane: Talk, Situations, The Pool for sport history, and The Clock presence game</li>
-                  <li>Full system prompts tuned to each swimmer type and age</li>
+                  <li>Six lanes: 9 and Under, 10 to 14, 15 to 18, College, Masters, and the Swim Supporter Zone</li>
+                  <li>Four tabs: Talk, Situations, The Pool for sport history, and The Clock presence game</li>
                   <li>Earned content that unlocks through genuine conversation depth</li>
-                  <li>Complete safety guardrails and legal redirects geared towards COPPA Compliance</li>
+                  <li>Complete safety guardrails and redirects</li>
                 </ul>
               </div>
               <div className="wl-section">
-                <div className="wl-section-title">Coming in 2.0</div>
+                <div className="wl-section-title">Coming Soon</div>
                 <ul className="wl-list">
-                  <li>Practice journal with date stamps and Phlip referencing past entries</li>
-                  <li>Seasonal intention that Phlip returns to at key moments</li>
-                  <li>Team mode with a coach portal and aggregate swimmer insights</li>
-                  <li>Check in prompts to keep the habit alive</li>
+                  <li>Practice journal and seasonal intention tracking</li>
+                  <li>Team mode with a coach portal</li>
                   <li>Coach, parent and swimmer linked accounts</li>
-                  <li>Push notifications on sleep, diet ect. timed to meets and taper</li>
+                  <li>Phlip Meet Meetups -- commission free group travel, hotel partners, and a community gathering at every major meet</li>
                   <li>Multilingual starting with Spanish</li>
-                  <li>COPPA compliance for swimmers under 13</li>
+                  <li>Phlip Merch -- Streamline On caps, Why Knot? hoodies, warm up gear</li>
+                  <li>Phlip Swim Camps -- live ERIP experiences with real coaches at venues nationwide</li>
                 </ul>
               </div>
               <div className="wl-section">
                 <div className="wl-section-title">What We Need From You</div>
                 <ul className="wl-list">
-                  <li>Talk to Phlip every day for two weeks or longer for free</li>
-                  <li>Try every lane including the Swim Supporter Zone</li>
-                  <li>Hit the Situations list and use "Talk" to push him into corners or situations you might imagine occuring</li>
-                  <li>Try to break him or get him to slip up from being nuetral or positive and tell us where he cracks</li>
-                  <li>Use the FEEDBACK button inside the app anytime by clicking near the chat send button</li>
+                  <li>Talk to Phlip every day for two weeks</li>
+                  <li>Try every lane and every tab</li>
+                  <li>Try to break him and tell us where he cracks</li>
+                  <li>Hit the ? button with your honest feedback</li>
                 </ul>
               </div>
-              <p className="wl-close">Phlip was built out of love for the sport and the people in it. Share the love!</p>
+              <p className="wl-close">Built out of love for the sport and the people in it. Share the love.</p>
             </div>
             <div className="wl-footer">
               <button className="wl-btn" onClick={()=>setScreen('nat')}>Let's Get Started!</button>
@@ -669,31 +647,6 @@ function App(){
           </div>
         )}
 
-        {screen==='pool'&&(
-          <div className="pool-screen" onClick={()=>setScreen('terms')}>
-            <div className="pool-water"/>
-            <div className="pool-shimmer"/>
-            <div className="pool-lanes"/>
-            <div className="pool-flag"/>
-            <div className="pool-nums">
-              {[1,2,3,4,5,6,7,8].map(n=><div key={n} className="pool-num">{n}</div>)}
-            </div>
-            <div className="pool-content">
-              <div className="pool-welcome">Welcome</div>
-              <div className="pool-divein">DIVE IN</div>
-              <div className="pool-tap">tap anywhere to enter</div>
-            </div>
-            <div className="pool-blocks">
-              {[...Array(8)].map((_,i)=>(
-                <div key={i} className="pool-block">
-                  <div className="pool-block-top"/>
-                  <div className="pool-block-base"/>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {screen==='terms'&&(
           <div className="terms">
             <div className="terms-hdr">
@@ -701,12 +654,7 @@ function App(){
               <div className="terms-tag">The one old swimmer you can always question</div>
             </div>
             <div className="terms-body">
-              <div className="terms-title">Before You Step On Deck</div>
-              <p className="terms-p">Phlip is a <strong>swim companion</strong>, not a coach, therapist, counselor, or medical professional. He is here for the mental and emotional side of competitive swimming.</p>
-              <p className="terms-p">Phlip <strong>never replaces your coach</strong>. Anything technical belongs with the person who can actually see you in the water.</p>
-              <p className="terms-p">If anything serious comes up, Phlip will point you to someone who can actually help. In the US you can always text or call <strong>988</strong> for free confidential crisis support.</p>
-              <p className="terms-p">Swimmers <strong>under 13</strong> should have a parent or guardian present or aware when using this app.</p>
-              <p className="terms-p">By continuing you understand that Phlip is a swim companion and not a substitute for professional support, medical advice, or coaching.</p>
+              <p className="terms-statement">Phlip is a <strong>swim companion</strong>, not a coach, therapist, or medical professional. He never replaces your coach or a trusted adult. If anything serious comes up he will point you to someone qualified to help. In the US text or call <strong>988</strong> anytime for free crisis support. Swimmers under 13 should have a parent or guardian aware they are using this app. By continuing you agree that Phlip is a companion tool and not a substitute for professional support, coaching, or medical advice.</p>
             </div>
             <div className="terms-footer">
               <button className="terms-btn" onClick={()=>setScreen('landing')}>I Understand -- Let's Go</button>
@@ -784,12 +732,16 @@ function App(){
             {tab==='situations'&&(
               <div className="sit-list">
                 <div className="sit-intro">Where are you right now. Tap one and Phlip picks it up from there.</div>
-                {(SITS[laneId]||SITS.middle).map((s,i)=>(
+                {sits.map((s,i)=>(
                   <div key={i} className="sit" onClick={()=>tapSit(s.m)}>
                     <span className="sit-txt">{s.l}</span>
                     <span className="sit-ch">&#8250;</span>
                   </div>
                 ))}
+                <div className="sit-special">
+                  <div className="sit-special-title">Coming Soon -- Phlip Meet Meetups</div>
+                  <div className="sit-special-text">Commission free group travel packages, hotel partner rates, and a community gathering at every major meet. Swimmers and families finding each other in the lobby, at dinner, poolside. The sport is better when the people in it find each other.</div>
+                </div>
               </div>
             )}
 
@@ -896,18 +848,14 @@ function BlockGame(){
     if(gs==='idle'){
       ref.current.start=Date.now();
       ref.current.raf=requestAnimationFrame(tick);
-      setGs('running');
-      setDisplay('0.000');
-      setResult(null);
-      return;
+      setGs('running');setDisplay('0.000');setResult(null);return;
     }
     if(gs==='running'){
       cancelAnimationFrame(ref.current.raf);
       const elapsed=Date.now()-ref.current.start;
       const diff=elapsed-TARGET;
       const dispVal=(elapsed/1000).toFixed(3);
-      setDisplay(dispVal);
-      setGs('done');
+      setDisplay(dispVal);setGs('done');
       const absDiff=Math.abs(diff);
       if(pb===null||absDiff<pb) setPb(absDiff);
       setResult({elapsed,diff,dispVal});
@@ -927,63 +875,36 @@ function BlockGame(){
       <div className="block-lanes"/>
       <div className="block-flag"/>
       <div className="block-title">The Clock</div>
-      <div className="block-sub" style={{marginBottom:'8px'}}>Start it. Stop it at exactly 5 seconds.</div>
-      <div className="block-sub" style={{fontSize:'11px',color:'rgba(255,255,255,0.4)',marginBottom:'28px'}}>No counting. Just feel it. Tap to start. Tap to stop.</div>
-
-      <div style={{position:'relative',zIndex:2,marginBottom:'24px',textAlign:'center'}}>
+      <div className="block-sub" style={{marginBottom:'4px',textAlign:'center'}}>Start it. Stop it at exactly 5 seconds.</div>
+      <div className="block-sub" style={{fontSize:'11px',color:'rgba(255,255,255,0.4)',marginBottom:'24px',textAlign:'center'}}>No counting. Just feel it. Tap anywhere to start and stop.</div>
+      <div style={{position:'relative',zIndex:2,marginBottom:'20px',textAlign:'center'}}>
         <div style={{
-          width:'200px',height:'200px',borderRadius:'50%',
+          width:'190px',height:'190px',borderRadius:'50%',
           border:'3px solid rgba(196,136,43,0.3)',
           display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',
           margin:'0 auto',
           background:gs==='running'?'rgba(196,136,43,0.06)':'rgba(10,30,53,0.8)',
           transition:'background 0.3s',
-          boxShadow:gs==='running'?'0 0 40px rgba(196,136,43,0.15)':'none',
         }}>
           <div style={{
             fontFamily:"'Barlow Condensed',Arial,sans-serif",
-            fontWeight:800,fontSize:'48px',
+            fontWeight:800,fontSize:'46px',
             color:gs==='done'?(Math.abs(result?.diff||9999)<=150?'#2ECC71':'#C4882B'):'#C4882B',
             letterSpacing:'2px',lineHeight:1,
             transition:'color 0.3s',
           }}>{display}</div>
-          <div style={{
-            fontFamily:"'Barlow',Arial,sans-serif",
-            fontSize:'11px',color:'rgba(196,136,43,0.45)',
-            letterSpacing:'3px',marginTop:'6px',textTransform:'uppercase',
-          }}>seconds</div>
+          <div style={{fontFamily:"'Barlow',Arial,sans-serif",fontSize:'10px',color:'rgba(196,136,43,0.45)',letterSpacing:'3px',marginTop:'5px',textTransform:'uppercase'}}>seconds</div>
           {gs==='done'&&diffLabel&&(
-            <div style={{
-              fontFamily:"'Barlow Condensed',Arial,sans-serif",
-              fontWeight:700,fontSize:'16px',
-              color:Math.abs(result.diff)<=150?'#2ECC71':'rgba(196,136,43,0.7)',
-              letterSpacing:'1px',marginTop:'8px',
-            }}>{diffLabel}</div>
+            <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:700,fontSize:'15px',color:Math.abs(result.diff)<=150?'#2ECC71':'rgba(196,136,43,0.7)',letterSpacing:'1px',marginTop:'7px'}}>{diffLabel}</div>
           )}
         </div>
-        <div style={{marginTop:'14px'}}>
-          <div style={{
-            width:'80px',height:'4px',
-            background:'rgba(196,136,43,0.15)',
-            margin:'0 auto',borderRadius:'2px',
-            overflow:'hidden',
-          }}>
-            <div style={{
-              height:'100%',
-              background:'#C4882B',
-              width:gs==='running'?'100%':'0%',
-              transition:gs==='running'?`width ${TARGET/1000}s linear`:'width 0s',
-              borderRadius:'2px',
-            }}/>
+        <div style={{marginTop:'12px'}}>
+          <div style={{width:'80px',height:'4px',background:'rgba(196,136,43,0.15)',margin:'0 auto',borderRadius:'2px',overflow:'hidden'}}>
+            <div style={{height:'100%',background:'#C4882B',width:gs==='running'?'100%':'0%',transition:gs==='running'?`width ${TARGET/1000}s linear`:'width 0s',borderRadius:'2px'}}/>
           </div>
-          <div style={{
-            fontFamily:"'Barlow',Arial,sans-serif",
-            fontSize:'10px',color:'rgba(196,136,43,0.3)',
-            letterSpacing:'2px',marginTop:'6px',textTransform:'uppercase',
-          }}>5.000</div>
+          <div style={{fontFamily:"'Barlow',Arial,sans-serif",fontSize:'10px',color:'rgba(196,136,43,0.3)',letterSpacing:'2px',marginTop:'5px',textTransform:'uppercase'}}>5.000</div>
         </div>
       </div>
-
       {gs==='idle'&&(
         <button className="block-btn" onClick={e=>{e.stopPropagation();handleTap();}}>START</button>
       )}
@@ -993,8 +914,8 @@ function BlockGame(){
       {gs==='done'&&result&&(
         <div className="block-result" style={{marginTop:'0'}}>
           <div className="br-phlip">{phlipSays(result.diff)}</div>
-          {pb!==null&&<div className="br-pb">Best: <span>{pb<=0?'Perfect':pb+'ms off'}</span></div>}
-        <button className="br-again" onClick={e=>{e.stopPropagation();reset();}}>Try Again</button>
+          {pb!==null&&<div className="br-pb">Best: <span>{pb<=9?'Perfect':pb+'ms off'}</span></div>}
+          <button className="br-again" onClick={e=>{e.stopPropagation();reset();}}>Try Again</button>
         </div>
       )}
     </div>
