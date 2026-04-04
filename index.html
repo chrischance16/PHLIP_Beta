@@ -733,7 +733,7 @@ function App(){
                 <div class="lane-label">${l.label}</div>
                 <div class="lane-right">
                   ${laneMemo[l.id] && html`<div class="lane-hist"></div>`}
-                  <div class="lane-arrow">&#8250;</div>
+                  <div class="lane-arrow">›</div>
                 </div>
               </div>
             `)}
@@ -744,7 +744,7 @@ function App(){
       ${screen==='chat' && html`
         <div class="chat">
           <div class="c-hdr">
-            <button class="back" onClick=${()=>setScreen('landing')}>&#8249;</button>
+            <button class="back" onClick=${()=>setScreen('landing')}>‹</button>
             <div class="c-hdr-info">
               <div class="c-hdr-name">Phlip</div>
               <div class="c-hdr-lane">${lane?.label}</div>
@@ -802,7 +802,7 @@ function App(){
               ${sits.map((s,i)=>html`
                 <div key=${i} class="sit" onClick=${()=>tapSit(s.m)}>
                   <span class="sit-txt">${s.l}</span>
-                  <span class="sit-ch">&#8250;</span>
+                  <span class="sit-ch">›</span>
                 </div>
               `)}
               <div class="sit-special">
