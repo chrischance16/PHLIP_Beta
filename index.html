@@ -17,9 +17,6 @@
 <link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://cdnjs.cloudflare.com">
-<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js" as="script">
-<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js" as="script">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -30,177 +27,32 @@
   @keyframes riseIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
   @keyframes tdot{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-5px)}}
   @keyframes blockPulse{0%,100%{opacity:0.7}50%{opacity:1}}
-
-  .app{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:#071E38;font-family:'Barlow',Arial,sans-serif;}
-  .welcome{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#071E38;}
-  .wl-hdr{background:#071E38;padding:22px 22px 14px;flex-shrink:0;text-align:center;border-bottom:1px solid rgba(196,136,43,0.15);}
-  .wl-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:44px;letter-spacing:10px;text-transform:uppercase;line-height:1;}
-  .wl-tag{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.75);font-size:12px;margin-top:5px;}
-  .wl-version{font-family:'Barlow Condensed',Arial,sans-serif;font-size:9px;letter-spacing:2px;color:rgba(196,136,43,0.3);text-transform:uppercase;margin-top:4px;}
-  .wl-body{flex:1;overflow-y:auto;padding:20px 22px 10px;}
-  .wl-section{margin-bottom:20px;}
-  .wl-section-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;color:#C4882B;text-transform:uppercase;border-bottom:1px solid rgba(196,136,43,0.2);padding-bottom:5px;margin-bottom:10px;}
-  .wl-p{font-family:'Barlow',Arial,sans-serif;font-size:13px;line-height:1.72;color:rgba(255,255,255,0.72);margin-bottom:8px;}
-  .wl-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
-  .wl-list li{font-family:'Barlow',Arial,sans-serif;font-size:12.5px;color:rgba(255,255,255,0.6);line-height:1.55;padding-left:14px;position:relative;}
-  .wl-list li::before{content:'--';position:absolute;left:0;color:rgba(196,136,43,0.5);}
-  .wl-close{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.5);font-size:13px;margin-top:6px;line-height:1.6;text-align:center;}
-  .wl-footer{padding:14px 22px 20px;flex-shrink:0;border-top:1px solid rgba(196,136,43,0.1);}
-  .wl-btn{width:100%;background:#C4882B;border:none;color:#071E38;padding:15px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:5px;cursor:pointer;transition:background 0.15s;text-transform:uppercase;}
-  .wl-btn:hover{background:#D4A030;}
-  .nat{flex:1;background:#071E38;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;user-select:none;position:relative;overflow:hidden;}
-  .nat-lanes{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.06) 85px,rgba(196,136,43,0.06) 86px);pointer-events:none;}
-  .nat-over{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;letter-spacing:10px;color:#C4882B;font-size:12px;margin-bottom:22px;position:relative;z-index:2;opacity:0.85;text-transform:uppercase;}
-  .door-wrap{width:216px;height:296px;display:flex;position:relative;z-index:2;perspective:900px;}
-  .door-cap{position:absolute;top:-13px;left:0;right:0;height:13px;background:linear-gradient(90deg,#3A2006,#7A5510,#4A2C08,#7A5510,#3A2006);border-radius:1px 1px 0 0;}
-  .dp{width:50%;height:100%;transform-style:preserve-3d;transition:transform 0.88s cubic-bezier(0.4,0,0.2,1);background:repeating-linear-gradient(180deg,rgba(0,0,0,0.05) 0,transparent 2px,transparent 38px,rgba(0,0,0,0.04) 38px,rgba(0,0,0,0.04) 41px),linear-gradient(115deg,#3A1E06 0%,#5A3210 18%,#381E04 32%,#58360E 52%,#3A1E06 68%,#664010 84%,#3A1E06 100%);border:1px solid #201004;}
-  .dp.dl{transform-origin:left center;border-right:none;}
-  .dp.dr{transform-origin:right center;border-left:1px solid rgba(130,90,15,0.3);}
-  .dp.dl.op{transform:rotateY(-83deg);}
-  .dp.dr.op{transform:rotateY(83deg);}
-  .di{position:absolute;top:9%;left:9%;right:9%;bottom:9%;border:1px solid rgba(196,136,43,0.14);}
-  .di::after{content:'';position:absolute;top:26%;left:7%;right:7%;bottom:26%;border:1px solid rgba(196,136,43,0.07);}
-  .dh{position:absolute;top:50%;transform:translateY(-50%);width:5px;height:24px;background:linear-gradient(90deg,#6A4A08,#C49020,#6A4A08);border-radius:3px;}
-  .dp.dl .dh{right:8px;}.dp.dr .dh{left:8px;}
-  .nat-glow{position:absolute;bottom:-3px;left:15%;right:15%;height:10px;background:rgba(0,160,210,0.4);border-radius:50%;filter:blur(4px);z-index:3;}
-  .nat-hint{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(196,136,43,0.35);font-size:12px;margin-top:22px;position:relative;z-index:2;}
-  .terms{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-  .terms-hdr{background:#071E38;padding:20px 18px 16px;flex-shrink:0;text-align:center;border-bottom:1px solid rgba(196,136,43,0.15);}
-  .terms-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:42px;letter-spacing:8px;text-transform:uppercase;display:block;line-height:1;}
-  .terms-tag{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.75);font-size:11px;margin-top:5px;}
-  .terms-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 28px;}
-  .terms-statement{font-family:'Barlow',Arial,sans-serif;font-size:14px;line-height:1.75;color:rgba(255,255,255,0.72);text-align:center;margin-bottom:8px;}
-  .terms-statement strong{color:rgba(255,255,255,0.92);font-weight:600;}
-  .terms-footer{padding:14px 18px 24px;flex-shrink:0;}
-  .terms-btn{width:100%;background:#C4882B;border:none;color:#071E38;padding:15px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:4px;cursor:pointer;transition:background 0.15s;text-transform:uppercase;}
-  .terms-btn:hover{background:#D4A030;}
-  .landing{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-  .l-hdr{background:#071E38;padding:20px 20px 16px;flex-shrink:0;position:relative;overflow:hidden;border-bottom:1px solid rgba(196,136,43,0.15);}
-  .l-hdr::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.04) 85px,rgba(196,136,43,0.04) 86px);pointer-events:none;}
-  .l-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:48px;letter-spacing:8px;line-height:1;display:block;position:relative;z-index:1;text-transform:uppercase;}
-  .l-tag{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(196,136,43,0.75);font-size:11px;margin-top:5px;position:relative;z-index:1;}
-  .l-safety{padding:8px 20px;background:#0A2236;flex-shrink:0;border-bottom:1px solid rgba(196,136,43,0.08);}
-  .l-safety p{font-family:'Barlow',Arial,sans-serif;color:rgba(255,255,255,0.45);font-size:11px;line-height:1.55;}
-  .lanes-wrap{flex:1;overflow-y:auto;padding:0;background:#071E38;}
-  .lane{background:transparent;border-bottom:1px solid rgba(196,136,43,0.08);padding:18px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.13s;position:relative;overflow:hidden;}
-  .lane::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:#C4882B;transform:scaleY(0);transition:transform 0.18s;transform-origin:center;}
-  .lane:hover{background:rgba(196,136,43,0.06);}
-  .lane:hover::before{transform:scaleY(1);}
-  .lane.sup::before{background:#A03030;}
-  .lane.sup:hover{background:rgba(160,48,48,0.06);}
-  .lane-label{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;letter-spacing:2.5px;color:rgba(255,255,255,0.82);font-size:19px;line-height:1;text-transform:uppercase;}
-  .lane.sup .lane-label{color:rgba(224,160,160,0.8);letter-spacing:2px;font-size:17px;}
-  .lane-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
-  .lane-hist{width:7px;height:7px;border-radius:50%;background:#C4882B;opacity:0.7;}
-  .lane.sup .lane-hist{background:#A03030;}
-  .lane-arrow{color:rgba(196,136,43,0.28);font-size:22px;line-height:1;transition:color 0.13s,transform 0.13s;}
-  .lane:hover .lane-arrow{color:rgba(196,136,43,0.65);transform:translateX(3px);}
-  .lane.sup .lane-arrow{color:rgba(160,48,48,0.28);}
-  .lane.sup:hover .lane-arrow{color:rgba(160,48,48,0.6);}
-  .chat{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-  .c-hdr{background:#071E38;padding:9px 13px;display:flex;align-items:center;gap:11px;flex-shrink:0;border-bottom:1px solid rgba(196,136,43,0.2);position:relative;overflow:hidden;}
-  .c-hdr::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.05) 85px,rgba(196,136,43,0.05) 86px);pointer-events:none;}
-  .back{background:none;border:none;color:rgba(196,136,43,0.7);font-size:28px;cursor:pointer;padding:0;line-height:1;flex-shrink:0;font-family:serif;position:relative;z-index:1;}
-  .c-hdr-info{flex:1;position:relative;z-index:1;}
-  .c-hdr-name{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:26px;letter-spacing:4px;line-height:1;text-transform:uppercase;}
-  .c-hdr-lane{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(196,136,43,0.55);font-size:10px;margin-top:2px;}
-  .c-hdr-actions{display:flex;gap:6px;align-items:center;position:relative;z-index:1;}
-  .c-clear{background:none;border:1px solid rgba(196,136,43,0.15);color:rgba(196,136,43,0.35);font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:8px;letter-spacing:1px;padding:4px 7px;cursor:pointer;text-transform:uppercase;transition:all 0.13s;}
-  .c-clear:hover{border-color:rgba(196,136,43,0.4);color:rgba(196,136,43,0.7);}
-  .tabs{display:flex;background:#0A1E35;border-bottom:1px solid rgba(196,136,43,0.12);flex-shrink:0;}
-  .tab{flex:1;padding:10px 2px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;letter-spacing:1px;font-size:10px;color:rgba(255,255,255,0.4);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color 0.13s,border-color 0.13s;text-transform:uppercase;}
-  .tab.on{color:#C4882B;border-bottom-color:#C4882B;}
-  .tab:hover:not(.on){color:rgba(255,255,255,0.65);}
-  .msgs{flex:1;overflow-y:auto;padding:13px 11px;display:flex;flex-direction:column;gap:10px;background:#071E38;}
-  .mu{align-self:flex-end;max-width:86%;background:#0D2840;color:rgba(255,255,255,0.88);padding:10px 14px;font-family:'Barlow',Arial,sans-serif;font-size:14px;line-height:1.6;border-bottom:2px solid rgba(196,136,43,0.4);}
-  .mp{align-self:flex-start;max-width:91%;background:#0A1E35;color:rgba(255,255,255,0.88);padding:12px 15px;font-family:'DM Serif Display',Georgia,serif;font-size:15px;line-height:1.72;border-left:3px solid #C4882B;}
-  .me{align-self:flex-start;max-width:91%;background:rgba(160,48,48,0.12);color:rgba(224,160,160,0.9);padding:10px 14px;font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-size:14px;border-left:3px solid rgba(160,48,48,0.6);}
-  .typing{align-self:flex-start;display:flex;gap:5px;padding:13px 15px;background:#0A1E35;border-left:3px solid #C4882B;}
-  .dot{width:7px;height:7px;background:#C4882B;border-radius:50%;animation:tdot 1.2s infinite;}
-  .dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}
-  .unlock-btn{align-self:flex-start;margin-top:-4px;background:rgba(196,136,43,0.12);border:1px solid rgba(196,136,43,0.3);color:#C4882B;padding:8px 14px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;cursor:pointer;transition:all 0.14s;display:flex;align-items:center;gap:7px;text-transform:uppercase;}
-  .unlock-btn:hover{background:rgba(196,136,43,0.2);border-color:rgba(196,136,43,0.5);}
-  .unlock-dot{width:6px;height:6px;background:#C4882B;border-radius:50%;opacity:0.7;}
-  .community-card{align-self:flex-start;width:100%;max-width:91%;background:rgba(196,136,43,0.06);border:1px solid rgba(196,136,43,0.15);padding:14px 16px;margin-top:4px;}
-  .cc-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:rgba(196,136,43,0.6);text-transform:uppercase;margin-bottom:6px;}
-  .cc-text{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.55);font-size:13px;line-height:1.6;margin-bottom:10px;}
-  .cc-btn{background:none;border:1px solid rgba(196,136,43,0.25);color:rgba(196,136,43,0.55);padding:6px 12px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;cursor:pointer;transition:all 0.13s;text-transform:uppercase;}
-  .cc-btn:hover{border-color:rgba(196,136,43,0.45);color:rgba(196,136,43,0.8);}
-  .share-bar{align-self:flex-start;width:100%;max-width:91%;display:flex;align-items:center;justify-content:flex-end;margin-top:-4px;}
-  .share-btn{background:none;border:1px solid rgba(196,136,43,0.2);color:rgba(196,136,43,0.5);padding:5px 12px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;cursor:pointer;transition:all 0.13s;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
-  .share-btn:hover{border-color:rgba(196,136,43,0.45);color:#C4882B;}
-  .share-copied{color:#2ECC71;border-color:rgba(46,204,113,0.4);}
-  .inp-area{padding:8px 11px;background:#0A1E35;display:flex;gap:6px;flex-shrink:0;border-top:1px solid rgba(196,136,43,0.1);}
-  .inp{flex:1;border:1px solid rgba(196,136,43,0.18);background:#071E38;padding:10px 12px;font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-size:14px;color:rgba(255,255,255,0.82);outline:none;resize:none;height:44px;line-height:1.4;}
-  .inp::placeholder{color:rgba(255,255,255,0.25);}
-  .inp:focus{border-color:rgba(196,136,43,0.4);}
-  .send{background:#C4882B;border:none;color:#071E38;padding:0 15px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:2px;cursor:pointer;transition:background 0.13s;flex-shrink:0;text-transform:uppercase;}
-  .send:hover:not(:disabled){background:#D4A030;}
-  .send:disabled{opacity:0.3;cursor:not-allowed;}
-  .sit-list{flex:1;overflow-y:auto;padding:8px 11px 14px;background:#071E38;display:flex;flex-direction:column;gap:5px;}
-  .sit-intro{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.45);font-size:12px;padding:6px 4px 6px;line-height:1.65;}
-  .sit{background:#0A1E35;padding:12px 14px;cursor:pointer;border-left:2px solid rgba(196,136,43,0.18);display:flex;align-items:center;justify-content:space-between;transition:background 0.12s,border-left-color 0.12s;}
-  .sit:hover{background:#0D2840;border-left-color:#C4882B;}
-  .sit-txt{font-family:'Barlow',Arial,sans-serif;font-size:14px;color:rgba(255,255,255,0.82);font-weight:500;}
-  .sit-ch{color:rgba(196,136,43,0.45);font-size:20px;flex-shrink:0;}
-  .sit-special{background:rgba(196,136,43,0.06);border-left:2px solid rgba(196,136,43,0.4);padding:14px 14px;margin-top:6px;}
-  .sit-special-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:rgba(196,136,43,0.6);text-transform:uppercase;margin-bottom:4px;}
-  .sit-special-text{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.45);font-size:12px;line-height:1.6;}
-  .pool-tab{flex:1;display:flex;flex-direction:column;overflow:hidden;}
-  .block-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#071E38;position:relative;overflow:hidden;padding:20px;}
-  .block-lanes{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.06) 85px,rgba(196,136,43,0.06) 86px);pointer-events:none;}
-  .block-flag{position:absolute;top:0;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,#C4882B 0,#C4882B 16px,transparent 16px,transparent 20px,#1B2B45 20px,#1B2B45 36px,transparent 36px,transparent 40px);}
-  .block-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;letter-spacing:6px;font-size:26px;color:#C4882B;text-transform:uppercase;margin-bottom:3px;position:relative;z-index:2;}
-  .block-sub{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(255,255,255,0.75);font-size:13px;position:relative;z-index:2;}
-  .block-btn{background:#C4882B;border:none;color:#071E38;padding:14px 44px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:4px;cursor:pointer;text-transform:uppercase;position:relative;z-index:2;transition:background 0.1s;}
-  .block-btn:hover{background:#D4A030;}
-  .block-result{background:#0A1E35;border-left:3px solid #C4882B;padding:16px 18px;width:100%;max-width:290px;position:relative;z-index:2;}
-  .br-phlip{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.9);font-size:14px;line-height:1.68;margin-bottom:10px;}
-  .br-pb{font-family:'Barlow Condensed',Arial,sans-serif;font-size:11px;letter-spacing:2px;color:rgba(196,136,43,0.7);text-transform:uppercase;margin-bottom:12px;}
-  .br-pb span{color:#C4882B;font-weight:700;}
-  .br-again{background:none;border:1px solid rgba(196,136,43,0.35);color:rgba(196,136,43,0.85);padding:8px 20px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;cursor:pointer;text-transform:uppercase;transition:all 0.13s;}
-  .br-again:hover{border-color:#C4882B;color:#C4882B;}
-  .fb-wrap{position:absolute;bottom:60px;right:11px;z-index:50;}
-  .fb-toggle{background:rgba(196,136,43,0.12);border:1px solid rgba(196,136,43,0.25);color:rgba(196,136,43,0.7);height:32px;padding:0 10px;border-radius:16px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:1.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.14s;text-transform:uppercase;white-space:nowrap;}
-  .fb-toggle:hover{background:rgba(196,136,43,0.2);color:#C4882B;}
-  .fb-form{position:absolute;bottom:40px;right:0;width:270px;background:#0A1E35;border:1px solid rgba(196,136,43,0.2);padding:16px;animation:riseIn 0.2s ease;}
-  .fb-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:#C4882B;text-transform:uppercase;margin-bottom:12px;}
-  .fb-q{font-family:'Barlow',Arial,sans-serif;font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:4px;}
-  .fb-inp{width:100%;background:#071E38;border:1px solid rgba(196,136,43,0.15);padding:7px 9px;font-family:'Barlow',Arial,sans-serif;font-size:12px;color:rgba(255,255,255,0.75);outline:none;resize:none;margin-bottom:9px;}
-  .fb-inp:focus{border-color:rgba(196,136,43,0.35);}
-  .fb-row{display:flex;gap:6px;margin-bottom:9px;}
-  .fb-yn{flex:1;background:none;border:1px solid rgba(196,136,43,0.2);color:rgba(255,255,255,0.5);padding:6px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all 0.13s;text-transform:uppercase;}
-  .fb-yn.sel,.fb-yn:hover{background:rgba(196,136,43,0.15);border-color:rgba(196,136,43,0.4);color:#C4882B;}
-  .fb-send{width:100%;background:#C4882B;border:none;color:#071E38;padding:8px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:3px;cursor:pointer;transition:background 0.13s;text-transform:uppercase;}
-  .fb-send:hover{background:#D4A030;}
-  .fb-thanks{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.6);font-size:13px;text-align:center;padding:8px 0;}
-  .modal-bg{position:absolute;inset:0;background:rgba(7,30,56,0.85);z-index:100;display:flex;align-items:flex-end;}
-  .modal{background:#071E38;width:100%;max-height:88%;display:flex;flex-direction:column;border-top:2px solid #C4882B;}
-  .modal-hdr{background:#0A1E35;padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;border-bottom:1px solid rgba(196,136,43,0.15);}
-  .modal-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:18px;letter-spacing:2px;text-transform:uppercase;line-height:1.2;}
-  .modal-sub{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(196,136,43,0.55);font-size:11px;margin-top:3px;}
-  .modal-close{background:none;border:none;color:rgba(196,136,43,0.45);font-size:26px;cursor:pointer;line-height:1;padding:0;flex-shrink:0;margin-left:12px;}
-  .modal-body{flex:1;overflow-y:auto;padding:18px 16px;}
-  .modal-body pre{font-family:'Barlow',Arial,sans-serif;font-size:13px;line-height:1.78;color:rgba(255,255,255,0.82);white-space:pre-wrap;word-wrap:break-word;}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/htm@3/dist/htm.umd.js"></script>
-<script>
-const html = htm.bind(React.createElement);
-const {useState,useEffect,useRef} = React;
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useEffect,useRef}=React;
 
-const VERSION = 'Beta 1.2';
-const MAX_SAVED = 20;
-const STORAGE_KEY = id => 'phlip_msgs_' + id;
+const VERSION='Beta 1.3';
+const MAX_SAVED=20;
+const STORAGE_KEY=id=>`phlip_msgs_${id}`;
 
-function saveMsgs(id,msgs){try{localStorage.setItem(STORAGE_KEY(id),JSON.stringify(msgs.slice(-MAX_SAVED)));}catch(e){}}
-function loadMsgs(id){try{const d=localStorage.getItem(STORAGE_KEY(id));return d?JSON.parse(d):null;}catch(e){return null;}}
-function clearMsgs(id){try{localStorage.removeItem(STORAGE_KEY(id));}catch(e){}}
-function hasHistory(id){try{const d=localStorage.getItem(STORAGE_KEY(id));return !!(d&&JSON.parse(d).length>0);}catch(e){return false;}}
+function saveMsgs(id,msgs){
+  try{localStorage.setItem(STORAGE_KEY(id),JSON.stringify(msgs.slice(-MAX_SAVED)));}catch(e){}
+}
+function loadMsgs(id){
+  try{const d=localStorage.getItem(STORAGE_KEY(id));return d?JSON.parse(d):null;}catch(e){return null;}
+}
+function clearMsgs(id){
+  try{localStorage.removeItem(STORAGE_KEY(id));}catch(e){}
+}
+function hasHistory(id){
+  try{const d=localStorage.getItem(STORAGE_KEY(id));return d&&JSON.parse(d).length>0;}catch(e){return false;}
+}
 
 const LANES=[
   {id:'young',   label:'9 & Under'},
@@ -277,7 +129,8 @@ const SITS={
 
 const UNLOCKS={
   intro:{
-    title:"About Phlip",sub:"Since you asked",
+    title:"About Phlip",
+    sub:"Since you asked",
     body:`My name is Phlip. Spelled that way on purpose.
 
 My dad called me Flip short for Flipper from the time I was small and the other kids picked it up. One night when I was older I was riding to a Phish concert at a place called Star Lake. The car broke down. We missed the show. But everyone adjusted, made camp under the stars, and had a better night than the concert would have been anyway. A new girl in the travel crew asked how I spelled my name. I laughed and said P-H-L-I-P. They all loved it and that was that.
@@ -292,9 +145,11 @@ That is who you are talking to.
 
 Why Knot?
 
--- Phlip`},
+-- Phlip`
+  },
   crib:{
-    title:"Phlip's Notes",sub:"What I wrote down that morning in Elkins",
+    title:"Phlip's Notes",
+    sub:"What I wrote down that morning in Elkins",
     body:`ERIP -- Exhaustion Reflex Instinct Principle
 Written from memory at breakfast with Chance, Elkins WV
 
@@ -322,9 +177,11 @@ The void will fill with something. Fill it first.
 The coachability threshold is a SKILL. Train it.
 Bad juju equals bad splits. Simple.
 
--- kept this one    -- Phlip`},
+-- kept this one    -- Phlip`
+  },
   cheat:{
-    title:"The Phlipsophy",sub:"ERIP: Your Cheat Sheet",
+    title:"The Phlipsophy",
+    sub:"ERIP: Your Cheat Sheet",
     body:`THE EXHAUSTION REFLEX INSTINCT PRINCIPLE
 Your Phlipsophy Cheat Sheet
 
@@ -349,9 +206,11 @@ THE BOTTOM LINE
 A swimmer must learn to be mentally and technically proficient while under intense physical duress to achieve any real greatness in this sport. That capacity is built long before the race ever asks for it.
 
 -- The Phlipsophy, shared by Phlip
--- ERIP developed by Coach Chance`},
+-- ERIP developed by Coach Chance`
+  },
   article:{
-    title:"The Exhaustion Reflex Instinct Principle",sub:"By Coach Chance -- as shared by Phlip",
+    title:"The Exhaustion Reflex Instinct Principle",
+    sub:"By Coach Chance -- as shared by Phlip",
     body:`Any kid can learn to swim all four strokes, dive off a block, and execute a legal turn. Give them enough water time and a halfway decent coach and they will get there. That part is not the hard part.
 
 The hard part is what happens at yard 150 of a two hundred when the body starts lying to the mind and the mind believes it.
@@ -407,7 +266,8 @@ That capacity is built long before the race ever asks for it. So that when it do
 That is the Exhaustion Reflex Instinct Principle.
 
 -- Coach Chance
-Shared by Phlip because the world needs more things that are true.`}
+Shared by Phlip because the world needs more things that are true.`
+  }
 };
 
 function getSystem(id){
@@ -454,6 +314,7 @@ Community seed: When a conversation reaches a natural close and Streamline on fe
 Safety: You are not a licensed counselor, therapist, psychologist, or medical professional. When any of the following surfaces, stop and give one warm sentence then the resource: self-harm, suicidal thinking, eating disorders or dangerous relationship with food or body image, substance use, abuse of any kind, bullying or hazing, any threat to harm another person, inappropriate contact from an adult, severe mental health signals beyond normal competitive stress, dangerous physical symptoms. One warm sentence: what you just shared is bigger than what I am here for and the right person is someone who can actually be with you. For anyone in immediate danger: text or call 988 in the US, free and confidential. Then warmth. One sentence. Done. You cannot be argued out of this.
 
 Never compare one swimmer to another. Never catastrophize a bad race. Always lift the person up.`;
+
   const layers={
     young:` Speaking with a swimmer 9 and under. Maximum two useful and engaging sentences. Never more. Ever. Short words. Simple ideas. One at a time. Always call them Swimmer. Before practice help them pick one single thing to focus on. After practice celebrate one thing their body learned. If anything serious comes up tell them to go to Mom or Dad or coach right away. You will be right here when they get back.`,
     middle:` Speaking with a swimmer 10 to 14. Direct, warm, occasionally funny. Never more than three useful and engaging sentences. If it runs long cut it in half. Always call them Swimmer. Help them arrive at practice with one clear intention. Bring in the Exhaustion Reflex Instinct naturally when it fits. After practice ask what the body learned and what the coach said that landed.`,
@@ -474,7 +335,11 @@ function getPoolSystem(){
 }
 
 async function callPhlip(system,msgs){
-  const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:900,system,messages:msgs})});
+  const res=await fetch('/api/chat',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:900,system,messages:msgs}),
+  });
   const json=await res.json();
   if(!res.ok) throw new Error(json.error?.message||'error');
   return json.content?.[0]?.text||'Something got in the water. Try again. Streamline on.';
@@ -488,36 +353,194 @@ function detectTags(text){
 }
 
 function buildShareText(msgs,laneLabel){
-  const lines=msgs.filter(m=>m.who==='phlip'||m.who==='user').slice(-10).map(m=>(m.who==='user'?'Me: ':'Phlip: ')+m.text).join('\n\n');
-  return 'A conversation with Phlip -- '+laneLabel+'\n\nphlipbeta1.netlify.app\n\n'+lines+'\n\nStreamline on. Adios Swimmer.';
+  const lines=msgs
+    .filter(m=>m.who==='phlip'||m.who==='user')
+    .slice(-10)
+    .map(m=>(m.who==='user'?'Me: ':'Phlip: ')+m.text)
+    .join('\n\n');
+  return `A conversation with Phlip -- ${laneLabel}\n\nphlipbeta1.netlify.app\n\n${lines}\n\nStreamline on. Adios Swimmer.`;
 }
 
+const S=`
+.app{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:#071E38;font-family:'Barlow',Arial,sans-serif;}
+.welcome{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#071E38;}
+.wl-hdr{background:#071E38;padding:22px 22px 14px;flex-shrink:0;text-align:center;border-bottom:1px solid rgba(196,136,43,0.15);}
+.wl-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:44px;letter-spacing:10px;text-transform:uppercase;line-height:1;}
+.wl-tag{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.75);font-size:12px;margin-top:5px;}
+.wl-version{font-family:'Barlow Condensed',Arial,sans-serif;font-size:9px;letter-spacing:2px;color:rgba(196,136,43,0.3);text-transform:uppercase;margin-top:4px;}
+.wl-body{flex:1;overflow-y:auto;padding:20px 22px 10px;}
+.wl-section{margin-bottom:20px;}
+.wl-section-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;color:#C4882B;text-transform:uppercase;border-bottom:1px solid rgba(196,136,43,0.2);padding-bottom:5px;margin-bottom:10px;}
+.wl-p{font-family:'Barlow',Arial,sans-serif;font-size:13px;line-height:1.72;color:rgba(255,255,255,0.72);margin-bottom:8px;}
+.wl-list{list-style:none;display:flex;flex-direction:column;gap:5px;}
+.wl-list li{font-family:'Barlow',Arial,sans-serif;font-size:12.5px;color:rgba(255,255,255,0.6);line-height:1.55;padding-left:14px;position:relative;}
+.wl-list li::before{content:'--';position:absolute;left:0;color:rgba(196,136,43,0.5);}
+.wl-close{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.5);font-size:13px;margin-top:6px;line-height:1.6;text-align:center;}
+.wl-footer{padding:14px 22px 20px;flex-shrink:0;border-top:1px solid rgba(196,136,43,0.1);}
+.wl-btn{width:100%;background:#C4882B;border:none;color:#071E38;padding:15px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:5px;cursor:pointer;transition:background 0.15s;text-transform:uppercase;}
+.wl-btn:hover{background:#D4A030;}
+.nat{flex:1;background:#071E38;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;user-select:none;position:relative;overflow:hidden;}
+.nat-lanes{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.06) 85px,rgba(196,136,43,0.06) 86px);pointer-events:none;}
+.nat-over{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;letter-spacing:10px;color:#C4882B;font-size:12px;margin-bottom:22px;position:relative;z-index:2;opacity:0.85;text-transform:uppercase;}
+.door-wrap{width:216px;height:296px;display:flex;position:relative;z-index:2;perspective:900px;}
+.door-cap{position:absolute;top:-13px;left:0;right:0;height:13px;background:linear-gradient(90deg,#3A2006,#7A5510,#4A2C08,#7A5510,#3A2006);border-radius:1px 1px 0 0;}
+.dp{width:50%;height:100%;transform-style:preserve-3d;transition:transform 0.88s cubic-bezier(0.4,0,0.2,1);background:repeating-linear-gradient(180deg,rgba(0,0,0,0.05) 0,transparent 2px,transparent 38px,rgba(0,0,0,0.04) 38px,rgba(0,0,0,0.04) 41px),linear-gradient(115deg,#3A1E06 0%,#5A3210 18%,#381E04 32%,#58360E 52%,#3A1E06 68%,#664010 84%,#3A1E06 100%);border:1px solid #201004;}
+.dp.dl{transform-origin:left center;border-right:none;}
+.dp.dr{transform-origin:right center;border-left:1px solid rgba(130,90,15,0.3);}
+.dp.dl.op{transform:rotateY(-83deg);}
+.dp.dr.op{transform:rotateY(83deg);}
+.di{position:absolute;top:9%;left:9%;right:9%;bottom:9%;border:1px solid rgba(196,136,43,0.14);}
+.di::after{content:'';position:absolute;top:26%;left:7%;right:7%;bottom:26%;border:1px solid rgba(196,136,43,0.07);}
+.dh{position:absolute;top:50%;transform:translateY(-50%);width:5px;height:24px;background:linear-gradient(90deg,#6A4A08,#C49020,#6A4A08);border-radius:3px;}
+.dp.dl .dh{right:8px;}.dp.dr .dh{left:8px;}
+.nat-glow{position:absolute;bottom:-3px;left:15%;right:15%;height:10px;background:rgba(0,160,210,0.4);border-radius:50%;filter:blur(4px);z-index:3;}
+.nat-hint{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(196,136,43,0.35);font-size:12px;margin-top:22px;position:relative;z-index:2;}
+.terms{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.terms-hdr{background:#071E38;padding:20px 18px 16px;flex-shrink:0;text-align:center;border-bottom:1px solid rgba(196,136,43,0.15);}
+.terms-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:42px;letter-spacing:8px;text-transform:uppercase;display:block;line-height:1;}
+.terms-tag{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.75);font-size:11px;margin-top:5px;}
+.terms-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 28px;}
+.terms-statement{font-family:'Barlow',Arial,sans-serif;font-size:14px;line-height:1.75;color:rgba(255,255,255,0.72);text-align:center;margin-bottom:8px;}
+.terms-statement strong{color:rgba(255,255,255,0.92);font-weight:600;}
+.terms-footer{padding:14px 18px 24px;flex-shrink:0;}
+.terms-btn{width:100%;background:#C4882B;border:none;color:#071E38;padding:15px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:4px;cursor:pointer;transition:background 0.15s;text-transform:uppercase;}
+.terms-btn:hover{background:#D4A030;}
+.landing{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.l-hdr{background:#071E38;padding:20px 20px 16px;flex-shrink:0;position:relative;overflow:hidden;border-bottom:1px solid rgba(196,136,43,0.15);}
+.l-hdr::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.04) 85px,rgba(196,136,43,0.04) 86px);pointer-events:none;}
+.l-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:48px;letter-spacing:8px;line-height:1;display:block;position:relative;z-index:1;text-transform:uppercase;}
+.l-tag{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(196,136,43,0.75);font-size:11px;margin-top:5px;position:relative;z-index:1;}
+.l-safety{padding:8px 20px;background:#0A2236;flex-shrink:0;border-bottom:1px solid rgba(196,136,43,0.08);}
+.l-safety p{font-family:'Barlow',Arial,sans-serif;color:rgba(255,255,255,0.45);font-size:11px;line-height:1.55;}
+.lanes-wrap{flex:1;overflow-y:auto;padding:0;background:#071E38;}
+.lane{background:transparent;border-bottom:1px solid rgba(196,136,43,0.08);padding:18px 20px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background 0.13s;position:relative;overflow:hidden;}
+.lane::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:#C4882B;transform:scaleY(0);transition:transform 0.18s;transform-origin:center;}
+.lane:hover{background:rgba(196,136,43,0.06);}
+.lane:hover::before{transform:scaleY(1);}
+.lane.sup::before{background:#A03030;}
+.lane.sup:hover{background:rgba(160,48,48,0.06);}
+.lane-label{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;letter-spacing:2.5px;color:rgba(255,255,255,0.82);font-size:19px;line-height:1;text-transform:uppercase;}
+.lane.sup .lane-label{color:rgba(224,160,160,0.8);letter-spacing:2px;font-size:17px;}
+.lane-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.lane-hist{width:7px;height:7px;border-radius:50%;background:#C4882B;opacity:0.7;}
+.lane.sup .lane-hist{background:#A03030;}
+.lane-arrow{color:rgba(196,136,43,0.28);font-size:22px;line-height:1;transition:color 0.13s,transform 0.13s;}
+.lane:hover .lane-arrow{color:rgba(196,136,43,0.65);transform:translateX(3px);}
+.lane.sup .lane-arrow{color:rgba(160,48,48,0.28);}
+.lane.sup:hover .lane-arrow{color:rgba(160,48,48,0.6);}
+.chat{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.c-hdr{background:#071E38;padding:9px 13px;display:flex;align-items:center;gap:11px;flex-shrink:0;border-bottom:1px solid rgba(196,136,43,0.2);position:relative;overflow:hidden;}
+.c-hdr::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.05) 85px,rgba(196,136,43,0.05) 86px);pointer-events:none;}
+.back{background:none;border:none;color:rgba(196,136,43,0.7);font-size:28px;cursor:pointer;padding:0;line-height:1;flex-shrink:0;font-family:serif;position:relative;z-index:1;}
+.c-hdr-info{flex:1;position:relative;z-index:1;}
+.c-hdr-name{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:26px;letter-spacing:4px;line-height:1;text-transform:uppercase;}
+.c-hdr-lane{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(196,136,43,0.55);font-size:10px;margin-top:2px;}
+.c-hdr-actions{display:flex;gap:6px;align-items:center;position:relative;z-index:1;}
+.c-clear{background:none;border:1px solid rgba(196,136,43,0.15);color:rgba(196,136,43,0.35);font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:8px;letter-spacing:1px;padding:4px 7px;cursor:pointer;text-transform:uppercase;transition:all 0.13s;}
+.c-clear:hover{border-color:rgba(196,136,43,0.4);color:rgba(196,136,43,0.7);}
+.tabs{display:flex;background:#0A1E35;border-bottom:1px solid rgba(196,136,43,0.12);flex-shrink:0;}
+.tab{flex:1;padding:10px 2px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;letter-spacing:1px;font-size:10px;color:rgba(255,255,255,0.4);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:color 0.13s,border-color 0.13s;text-transform:uppercase;}
+.tab.on{color:#C4882B;border-bottom-color:#C4882B;}
+.tab:hover:not(.on){color:rgba(255,255,255,0.65);}
+.msgs{flex:1;overflow-y:auto;padding:13px 11px;display:flex;flex-direction:column;gap:10px;background:#071E38;}
+.mu{align-self:flex-end;max-width:86%;background:#0D2840;color:rgba(255,255,255,0.88);padding:10px 14px;font-family:'Barlow',Arial,sans-serif;font-size:14px;line-height:1.6;border-bottom:2px solid rgba(196,136,43,0.4);}
+.mp{align-self:flex-start;max-width:91%;background:#0A1E35;color:rgba(255,255,255,0.88);padding:12px 15px;font-family:'DM Serif Display',Georgia,serif;font-size:15px;line-height:1.72;border-left:3px solid #C4882B;}
+.me{align-self:flex-start;max-width:91%;background:rgba(160,48,48,0.12);color:rgba(224,160,160,0.9);padding:10px 14px;font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-size:14px;border-left:3px solid rgba(160,48,48,0.6);}
+.typing{align-self:flex-start;display:flex;gap:5px;padding:13px 15px;background:#0A1E35;border-left:3px solid #C4882B;}
+.dot{width:7px;height:7px;background:#C4882B;border-radius:50%;animation:tdot 1.2s infinite;}
+.dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}
+.unlock-btn{align-self:flex-start;margin-top:-4px;background:rgba(196,136,43,0.12);border:1px solid rgba(196,136,43,0.3);color:#C4882B;padding:8px 14px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;cursor:pointer;transition:all 0.14s;display:flex;align-items:center;gap:7px;text-transform:uppercase;}
+.unlock-btn:hover{background:rgba(196,136,43,0.2);border-color:rgba(196,136,43,0.5);}
+.unlock-dot{width:6px;height:6px;background:#C4882B;border-radius:50%;opacity:0.7;}
+.community-card{align-self:flex-start;width:100%;max-width:91%;background:rgba(196,136,43,0.06);border:1px solid rgba(196,136,43,0.15);padding:14px 16px;margin-top:4px;}
+.cc-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:rgba(196,136,43,0.6);text-transform:uppercase;margin-bottom:6px;}
+.cc-text{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.55);font-size:13px;line-height:1.6;margin-bottom:10px;}
+.cc-btn{background:none;border:1px solid rgba(196,136,43,0.25);color:rgba(196,136,43,0.55);padding:6px 12px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;cursor:pointer;transition:all 0.13s;text-transform:uppercase;}
+.cc-btn:hover{border-color:rgba(196,136,43,0.45);color:rgba(196,136,43,0.8);}
+.share-bar{align-self:flex-start;width:100%;max-width:91%;display:flex;align-items:center;justify-content:flex-end;margin-top:-4px;}
+.share-btn{background:none;border:1px solid rgba(196,136,43,0.2);color:rgba(196,136,43,0.5);padding:5px 12px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;cursor:pointer;transition:all 0.13s;text-transform:uppercase;display:flex;align-items:center;gap:5px;}
+.share-btn:hover{border-color:rgba(196,136,43,0.45);color:#C4882B;}
+.share-copied{color:#2ECC71;border-color:rgba(46,204,113,0.4);}
+.inp-area{padding:8px 11px;background:#0A1E35;display:flex;gap:6px;flex-shrink:0;border-top:1px solid rgba(196,136,43,0.1);}
+.inp{flex:1;border:1px solid rgba(196,136,43,0.18);background:#071E38;padding:10px 12px;font-family:'DM Serif Display',Georgia,serif;font-style:italic;font-size:14px;color:rgba(255,255,255,0.82);outline:none;resize:none;height:44px;line-height:1.4;}
+.inp::placeholder{color:rgba(255,255,255,0.25);}
+.inp:focus{border-color:rgba(196,136,43,0.4);}
+.send{background:#C4882B;border:none;color:#071E38;padding:0 15px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:2px;cursor:pointer;transition:background 0.13s;flex-shrink:0;text-transform:uppercase;}
+.send:hover:not(:disabled){background:#D4A030;}
+.send:disabled{opacity:0.3;cursor:not-allowed;}
+.sit-list{flex:1;overflow-y:auto;padding:8px 11px 14px;background:#071E38;display:flex;flex-direction:column;gap:5px;}
+.sit-intro{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.45);font-size:12px;padding:6px 4px 6px;line-height:1.65;}
+.sit{background:#0A1E35;padding:12px 14px;cursor:pointer;border-left:2px solid rgba(196,136,43,0.18);display:flex;align-items:center;justify-content:space-between;transition:background 0.12s,border-left-color 0.12s;}
+.sit:hover{background:#0D2840;border-left-color:#C4882B;}
+.sit-txt{font-family:'Barlow',Arial,sans-serif;font-size:14px;color:rgba(255,255,255,0.82);font-weight:500;}
+.sit-ch{color:rgba(196,136,43,0.45);font-size:20px;flex-shrink:0;}
+.sit-special{background:rgba(196,136,43,0.06);border-left:2px solid rgba(196,136,43,0.4);padding:14px 14px;margin-top:6px;}
+.sit-special-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:rgba(196,136,43,0.6);text-transform:uppercase;margin-bottom:4px;}
+.sit-special-text{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.45);font-size:12px;line-height:1.6;}
+.pool-tab{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.block-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#071E38;position:relative;overflow:hidden;padding:20px;}
+.block-lanes{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.06) 85px,rgba(196,136,43,0.06) 86px);pointer-events:none;}
+.block-flag{position:absolute;top:0;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,#C4882B 0,#C4882B 16px,transparent 16px,transparent 20px,#1B2B45 20px,#1B2B45 36px,transparent 36px,transparent 40px);}
+.block-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;letter-spacing:6px;font-size:26px;color:#C4882B;text-transform:uppercase;margin-bottom:3px;position:relative;z-index:2;}
+.block-sub{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(255,255,255,0.75);font-size:13px;margin-bottom:22px;position:relative;z-index:2;}
+.block-btn{background:#C4882B;border:none;color:#071E38;padding:14px 44px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:17px;letter-spacing:4px;cursor:pointer;text-transform:uppercase;position:relative;z-index:2;transition:background 0.1s;}
+.block-btn:hover{background:#D4A030;}
+.block-result{background:#0A1E35;border-left:3px solid #C4882B;padding:16px 18px;width:100%;max-width:290px;position:relative;z-index:2;}
+.br-phlip{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.9);font-size:14px;line-height:1.68;margin-bottom:10px;}
+.br-pb{font-family:'Barlow Condensed',Arial,sans-serif;font-size:11px;letter-spacing:2px;color:rgba(196,136,43,0.7);text-transform:uppercase;margin-bottom:12px;}
+.br-pb span{color:#C4882B;font-weight:700;}
+.br-again{background:none;border:1px solid rgba(196,136,43,0.35);color:rgba(196,136,43,0.85);padding:8px 20px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:3px;cursor:pointer;text-transform:uppercase;transition:all 0.13s;}
+.br-again:hover{border-color:#C4882B;color:#C4882B;}
+.fb-wrap{position:absolute;bottom:60px;right:11px;z-index:50;}
+.fb-toggle{background:rgba(196,136,43,0.12);border:1px solid rgba(196,136,43,0.25);color:rgba(196,136,43,0.7);height:32px;padding:0 10px;border-radius:16px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:1.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.14s;text-transform:uppercase;white-space:nowrap;}
+.fb-toggle:hover{background:rgba(196,136,43,0.2);color:#C4882B;}
+.fb-form{position:absolute;bottom:40px;right:0;width:270px;background:#0A1E35;border:1px solid rgba(196,136,43,0.2);padding:16px;animation:riseIn 0.2s ease;}
+.fb-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:#C4882B;text-transform:uppercase;margin-bottom:12px;}
+.fb-q{font-family:'Barlow',Arial,sans-serif;font-size:11px;color:rgba(255,255,255,0.65);margin-bottom:4px;}
+.fb-inp{width:100%;background:#071E38;border:1px solid rgba(196,136,43,0.15);padding:7px 9px;font-family:'Barlow',Arial,sans-serif;font-size:12px;color:rgba(255,255,255,0.75);outline:none;resize:none;margin-bottom:9px;}
+.fb-inp:focus{border-color:rgba(196,136,43,0.35);}
+.fb-row{display:flex;gap:6px;margin-bottom:9px;}
+.fb-yn{flex:1;background:none;border:1px solid rgba(196,136,43,0.2);color:rgba(255,255,255,0.5);padding:6px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:1px;cursor:pointer;transition:all 0.13s;text-transform:uppercase;}
+.fb-yn.sel,.fb-yn:hover{background:rgba(196,136,43,0.15);border-color:rgba(196,136,43,0.4);color:#C4882B;}
+.fb-send{width:100%;background:#C4882B;border:none;color:#071E38;padding:8px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:10px;letter-spacing:3px;cursor:pointer;transition:background 0.13s;text-transform:uppercase;}
+.fb-send:hover{background:#D4A030;}
+.fb-thanks{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.6);font-size:13px;text-align:center;padding:8px 0;}
+.modal-bg{position:absolute;inset:0;background:rgba(7,30,56,0.85);z-index:100;display:flex;align-items:flex-end;}
+.modal{background:#071E38;width:100%;max-height:88%;display:flex;flex-direction:column;border-top:2px solid #C4882B;}
+.modal-hdr{background:#0A1E35;padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;flex-shrink:0;border-bottom:1px solid rgba(196,136,43,0.15);}
+.modal-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:18px;letter-spacing:2px;text-transform:uppercase;line-height:1.2;}
+.modal-sub{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(196,136,43,0.55);font-size:11px;margin-top:3px;}
+.modal-close{background:none;border:none;color:rgba(196,136,43,0.45);font-size:26px;cursor:pointer;line-height:1;padding:0;flex-shrink:0;margin-left:12px;}
+.modal-body{flex:1;overflow-y:auto;padding:18px 16px;}
+.modal-body pre{font-family:'Barlow',Arial,sans-serif;font-size:13px;line-height:1.78;color:rgba(255,255,255,0.82);white-space:pre-wrap;word-wrap:break-word;}
+`;
+
 function App(){
-  const [screen,setScreen]=useState('welcome');
-  const [natOpen,setNatOpen]=useState(false);
-  const [laneId,setLaneId]=useState(null);
-  const [tab,setTab]=useState('talk');
-  const [talkMsgs,setTalkMsgs]=useState([]);
-  const [poolMsgs,setPoolMsgs]=useState([]);
-  const [input,setInput]=useState('');
-  const [loading,setLoading]=useState(false);
-  const [earned,setEarned]=useState(new Set());
+  const [screen,   setScreen]  =useState('welcome');
+  const [natOpen,  setNatOpen] =useState(false);
+  const [laneId,   setLaneId]  =useState(null);
+  const [tab,      setTab]     =useState('talk');
+  const [talkMsgs, setTalkMsgs]=useState([]);
+  const [poolMsgs, setPoolMsgs]=useState([]);
+  const [input,    setInput]   =useState('');
+  const [loading,  setLoading] =useState(false);
+  const [earned,   setEarned]  =useState(new Set());
   const [showModal,setShowModal]=useState(null);
-  const [showFb,setShowFb]=useState(false);
-  const [fbDone,setFbDone]=useState(false);
-  const [fb1,setFb1]=useState('');
-  const [fb2,setFb2]=useState('');
-  const [fb3,setFb3]=useState('');
-  const [fb4,setFb4]=useState('');
+  const [showFb,   setShowFb]  =useState(false);
+  const [fbDone,   setFbDone]  =useState(false);
+  const [fb1,      setFb1]     =useState('');
+  const [fb2,      setFb2]     =useState('');
+  const [fb3,      setFb3]     =useState('');
+  const [fb4,      setFb4]     =useState('');
   const [communityShown,setCommunityShown]=useState(false);
-  const [shareMsg,setShareMsg]=useState(null);
-  const [laneMemo,setLaneMemo]=useState({});
+  const [shareMsg, setShareMsg]=useState(null);
+  const [laneMemo, setLaneMemo]=useState({});
   const talkEnd=useRef(null);
   const poolEnd=useRef(null);
 
-  const activeMsgs=tab==='pool'?poolMsgs:talkMsgs;
+  const activeMsgs   =tab==='pool'?poolMsgs:talkMsgs;
   const setActiveMsgs=tab==='pool'?setPoolMsgs:setTalkMsgs;
-  const activeEnd=tab==='pool'?poolEnd:talkEnd;
+  const activeEnd    =tab==='pool'?poolEnd:talkEnd;
 
   useEffect(()=>{
     const memo={};
@@ -534,32 +557,45 @@ function App(){
   const openNat=()=>{
     if(natOpen) return;
     setNatOpen(true);
-    setTimeout(()=>setScreen('terms'),920);
+    setTimeout(()=>setScreen('landing'),920);
+  };
+
+  const OPENERS={
+    swimmer:[
+      "Just finished a swim and drying off. Whats the what, Swimmer?",
+      "When is your next meet? I want to know what is on the horizon for you.",
+      "I just swam my best of the year and I am still buzzing. How is your training coming?",
+      "Whats the what? Something brought you here today. I am all ears.",
+    ],
+    parent:[
+      "Just got out of the water. How is your swimmer doing right now?",
+      "Whats the what, Rents? Something on your mind today?",
+      "Big meet coming up or just checking in? Either way I am here.",
+      "How is the season going from where you are standing?",
+    ],
+  };
+
+  const getInstantOpener=(id)=>{
+    const pool=id==='parent'?OPENERS.parent:OPENERS.swimmer;
+    return pool[Math.floor(Math.random()*pool.length)];
   };
 
   const enterChat=(id)=>{
-    setLaneId(id);setInput('');setTab('talk');setEarned(new Set());
+    setLaneId(id);
+    setInput('');setTab('talk');setEarned(new Set());
     setCommunityShown(false);setShareMsg(null);
     const saved=loadMsgs(id);
     if(saved&&saved.length>0){
-      setTalkMsgs(saved);setPoolMsgs([]);setScreen('chat');
+      setTalkMsgs(saved);
+      setPoolMsgs([]);
+      setScreen('chat');
       setTimeout(()=>sendReturnOpener(id,saved),120);
     } else {
-      setTalkMsgs([]);setPoolMsgs([]);setScreen('chat');
-      setTimeout(()=>sendOpener(id),100);
+      const opener=getInstantOpener(id);
+      setTalkMsgs([{who:'phlip',text:opener}]);
+      setPoolMsgs([]);
+      setScreen('chat');
     }
-  };
-
-  const sendOpener=async(id)=>{
-    setLoading(true);
-    try{
-      const prompt=id==='parent'?'Open warmly as Phlip to a swim parent or supporter. Two or three sentences and one question. Use Rents warmly if it feels right.':'Open this conversation with your natural voice. One of your openers. Two sentences and one question to find where they are today.';
-      const raw=await callPhlip(getSystem(id),[{role:'user',content:prompt}]);
-      const{clean,unlock}=detectTags(raw);
-      setTalkMsgs([{who:'phlip',text:clean,unlock:unlock||null}]);
-      if(unlock) setEarned(p=>new Set([...p,unlock]));
-    }catch{setTalkMsgs([{who:'err',text:'Something got in the water. Try again. Streamline on.'}]);}
-    finally{setLoading(false);}
   };
 
   const sendReturnOpener=async(id,saved)=>{
@@ -575,9 +611,11 @@ function App(){
   };
 
   const clearConvo=()=>{
-    clearMsgs(laneId);setTalkMsgs([]);setPoolMsgs([]);
+    clearMsgs(laneId);
+    const opener=getInstantOpener(laneId);
+    setTalkMsgs([{who:'phlip',text:opener}]);
+    setPoolMsgs([]);
     setEarned(new Set());setCommunityShown(false);setShareMsg(null);
-    setTimeout(()=>sendOpener(laneId),100);
     setLaneMemo(p=>({...p,[laneId]:false}));
   };
 
@@ -587,8 +625,9 @@ function App(){
       const raw=await callPhlip(getPoolSystem(),[{role:'user',content:'Open the conversation. Invite me to ask about the history of the sport and the great swimmers and coaches. Two or three sentences, warm, from the deck.'}]);
       const{clean}=detectTags(raw);
       setPoolMsgs([{who:'phlip',text:clean}]);
-    }catch{setPoolMsgs([{who:'err',text:'Something got in the water. Try again. Streamline on.'}]);}
-    finally{setLoading(false);}
+    }catch{
+      setPoolMsgs([{who:'err',text:'Something got in the water. Try again. Streamline on.'}]);
+    }finally{setLoading(false);}
   };
 
   const switchTab=(t)=>{
@@ -606,16 +645,28 @@ function App(){
       const apiMsgs=next.map(m=>({role:m.who==='phlip'?'assistant':'user',content:m.text}));
       const raw=await callPhlip(sys,apiMsgs);
       const{clean,unlock,community}=detectTags(raw);
-      const newMsg={who:'phlip',text:clean,unlock:unlock&&!earned.has(unlock)?unlock:null,community:community&&!communityShown&&tab==='talk',shareable:next.length>=4&&tab==='talk'};
+      const newMsg={
+        who:'phlip',text:clean,
+        unlock:unlock&&!earned.has(unlock)?unlock:null,
+        community:community&&!communityShown&&tab==='talk',
+        shareable:next.length>=4&&tab==='talk',
+      };
       if(unlock&&!earned.has(unlock)) setEarned(p=>new Set([...p,unlock]));
       if(community&&!communityShown&&tab==='talk') setCommunityShown(true);
       setActiveMsgs([...next,newMsg]);
-    }catch{setActiveMsgs([...next,{who:'err',text:'Something got in the water. Try again. Streamline on.'}]);}
-    finally{setLoading(false);}
+    }catch{
+      setActiveMsgs([...next,{who:'err',text:'Something got in the water. Try again. Streamline on.'}]);
+    }finally{setLoading(false);}
   };
 
   const submitFeedback=async()=>{
-    try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'phlip-feedback','q1':fb1,'q2':fb2,'q3':fb3,'q4':fb4}).toString()});}catch{}
+    try{
+      await fetch('/',{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded'},
+        body:new URLSearchParams({'form-name':'phlip-feedback','q1':fb1,'q2':fb2,'q3':fb3,'q4':fb4}).toString(),
+      });
+    }catch{}
     setFbDone(true);
     setTimeout(()=>{setShowFb(false);setFbDone(false);setFb1('');setFb2('');setFb3('');setFb4('');},2200);
   };
@@ -625,7 +676,10 @@ function App(){
     try{
       if(navigator.share){await navigator.share({title:'A conversation with Phlip',text,url:'https://phlipbeta1.netlify.app'});}
       else{await navigator.clipboard.writeText(text);setShareMsg('Copied!');}
-    }catch{try{await navigator.clipboard.writeText(text);setShareMsg('Copied!');}catch{}}
+    }catch{
+      try{await navigator.clipboard.writeText(text);setShareMsg('Copied!');}
+      catch{}
+    }
     setTimeout(()=>setShareMsg(null),2000);
   };
 
@@ -634,257 +688,237 @@ function App(){
   const lane=LANES.find(l=>l.id===laneId);
   const sits=SITS[laneId]||SITS.middle;
 
-  return html`
-    <div class="app">
+  return(
+    <>
+      <style>{S}</style>
+      <div className="app">
 
-      ${screen==='welcome' && html`
-        <div class="welcome">
-          <div class="wl-hdr">
-            <div class="wl-logo">Phlip</div>
-            <div class="wl-tag">The Old Swimmer You Can Always Question</div>
-            <div class="wl-version">${VERSION}</div>
-          </div>
-          <div class="wl-body">
-            <div class="wl-section">
-              <div class="wl-section-title">Welcome to Beta 1.2</div>
-              <p class="wl-p">You are one of the first people to step on this deck.</p>
-              <p class="wl-p">Phlip is a swim companion built for swimmers. He is not a coach. He is not a therapist. He is the old swimmer who has been in every swimmer's shoes before and is always ready to talk swimming.</p>
-              <p class="wl-p">This is beta. Your use and feedback is how we make Phlip better. Hit Submit Feedback near the send button anytime to share your thoughts.</p>
+        {screen==='welcome'&&(
+          <div className="welcome">
+            <div className="wl-hdr">
+              <div className="wl-logo">Phlip</div>
+              <div className="wl-tag">The Old Swimmer You Can Always Question</div>
+              <div className="wl-version">{VERSION}</div>
             </div>
-            <div class="wl-section">
-              <div class="wl-section-title">What Is Here Now</div>
-              <ul class="wl-list">
-                <li>Six lanes: 9 and Under, 10 to 14, 15 to 18, College, Masters, and the Swim Supporter Zone</li>
-                <li>Four tabs: Talk, Situations, The Pool for sport history, and The Clock presence game</li>
-                <li>Phlip remembers your last conversation in each lane</li>
-                <li>Share conversations that hit home</li>
-                <li>Complete safety guardrails and redirects</li>
-              </ul>
+            <div className="wl-body">
+              <p className="wl-p" style={{fontSize:'16px',lineHeight:'1.8',color:'rgba(255,255,255,0.82)',marginBottom:'20px'}}>Phlip is the old swimmer who has been where you are. Not a coach. Not a therapist. Just someone who gets it and is always ready to talk swimming.</p>
+              <p className="wl-p" style={{fontSize:'15px',lineHeight:'1.8',color:'rgba(255,255,255,0.72)',marginBottom:'20px'}}>Pick your lane. Phlip takes it from there.</p>
+              <p className="wl-p" style={{fontSize:'13px',lineHeight:'1.7',color:'rgba(255,255,255,0.55)',marginBottom:'8px'}}>Not a coach, therapist, or medical professional. If anything serious comes up Phlip will point you to someone qualified. US crisis support: text or call 988. Swimmers under 13 should have a parent aware they are here.</p>
+              <p className="wl-close">Built for the sport. Free for beta. Share it if it hits home.</p>
             </div>
-            <div class="wl-section">
-              <div class="wl-section-title">Coming Soon</div>
-              <ul class="wl-list">
-                <li>Practice journal and seasonal intention tracking</li>
-                <li>Team mode with a coach portal</li>
-                <li>Coach, parent and swimmer linked accounts</li>
-                <li>Phlip Meet Meetups -- commission free group travel, hotel partners, and a community gathering at every major meet</li>
-                <li>Multilingual starting with Spanish</li>
-                <li>Phlip Merch -- Streamline On caps, Why Knot? hoodies, warm up gear</li>
-                <li>Phlip Swim Camps -- live ERIP experiences with real coaches at venues nationwide</li>
-              </ul>
-            </div>
-            <div class="wl-section">
-              <div class="wl-section-title">What We Need From You</div>
-              <ul class="wl-list">
-                <li>Talk to Phlip every day for two weeks</li>
-                <li>Try every lane and every tab</li>
-                <li>Try to break him and tell us where he cracks</li>
-                <li>Hit Submit Feedback with your honest thoughts</li>
-                <li>Share conversations that hit home with someone who needs them</li>
-              </ul>
-            </div>
-            <p class="wl-close">Built out of love for the sport and the people in it. Share the love.</p>
-          </div>
-          <div class="wl-footer">
-            <button class="wl-btn" onClick=${()=>setScreen('nat')}>Let's Get Started!</button>
-          </div>
-        </div>
-      `}
-
-      ${screen==='nat' && html`
-        <div class="nat" onClick=${openNat}>
-          <div class="nat-lanes"></div>
-          <div class="nat-over">Natatorium</div>
-          <div class="door-wrap">
-            <div class="door-cap"></div>
-            <div class=${`dp dl${natOpen?' op':''}`}><div class="di"></div><div class="dh"></div></div>
-            <div class=${`dp dr${natOpen?' op':''}`}><div class="di"></div><div class="dh"></div></div>
-            <div class="nat-glow"></div>
-          </div>
-          <div class="nat-hint">Tap to enter</div>
-        </div>
-      `}
-
-      ${screen==='terms' && html`
-        <div class="terms">
-          <div class="terms-hdr">
-            <span class="terms-logo">Phlip</span>
-            <div class="terms-tag">The one old swimmer you can always question</div>
-          </div>
-          <div class="terms-body">
-            <p class="terms-statement">Phlip is a <strong>swim companion</strong>, not a coach, therapist, or medical professional. He never replaces your coach or a trusted adult. If anything serious comes up he will point you to someone qualified to help. In the US text or call <strong>988</strong> anytime for free crisis support. Swimmers under 13 should have a parent or guardian aware they are using this app. By continuing you agree that Phlip is a companion tool and not a substitute for professional support, coaching, or medical advice.</p>
-          </div>
-          <div class="terms-footer">
-            <button class="terms-btn" onClick=${()=>setScreen('landing')}>I Understand -- Let's Go</button>
-          </div>
-        </div>
-      `}
-
-      ${screen==='landing' && html`
-        <div class="landing">
-          <div class="l-hdr">
-            <span class="l-logo">Phlip</span>
-            <div class="l-tag">The one old swimmer you can always question</div>
-          </div>
-          <div class="l-safety"><p>Not a coach, not a counselor. A trusted companion. Always here.</p></div>
-          <div class="lanes-wrap">
-            ${LANES.map(l=>html`
-              <div key=${l.id} class=${`lane${l.sup?' sup':''}`} onClick=${()=>enterChat(l.id)}>
-                <div class="lane-label">${l.label}</div>
-                <div class="lane-right">
-                  ${laneMemo[l.id] && html`<div class="lane-hist"></div>`}
-                  <div class="lane-arrow">›</div>
-                </div>
-              </div>
-            `)}
-          </div>
-        </div>
-      `}
-
-      ${screen==='chat' && html`
-        <div class="chat">
-          <div class="c-hdr">
-            <button class="back" onClick=${()=>setScreen('landing')}>‹</button>
-            <div class="c-hdr-info">
-              <div class="c-hdr-name">Phlip</div>
-              <div class="c-hdr-lane">${lane?.label}</div>
-            </div>
-            <div class="c-hdr-actions">
-              ${talkMsgs.length>2 && html`<button class="c-clear" onClick=${clearConvo}>New Convo</button>`}
+            <div className="wl-footer">
+              <button className="wl-btn" onClick={()=>setScreen('nat')}>I Understand -- Let's Go</button>
             </div>
           </div>
-          <div class="tabs">
-            <button class=${`tab${tab==='talk'?' on':''}`} onClick=${()=>setTab('talk')}>Talk</button>
-            <button class=${`tab${tab==='situations'?' on':''}`} onClick=${()=>setTab('situations')}>Situations</button>
-            <button class=${`tab${tab==='pool'?' on':''}`} onClick=${()=>switchTab('pool')}>The Pool</button>
-            <button class=${`tab${tab==='block'?' on':''}`} onClick=${()=>setTab('block')}>The Clock</button>
+        )}
+
+        {screen==='nat'&&(
+          <div className="nat" onClick={openNat}>
+            <div className="nat-lanes"/>
+            <div className="nat-over">Natatorium</div>
+            <div className="door-wrap">
+              <div className="door-cap"/>
+              <div className={`dp dl${natOpen?' op':''}`}><div className="di"/><div className="dh"/></div>
+              <div className={`dp dr${natOpen?' op':''}`}><div className="di"/><div className="dh"/></div>
+              <div className="nat-glow"/>
+            </div>
+            <div className="nat-hint">Tap to enter</div>
           </div>
+        )}
 
-          ${tab==='talk' && html`
-            <div class="msgs">
-              ${talkMsgs.map((m,i)=>html`
-                <${React.Fragment} key=${i}>
-                  <div class=${m.who==='user'?'mu':m.who==='err'?'me':'mp'}>${m.text}</div>
-                  ${m.unlock&&UNLOCKS[m.unlock] && html`
-                    <button class="unlock-btn" onClick=${()=>setShowModal(m.unlock)}>
-                      <div class="unlock-dot"></div><div class="unlock-dot"></div><div class="unlock-dot"></div>
-                      Phlip's got something for you
-                    </button>
-                  `}
-                  ${m.community && html`
-                    <div class="community-card">
-                      <div class="cc-title">Still in the water</div>
-                      <div class="cc-text">There are other swimmers in this water. When you are ready.</div>
-                      <button class="cc-btn">I'm in</button>
-                    </div>
-                  `}
-                  ${m.shareable&&m.who==='phlip'&&i===talkMsgs.length-1 && html`
-                    <div class="share-bar">
-                      <button class=${`share-btn${shareMsg?' share-copied':''}`} onClick=${()=>handleShare(talkMsgs,lane?.label||'')}>
-                        ${shareMsg||'Share this conversation'}
-                      </button>
-                    </div>
-                  `}
-                <//>
-              `)}
-              ${loading && html`<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`}
-              <div ref=${talkEnd}></div>
+        {screen==='terms'&&(
+          <div className="terms">
+            <div className="terms-hdr">
+              <span className="terms-logo">Phlip</span>
+              <div className="terms-tag">The one old swimmer you can always question</div>
             </div>
-            <div class="inp-area">
-              <textarea class="inp" value=${input} onChange=${e=>setInput(e.target.value)} onKeyDown=${onKey} placeholder="Talk to Phlip" disabled=${loading}></textarea>
-              <button class="send" onClick=${()=>send(input)} disabled=${loading||!input.trim()}>Send</button>
+            <div className="terms-body">
+              <p className="terms-statement">Phlip is a <strong>swim companion</strong>, not a coach, therapist, or medical professional. He never replaces your coach or a trusted adult. If anything serious comes up he will point you to someone qualified to help. In the US text or call <strong>988</strong> anytime for free crisis support. Swimmers under 13 should have a parent or guardian aware they are using this app. By continuing you agree that Phlip is a companion tool and not a substitute for professional support, coaching, or medical advice.</p>
             </div>
-          `}
-
-          ${tab==='situations' && html`
-            <div class="sit-list">
-              <div class="sit-intro">Where are you right now. Tap one and Phlip picks it up from there.</div>
-              ${sits.map((s,i)=>html`
-                <div key=${i} class="sit" onClick=${()=>tapSit(s.m)}>
-                  <span class="sit-txt">${s.l}</span>
-                  <span class="sit-ch">›</span>
-                </div>
-              `)}
-              <div class="sit-special">
-                <div class="sit-special-title">Coming Soon -- Phlip Meet Meetups</div>
-                <div class="sit-special-text">Commission free group travel packages, hotel partner rates, and a community gathering at every major meet. Swimmers and families finding each other in the lobby, at dinner, poolside. The sport is better when the people in it find each other.</div>
-              </div>
+            <div className="terms-footer">
+              <button className="terms-btn" onClick={()=>setScreen('landing')}>I Understand -- Let's Go</button>
             </div>
-          `}
+          </div>
+        )}
 
-          ${tab==='block' && html`<${BlockGame}/>`}
-
-          ${tab==='pool' && html`
-            <div class="pool-tab">
-              <div class="msgs">
-                ${poolMsgs.map((m,i)=>html`<div key=${i} class=${m.who==='user'?'mu':m.who==='err'?'me':'mp'}>${m.text}</div>`)}
-                ${loading && html`<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`}
-                <div ref=${poolEnd}></div>
-              </div>
-              <div class="inp-area">
-                <textarea class="inp" value=${input} onChange=${e=>setInput(e.target.value)} onKeyDown=${onKey} placeholder="Ask about the sport, the greats, the history" disabled=${loading}></textarea>
-                <button class="send" onClick=${()=>send(input)} disabled=${loading||!input.trim()}>Send</button>
-              </div>
+        {screen==='landing'&&(
+          <div className="landing">
+            <div className="l-hdr">
+              <span className="l-logo">Phlip</span>
+              <div className="l-tag">The one old swimmer you can always question</div>
             </div>
-          `}
-
-          <div class="fb-wrap">
-            <button class="fb-toggle" onClick=${()=>setShowFb(!showFb)}>Submit Feedback</button>
-            ${showFb && html`
-              <div class="fb-form">
-                <div class="fb-title">Tell Phlip</div>
-                ${fbDone ? html`<div class="fb-thanks">Thank you. Streamline on.</div>` : html`
-                  <div class="fb-q">What surprised you about Phlip today</div>
-                  <textarea class="fb-inp" rows="2" value=${fb1} onChange=${e=>setFb1(e.target.value)} placeholder="Anything..."></textarea>
-                  <div class="fb-q">What felt off or missing</div>
-                  <textarea class="fb-inp" rows="2" value=${fb2} onChange=${e=>setFb2(e.target.value)} placeholder="Be direct..."></textarea>
-                  <div class="fb-q">Would you recommend Phlip to a swimmer you care about</div>
-                  <div class="fb-row">
-                    <button class=${`fb-yn${fb3==='yes'?' sel':''}`} onClick=${()=>setFb3('yes')}>Yes</button>
-                    <button class=${`fb-yn${fb3==='no'?' sel':''}`} onClick=${()=>setFb3('no')}>Not yet</button>
+            <div className="l-safety">
+              <p>Not a coach, not a counselor. A trusted companion. Always here.</p>
+            </div>
+            <div className="lanes-wrap">
+              {LANES.map(l=>(
+                <div key={l.id} className={`lane${l.sup?' sup':''}`} onClick={()=>enterChat(l.id)}>
+                  <div className="lane-label">{l.label}</div>
+                  <div className="lane-right">
+                    {laneMemo[l.id]&&<div className="lane-hist" title="Conversation saved"/>}
+                    <div className="lane-arrow">&#8250;</div>
                   </div>
-                  <div class="fb-q">Email for follow up (optional)</div>
-                  <input class="fb-inp" style="height:32px" value=${fb4} onChange=${e=>setFb4(e.target.value)} placeholder="your@email.com" />
-                  <button class="fb-send" onClick=${submitFeedback}>Send it</button>
-                `}
-              </div>
-            `}
-          </div>
-        </div>
-      `}
-
-      ${showModal&&UNLOCKS[showModal] && html`
-        <div class="modal-bg" onClick=${()=>setShowModal(null)}>
-          <div class="modal" onClick=${e=>e.stopPropagation()}>
-            <div class="modal-hdr">
-              <div>
-                <div class="modal-title">${UNLOCKS[showModal].title}</div>
-                <div class="modal-sub">${UNLOCKS[showModal].sub}</div>
-              </div>
-              <button class="modal-close" onClick=${()=>setShowModal(null)}>x</button>
-            </div>
-            <div class="modal-body">
-              <pre>${UNLOCKS[showModal].body}</pre>
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      `}
+        )}
 
-    </div>
+        {screen==='chat'&&(
+          <div className="chat">
+            <div className="c-hdr">
+              <button className="back" onClick={()=>setScreen('landing')}>&#8249;</button>
+              <div className="c-hdr-info">
+                <div className="c-hdr-name">Phlip</div>
+                <div className="c-hdr-lane">{lane?.label}</div>
+              </div>
+              <div className="c-hdr-actions">
+                {talkMsgs.length>2&&<button className="c-clear" onClick={clearConvo}>New Convo</button>}
+              </div>
+            </div>
+            <div className="tabs">
+              <button className={`tab${tab==='talk'?' on':''}`} onClick={()=>setTab('talk')}>Talk</button>
+              <button className={`tab${tab==='situations'?' on':''}`} onClick={()=>setTab('situations')}>Situations</button>
+              <button className={`tab${tab==='pool'?' on':''}`} onClick={()=>switchTab('pool')}>The Pool</button>
+              <button className={`tab${tab==='block'?' on':''}`} onClick={()=>setTab('block')}>The Clock</button>
+            </div>
 
-    <form name="phlip-feedback" data-netlify="true" hidden>
-      <input name="q1"/><input name="q2"/><input name="q3"/><input name="q4"/>
-    </form>
-  `;
+            {tab==='talk'&&(
+              <>
+                <div className="msgs">
+                  {talkMsgs.map((m,i)=>(
+                    <React.Fragment key={i}>
+                      <div className={m.who==='user'?'mu':m.who==='err'?'me':'mp'}>{m.text}</div>
+                      {m.unlock&&UNLOCKS[m.unlock]&&(
+                        <button className="unlock-btn" onClick={()=>setShowModal(m.unlock)}>
+                          <div className="unlock-dot"/><div className="unlock-dot"/><div className="unlock-dot"/>
+                          Phlip's got something for you
+                        </button>
+                      )}
+                      {m.community&&(
+                        <div className="community-card">
+                          <div className="cc-title">Still in the water</div>
+                          <div className="cc-text">There are other swimmers in this water. When you are ready.</div>
+                          <button className="cc-btn" onClick={()=>{}}>I'm in</button>
+                        </div>
+                      )}
+                      {m.shareable&&m.who==='phlip'&&i===talkMsgs.length-1&&(
+                        <div className="share-bar">
+                          <button
+                            className={`share-btn${shareMsg?' share-copied':''}`}
+                            onClick={()=>handleShare(talkMsgs,lane?.label||'')}>
+                            {shareMsg||'Share this conversation'}
+                          </button>
+                        </div>
+                      )}
+                    </React.Fragment>
+                  ))}
+                  {loading&&<div className="typing"><div className="dot"/><div className="dot"/><div className="dot"/></div>}
+                  <div ref={talkEnd}/>
+                </div>
+                <div className="inp-area">
+                  <textarea className="inp" value={input} onChange={e=>setInput(e.target.value)} onKeyDown={onKey} placeholder="Talk to Phlip" disabled={loading}/>
+                  <button className="send" onClick={()=>send(input)} disabled={loading||!input.trim()}>Send</button>
+                </div>
+              </>
+            )}
+
+            {tab==='situations'&&(
+              <div className="sit-list">
+                <div className="sit-intro">Where are you right now. Tap one and Phlip picks it up from there.</div>
+                {sits.map((s,i)=>(
+                  <div key={i} className="sit" onClick={()=>tapSit(s.m)}>
+                    <span className="sit-txt">{s.l}</span>
+                    <span className="sit-ch">&#8250;</span>
+                  </div>
+                ))}
+                <div className="sit-special">
+                  <div className="sit-special-title">Coming Soon -- Phlip Meet Meetups</div>
+                  <div className="sit-special-text">Commission free group travel packages, hotel partner rates, and a community gathering at every major meet. Swimmers and families finding each other in the lobby, at dinner, poolside. The sport is better when the people in it find each other.</div>
+                </div>
+              </div>
+            )}
+
+            {tab==='block'&&<BlockGame/>}
+
+            {tab==='pool'&&(
+              <div className="pool-tab">
+                <div className="msgs">
+                  {poolMsgs.map((m,i)=>(
+                    <div key={i} className={m.who==='user'?'mu':m.who==='err'?'me':'mp'}>{m.text}</div>
+                  ))}
+                  {loading&&<div className="typing"><div className="dot"/><div className="dot"/><div className="dot"/></div>}
+                  <div ref={poolEnd}/>
+                </div>
+                <div className="inp-area">
+                  <textarea className="inp" value={input} onChange={e=>setInput(e.target.value)} onKeyDown={onKey} placeholder="Ask about the sport, the greats, the history" disabled={loading}/>
+                  <button className="send" onClick={()=>send(input)} disabled={loading||!input.trim()}>Send</button>
+                </div>
+              </div>
+            )}
+
+            <div className="fb-wrap">
+              <button className="fb-toggle" onClick={()=>setShowFb(!showFb)}>Submit Feedback</button>
+              {showFb&&(
+                <div className="fb-form">
+                  <div className="fb-title">Tell Phlip</div>
+                  {fbDone?(
+                    <div className="fb-thanks">Thank you. Streamline on.</div>
+                  ):(
+                    <>
+                      <div className="fb-q">What surprised you about Phlip today</div>
+                      <textarea className="fb-inp" rows={2} value={fb1} onChange={e=>setFb1(e.target.value)} placeholder="Anything..."/>
+                      <div className="fb-q">What felt off or missing</div>
+                      <textarea className="fb-inp" rows={2} value={fb2} onChange={e=>setFb2(e.target.value)} placeholder="Be direct..."/>
+                      <div className="fb-q">Would you recommend Phlip to a swimmer you care about</div>
+                      <div className="fb-row">
+                        <button className={`fb-yn${fb3==='yes'?' sel':''}`} onClick={()=>setFb3('yes')}>Yes</button>
+                        <button className={`fb-yn${fb3==='no'?' sel':''}`} onClick={()=>setFb3('no')}>Not yet</button>
+                      </div>
+                      <div className="fb-q">Email for follow up (optional)</div>
+                      <input className="fb-inp" style={{height:'32px'}} value={fb4} onChange={e=>setFb4(e.target.value)} placeholder="your@email.com"/>
+                      <button className="fb-send" onClick={submitFeedback}>Send it</button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {showModal&&UNLOCKS[showModal]&&(
+          <div className="modal-bg" onClick={()=>setShowModal(null)}>
+            <div className="modal" onClick={e=>e.stopPropagation()}>
+              <div className="modal-hdr">
+                <div>
+                  <div className="modal-title">{UNLOCKS[showModal].title}</div>
+                  <div className="modal-sub">{UNLOCKS[showModal].sub}</div>
+                </div>
+                <button className="modal-close" onClick={()=>setShowModal(null)}>x</button>
+              </div>
+              <div className="modal-body">
+                <pre>{UNLOCKS[showModal].body}</pre>
+              </div>
+            </div>
+          </div>
+        )}
+
+      </div>
+
+      <form name="phlip-feedback" data-netlify="true" hidden>
+        <input name="q1"/><input name="q2"/><input name="q3"/><input name="q4"/>
+      </form>
+    </>
+  );
 }
 
 function BlockGame(){
   const TARGET=5000;
-  const [gs,setGs]=useState('idle');
-  const [display,setDisplay]=useState('0.000');
-  const [result,setResult]=useState(null);
-  const [pb,setPb]=useState(null);
-  const ref=useRef({});
+  const [gs,setGs]=React.useState('idle');
+  const [display,setDisplay]=React.useState('0.000');
+  const [result,setResult]=React.useState(null);
+  const [pb,setPb]=React.useState(null);
+  const ref=React.useRef({});
 
   function phlipSays(diff){
     const d=Math.abs(diff);
@@ -930,56 +964,42 @@ function BlockGame(){
 
   const diffLabel=result?(Math.abs(result.diff)<10?'Perfect':((result.diff>0?'+':'')+result.diff+'ms')):null;
 
-  const clockStyle={
-    width:'190px',height:'190px',borderRadius:'50%',
-    border:'3px solid rgba(196,136,43,0.3)',
-    display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',
-    margin:'0 auto',
-    background:gs==='running'?'rgba(196,136,43,0.06)':'rgba(10,30,53,0.8)',
-    transition:'background 0.3s',
-  };
-  const numStyle={
-    fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:800,fontSize:'46px',
-    color:gs==='done'?(Math.abs(result?.diff||9999)<=150?'#2ECC71':'#C4882B'):'#C4882B',
-    letterSpacing:'2px',lineHeight:1,transition:'color 0.3s',
-  };
-
-  return html`
-    <div class="block-wrap" style="cursor:pointer" onClick=${handleTap}>
-      <div class="block-lanes"></div>
-      <div class="block-flag"></div>
-      <div class="block-title">The Clock</div>
-      <div class="block-sub" style="margin-bottom:4px;text-align:center">Start it. Stop it at exactly 5 seconds.</div>
-      <div class="block-sub" style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:24px;text-align:center">No counting. Just feel it. Tap anywhere to start and stop.</div>
-      <div style="position:relative;z-index:2;margin-bottom:20px;text-align:center">
-        <div style=${clockStyle}>
-          <div style=${numStyle}>${display}</div>
-          <div style="font-family:'Barlow',Arial,sans-serif;font-size:10px;color:rgba(196,136,43,0.45);letter-spacing:3px;margin-top:5px;text-transform:uppercase">seconds</div>
-          ${gs==='done'&&diffLabel && html`
-            <div style="font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:15px;color:${Math.abs(result.diff)<=150?'#2ECC71':'rgba(196,136,43,0.7)'};letter-spacing:1px;margin-top:7px">${diffLabel}</div>
-          `}
+  return(
+    <div className="block-wrap" style={{cursor:'pointer'}} onClick={handleTap}>
+      <div className="block-lanes"/>
+      <div className="block-flag"/>
+      <div className="block-title">The Clock</div>
+      <div className="block-sub" style={{marginBottom:'4px',textAlign:'center'}}>Start it. Stop it at exactly 5 seconds.</div>
+      <div className="block-sub" style={{fontSize:'11px',color:'rgba(255,255,255,0.4)',marginBottom:'24px',textAlign:'center'}}>No counting. Just feel it. Tap anywhere to start and stop.</div>
+      <div style={{position:'relative',zIndex:2,marginBottom:'20px',textAlign:'center'}}>
+        <div style={{width:'190px',height:'190px',borderRadius:'50%',border:'3px solid rgba(196,136,43,0.3)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',margin:'0 auto',background:gs==='running'?'rgba(196,136,43,0.06)':'rgba(10,30,53,0.8)',transition:'background 0.3s'}}>
+          <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:800,fontSize:'46px',color:gs==='done'?(Math.abs(result?.diff||9999)<=150?'#2ECC71':'#C4882B'):'#C4882B',letterSpacing:'2px',lineHeight:1,transition:'color 0.3s'}}>{display}</div>
+          <div style={{fontFamily:"'Barlow',Arial,sans-serif",fontSize:'10px',color:'rgba(196,136,43,0.45)',letterSpacing:'3px',marginTop:'5px',textTransform:'uppercase'}}>seconds</div>
+          {gs==='done'&&diffLabel&&(
+            <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:700,fontSize:'15px',color:Math.abs(result.diff)<=150?'#2ECC71':'rgba(196,136,43,0.7)',letterSpacing:'1px',marginTop:'7px'}}>{diffLabel}</div>
+          )}
         </div>
-        <div style="margin-top:12px">
-          <div style="width:80px;height:4px;background:rgba(196,136,43,0.15);margin:0 auto;border-radius:2px;overflow:hidden">
-            <div style="height:100%;background:#C4882B;width:${gs==='running'?'100%':'0%'};transition:${gs==='running'?`width ${TARGET/1000}s linear`:'width 0s'};border-radius:2px"></div>
+        <div style={{marginTop:'12px'}}>
+          <div style={{width:'80px',height:'4px',background:'rgba(196,136,43,0.15)',margin:'0 auto',borderRadius:'2px',overflow:'hidden'}}>
+            <div style={{height:'100%',background:'#C4882B',width:gs==='running'?'100%':'0%',transition:gs==='running'?`width ${TARGET/1000}s linear`:'width 0s',borderRadius:'2px'}}/>
           </div>
-          <div style="font-family:'Barlow',Arial,sans-serif;font-size:10px;color:rgba(196,136,43,0.3);letter-spacing:2px;margin-top:5px;text-transform:uppercase">5.000</div>
+          <div style={{fontFamily:"'Barlow',Arial,sans-serif",fontSize:'10px',color:'rgba(196,136,43,0.3)',letterSpacing:'2px',marginTop:'5px',textTransform:'uppercase'}}>5.000</div>
         </div>
       </div>
-      ${gs==='idle' && html`<button class="block-btn" onClick=${e=>{e.stopPropagation();handleTap();}}>START</button>`}
-      ${gs==='running' && html`<button class="block-btn" style="background:rgba(196,136,43,0.15);border:2px solid #C4882B;color:#C4882B" onClick=${e=>{e.stopPropagation();handleTap();}}>STOP</button>`}
-      ${gs==='done'&&result && html`
-        <div class="block-result" style="margin-top:0">
-          <div class="br-phlip">${phlipSays(result.diff)}</div>
-          ${pb!==null && html`<div class="br-pb">Best: <span>${pb<=9?'Perfect':pb+'ms off'}</span></div>`}
-          <button class="br-again" onClick=${e=>{e.stopPropagation();reset();}}>Try Again</button>
+      {gs==='idle'&&<button className="block-btn" onClick={e=>{e.stopPropagation();handleTap();}}>START</button>}
+      {gs==='running'&&<button className="block-btn" style={{background:'rgba(196,136,43,0.15)',border:'2px solid #C4882B',color:'#C4882B'}} onClick={e=>{e.stopPropagation();handleTap();}}>STOP</button>}
+      {gs==='done'&&result&&(
+        <div className="block-result" style={{marginTop:'0'}}>
+          <div className="br-phlip">{phlipSays(result.diff)}</div>
+          {pb!==null&&<div className="br-pb">Best: <span>{pb<=9?'Perfect':pb+'ms off'}</span></div>}
+          <button className="br-again" onClick={e=>{e.stopPropagation();reset();}}>Try Again</button>
         </div>
-      `}
+      )}
     </div>
-  `;
+  );
 }
 
-ReactDOM.createRoot(document.getElementById('root')).render(html`<${App}/>`);
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
 </script>
 </body>
 </html>
