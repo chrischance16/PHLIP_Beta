@@ -532,6 +532,7 @@ function App(){
   const [fb2,      setFb2]     =useState('');
   const [fb3,      setFb3]     =useState('');
   const [fb4,      setFb4]     =useState('');
+  const [fb5,      setFb5]     =useState('');
   const [communityShown,setCommunityShown]=useState(false);
   const [shareMsg, setShareMsg]=useState(null);
   const [laneMemo, setLaneMemo]=useState({});
@@ -585,7 +586,8 @@ function App(){
     setInput('');setTab('talk');setEarned(new Set());
     setCommunityShown(false);setShareMsg(null);
     const saved=loadMsgs(id);
-    if(saved&&saved.length>0){
+    const hasRealConvo=saved&&saved.some(m=>m.who==='user');
+    if(hasRealConvo){
       setTalkMsgs(saved);
       setPoolMsgs([]);
       setScreen('chat');
@@ -664,11 +666,11 @@ function App(){
       await fetch('/',{
         method:'POST',
         headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        body:new URLSearchParams({'form-name':'phlip-feedback','q1':fb1,'q2':fb2,'q3':fb3,'q4':fb4}).toString(),
+        body:new URLSearchParams({'form-name':'phlip-feedback','q1':fb1,'q2':fb2,'q3':fb3,'q4':fb4,'q5':fb5}).toString(),
       });
     }catch{}
     setFbDone(true);
-    setTimeout(()=>{setShowFb(false);setFbDone(false);setFb1('');setFb2('');setFb3('');setFb4('');},2200);
+    setTimeout(()=>{setShowFb(false);setFbDone(false);setFb1('');setFb2('');setFb3('');setFb4('');setFb5('');},2200);
   };
 
   const handleShare=async(msgs,laneLabel)=>{
@@ -866,15 +868,24 @@ function App(){
                     <div className="fb-thanks">Thank you. Streamline on.</div>
                   ):(
                     <>
-                      <div className="fb-q">What surprised you about Phlip today</div>
-                      <textarea className="fb-inp" rows={2} value={fb1} onChange={e=>setFb1(e.target.value)} placeholder="Anything..."/>
-                      <div className="fb-q">What felt off or missing</div>
-                      <textarea className="fb-inp" rows={2} value={fb2} onChange={e=>setFb2(e.target.value)} placeholder="Be direct..."/>
-                      <div className="fb-q">Would you recommend Phlip to a swimmer you care about</div>
-                      <div className="fb-row">
-                        <button className={`fb-yn${fb3==='yes'?' sel':''}`} onClick={()=>setFb3('yes')}>Yes</button>
-                        <button className={`fb-yn${fb3==='no'?' sel':''}`} onClick={()=>setFb3('no')}>Not yet</button>
+                      <div className="fb-q">How would you rate Phlip?</div>
+                      <div style={{display:'flex',gap:'8px',marginBottom:'9px'}}>
+                        {[1,2,3,4,5].map(n=>(
+                          <button key={n} onClick={()=>setFb3(String(n))} style={{flex:1,padding:'6px 0',background:'none',border:'1px solid rgba(196,136,43,0.2)',color:fb3===String(n)?'#C4882B':'rgba(255,255,255,0.4)',fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:700,fontSize:'16px',cursor:'pointer',borderColor:fb3===String(n)?'#C4882B':'rgba(196,136,43,0.2)',transition:'all 0.13s'}}>
+                            {n}
+                          </button>
+                        ))}
                       </div>
+                      <div className="fb-q">Would you recommend Phlip to a swimmer, coach or parent?</div>
+                      <div className="fb-row">
+                        <button className={`fb-yn${fb2==='yes'?' sel':''}`} onClick={()=>setFb2('yes')}>Yes</button>
+                        <button className={`fb-yn${fb2==='no'?' sel':''}`} onClick={()=>setFb2('no')}>Not yet</button>
+                      </div>
+                      <div className="fb-q">Any additional feedback?</div>
+                      <textarea className="fb-inp" rows={3} value={fb1} onChange={e=>setFb1(e.target.value)} placeholder="Anything at all..."/>
+                      <div className="fb-q">Name and club or team (optional)</div>
+                      <input className="fb-inp" style={{height:'32px'}} value={fb4} onChange={e=>setFb4(e.target.value)} placeholder="Your name and club"/>
+                      <textarea className="fb-inp" rows={4} value={fb1} onChange={e=>setFb1(e.target.value)} placeholder="Anything at all..."/>
                       <div className="fb-q">Email for follow up (optional)</div>
                       <input className="fb-inp" style={{height:'32px'}} value={fb4} onChange={e=>setFb4(e.target.value)} placeholder="your@email.com"/>
                       <button className="fb-send" onClick={submitFeedback}>Send it</button>
@@ -906,7 +917,7 @@ function App(){
       </div>
 
       <form name="phlip-feedback" data-netlify="true" hidden>
-        <input name="q1"/><input name="q2"/><input name="q3"/><input name="q4"/>
+        <input name="q1"/><input name="q2"/><input name="q3"/><input name="q4"/><input name="q5"/>
       </form>
     </>
   );
@@ -965,31 +976,31 @@ function BlockGame(){
   const diffLabel=result?(Math.abs(result.diff)<10?'Perfect':((result.diff>0?'+':'')+result.diff+'ms')):null;
 
   return(
-    <div className="block-wrap" style={{cursor:'pointer'}} onClick={handleTap}>
+    <div className="block-wrap" style={{cursor:'pointer',overflowY:'auto',justifyContent:'flex-start',paddingTop:'28px'}} onClick={handleTap}>
       <div className="block-lanes"/>
       <div className="block-flag"/>
       <div className="block-title">The Clock</div>
       <div className="block-sub" style={{marginBottom:'4px',textAlign:'center'}}>Start it. Stop it at exactly 5 seconds.</div>
-      <div className="block-sub" style={{fontSize:'11px',color:'rgba(255,255,255,0.4)',marginBottom:'24px',textAlign:'center'}}>No counting. Just feel it. Tap anywhere to start and stop.</div>
-      <div style={{position:'relative',zIndex:2,marginBottom:'20px',textAlign:'center'}}>
-        <div style={{width:'190px',height:'190px',borderRadius:'50%',border:'3px solid rgba(196,136,43,0.3)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',margin:'0 auto',background:gs==='running'?'rgba(196,136,43,0.06)':'rgba(10,30,53,0.8)',transition:'background 0.3s'}}>
-          <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:800,fontSize:'46px',color:gs==='done'?(Math.abs(result?.diff||9999)<=150?'#2ECC71':'#C4882B'):'#C4882B',letterSpacing:'2px',lineHeight:1,transition:'color 0.3s'}}>{display}</div>
+      <div className="block-sub" style={{fontSize:'11px',color:'rgba(255,255,255,0.4)',marginBottom:'20px',textAlign:'center'}}>No counting. Just feel it. Tap anywhere to start and stop.</div>
+      <div style={{position:'relative',zIndex:2,marginBottom:'16px',textAlign:'center'}}>
+        <div style={{width:'180px',height:'180px',borderRadius:'50%',border:'3px solid rgba(196,136,43,0.3)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',margin:'0 auto',background:gs==='running'?'rgba(196,136,43,0.06)':'rgba(10,30,53,0.8)',transition:'background 0.3s'}}>
+          <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:800,fontSize:'44px',color:gs==='done'?(Math.abs(result?.diff||9999)<=150?'#2ECC71':'#C4882B'):'#C4882B',letterSpacing:'2px',lineHeight:1,transition:'color 0.3s'}}>{display}</div>
           <div style={{fontFamily:"'Barlow',Arial,sans-serif",fontSize:'10px',color:'rgba(196,136,43,0.45)',letterSpacing:'3px',marginTop:'5px',textTransform:'uppercase'}}>seconds</div>
           {gs==='done'&&diffLabel&&(
-            <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:700,fontSize:'15px',color:Math.abs(result.diff)<=150?'#2ECC71':'rgba(196,136,43,0.7)',letterSpacing:'1px',marginTop:'7px'}}>{diffLabel}</div>
+            <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:700,fontSize:'14px',color:Math.abs(result.diff)<=150?'#2ECC71':'rgba(196,136,43,0.7)',letterSpacing:'1px',marginTop:'6px'}}>{diffLabel}</div>
           )}
         </div>
-        <div style={{marginTop:'12px'}}>
+        <div style={{marginTop:'10px'}}>
           <div style={{width:'80px',height:'4px',background:'rgba(196,136,43,0.15)',margin:'0 auto',borderRadius:'2px',overflow:'hidden'}}>
             <div style={{height:'100%',background:'#C4882B',width:gs==='running'?'100%':'0%',transition:gs==='running'?`width ${TARGET/1000}s linear`:'width 0s',borderRadius:'2px'}}/>
           </div>
-          <div style={{fontFamily:"'Barlow',Arial,sans-serif",fontSize:'10px',color:'rgba(196,136,43,0.3)',letterSpacing:'2px',marginTop:'5px',textTransform:'uppercase'}}>5.000</div>
+          <div style={{fontFamily:"'Barlow',Arial,sans-serif",fontSize:'10px',color:'rgba(196,136,43,0.3)',letterSpacing:'2px',marginTop:'4px',textTransform:'uppercase'}}>5.000</div>
         </div>
       </div>
       {gs==='idle'&&<button className="block-btn" onClick={e=>{e.stopPropagation();handleTap();}}>START</button>}
       {gs==='running'&&<button className="block-btn" style={{background:'rgba(196,136,43,0.15)',border:'2px solid #C4882B',color:'#C4882B'}} onClick={e=>{e.stopPropagation();handleTap();}}>STOP</button>}
       {gs==='done'&&result&&(
-        <div className="block-result" style={{marginTop:'0'}}>
+        <div className="block-result" style={{marginTop:'14px'}}>
           <div className="br-phlip">{phlipSays(result.diff)}</div>
           {pb!==null&&<div className="br-pb">Best: <span>{pb<=9?'Perfect':pb+'ms off'}</span></div>}
           <button className="br-again" onClick={e=>{e.stopPropagation();reset();}}>Try Again</button>
