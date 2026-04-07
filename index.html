@@ -621,15 +621,16 @@ function App(){
     setLaneMemo(p=>({...p,[laneId]:false}));
   };
 
-  const sendPoolOpener=async()=>{
-    setLoading(true);
-    try{
-      const raw=await callPhlip(getPoolSystem(),[{role:'user',content:'Open the conversation. Invite me to ask about the history of the sport and the great swimmers and coaches. Two or three sentences, warm, from the deck.'}]);
-      const{clean}=detectTags(raw);
-      setPoolMsgs([{who:'phlip',text:clean}]);
-    }catch{
-      setPoolMsgs([{who:'err',text:'Something got in the water. Try again. Streamline on.'}]);
-    }finally{setLoading(false);}
+  const POOL_OPENERS=[
+    "The history of this sport is something else. Spitz. Evans. Thorpe. Phelps. Ledecky. Who do you want to talk about or what era has your attention?",
+    "I have been on a lot of pool decks and read a lot of history. What part of the sport are you curious about today?",
+    "From 1896 Athens to last summer there is no shortage of great stories in this sport. Where do you want to start?",
+    "The greats of this sport gave everything they had. I love talking about them. Who or what are you thinking about?",
+  ];
+
+  const sendPoolOpener=()=>{
+    const opener=POOL_OPENERS[Math.floor(Math.random()*POOL_OPENERS.length)];
+    setPoolMsgs([{who:'phlip',text:opener}]);
   };
 
   const switchTab=(t)=>{
@@ -728,21 +729,6 @@ function App(){
           </div>
         )}
 
-        {screen==='terms'&&(
-          <div className="terms">
-            <div className="terms-hdr">
-              <span className="terms-logo">Phlip</span>
-              <div className="terms-tag">The one old swimmer you can always question</div>
-            </div>
-            <div className="terms-body">
-              <p className="terms-statement">Phlip is a <strong>swim companion</strong>, not a coach, therapist, or medical professional. He never replaces your coach or a trusted adult. If anything serious comes up he will point you to someone qualified to help. In the US text or call <strong>988</strong> anytime for free crisis support. Swimmers under 13 should have a parent or guardian aware they are using this app. By continuing you agree that Phlip is a companion tool and not a substitute for professional support, coaching, or medical advice.</p>
-            </div>
-            <div className="terms-footer">
-              <button className="terms-btn" onClick={()=>setScreen('landing')}>I Understand -- Let's Go</button>
-            </div>
-          </div>
-        )}
-
         {screen==='landing'&&(
           <div className="landing">
             <div className="l-hdr">
@@ -776,7 +762,37 @@ function App(){
               </div>
               <div className="c-hdr-actions">
                 {talkMsgs.length>2&&<button className="c-clear" onClick={clearConvo}>New Convo</button>}
+                <button className="c-clear" style={{borderColor:'rgba(196,136,43,0.3)',color:'rgba(196,136,43,0.6)'}} onClick={()=>setShowFb(!showFb)}>Feedback</button>
               </div>
+              {showFb&&(
+                <div style={{position:'absolute',top:'52px',right:'0',width:'270px',background:'#0A1E35',border:'1px solid rgba(196,136,43,0.2)',padding:'16px',zIndex:60,animation:'riseIn 0.2s ease',maxHeight:'70vh',overflowY:'auto'}}>
+                  <div className="fb-title">Tell Phlip</div>
+                  {fbDone?(
+                    <div className="fb-thanks">Thank you. Streamline on.</div>
+                  ):(
+                    <>
+                      <div className="fb-q">How would you rate Phlip?</div>
+                      <div style={{display:'flex',gap:'8px',marginBottom:'9px'}}>
+                        {[1,2,3,4,5].map(n=>(
+                          <button key={n} onClick={()=>setFb3(String(n))} style={{flex:1,padding:'6px 0',background:'none',border:'1px solid rgba(196,136,43,0.2)',color:fb3===String(n)?'#C4882B':'rgba(255,255,255,0.4)',fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:700,fontSize:'16px',cursor:'pointer',borderColor:fb3===String(n)?'#C4882B':'rgba(196,136,43,0.2)',transition:'all 0.13s'}}>
+                            {n}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="fb-q">Would you recommend Phlip to a swimmer, coach or parent?</div>
+                      <div className="fb-row">
+                        <button className={`fb-yn${fb2==='yes'?' sel':''}`} onClick={()=>setFb2('yes')}>Yes</button>
+                        <button className={`fb-yn${fb2==='no'?' sel':''}`} onClick={()=>setFb2('no')}>Not yet</button>
+                      </div>
+                      <div className="fb-q">Any additional feedback?</div>
+                      <textarea className="fb-inp" rows={3} value={fb1} onChange={e=>setFb1(e.target.value)} placeholder="Anything at all..."/>
+                      <div className="fb-q">Name and club or team (optional)</div>
+                      <input className="fb-inp" style={{height:'32px'}} value={fb4} onChange={e=>setFb4(e.target.value)} placeholder="Your name and club"/>
+                      <button className="fb-send" onClick={submitFeedback}>Send it</button>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
             <div className="tabs">
               <button className={`tab${tab==='talk'?' on':''}`} onClick={()=>setTab('talk')}>Talk</button>
@@ -859,41 +875,6 @@ function App(){
               </div>
             )}
 
-            <div className="fb-wrap">
-              <button className="fb-toggle" onClick={()=>setShowFb(!showFb)}>Submit Feedback</button>
-              {showFb&&(
-                <div className="fb-form">
-                  <div className="fb-title">Tell Phlip</div>
-                  {fbDone?(
-                    <div className="fb-thanks">Thank you. Streamline on.</div>
-                  ):(
-                    <>
-                      <div className="fb-q">How would you rate Phlip?</div>
-                      <div style={{display:'flex',gap:'8px',marginBottom:'9px'}}>
-                        {[1,2,3,4,5].map(n=>(
-                          <button key={n} onClick={()=>setFb3(String(n))} style={{flex:1,padding:'6px 0',background:'none',border:'1px solid rgba(196,136,43,0.2)',color:fb3===String(n)?'#C4882B':'rgba(255,255,255,0.4)',fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:700,fontSize:'16px',cursor:'pointer',borderColor:fb3===String(n)?'#C4882B':'rgba(196,136,43,0.2)',transition:'all 0.13s'}}>
-                            {n}
-                          </button>
-                        ))}
-                      </div>
-                      <div className="fb-q">Would you recommend Phlip to a swimmer, coach or parent?</div>
-                      <div className="fb-row">
-                        <button className={`fb-yn${fb2==='yes'?' sel':''}`} onClick={()=>setFb2('yes')}>Yes</button>
-                        <button className={`fb-yn${fb2==='no'?' sel':''}`} onClick={()=>setFb2('no')}>Not yet</button>
-                      </div>
-                      <div className="fb-q">Any additional feedback?</div>
-                      <textarea className="fb-inp" rows={3} value={fb1} onChange={e=>setFb1(e.target.value)} placeholder="Anything at all..."/>
-                      <div className="fb-q">Name and club or team (optional)</div>
-                      <input className="fb-inp" style={{height:'32px'}} value={fb4} onChange={e=>setFb4(e.target.value)} placeholder="Your name and club"/>
-                      <textarea className="fb-inp" rows={4} value={fb1} onChange={e=>setFb1(e.target.value)} placeholder="Anything at all..."/>
-                      <div className="fb-q">Email for follow up (optional)</div>
-                      <input className="fb-inp" style={{height:'32px'}} value={fb4} onChange={e=>setFb4(e.target.value)} placeholder="your@email.com"/>
-                      <button className="fb-send" onClick={submitFeedback}>Send it</button>
-                    </>
-                  )}
-                </div>
-              )}
-            </div>
           </div>
         )}
 
