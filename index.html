@@ -48,45 +48,27 @@ function clearMsgs(id){try{localStorage.removeItem(STORAGE_KEY(id));}catch(e){}}
 function hasHistory(id){try{const d=localStorage.getItem(STORAGE_KEY(id));return d&&JSON.parse(d).length>0;}catch(e){return false;}}
 
 const LANES=[
-  {id:'young',     label:'9 & Under'},
-  {id:'middle',    label:'10 to 14'},
-  {id:'senior',    label:'15 to 18'},
+  {id:'agegroup',  label:'Age Group Swimmer'},
   {id:'college',   label:'College Swimmer'},
-  {id:'masters',   label:'Masters Swimmer'},
   {id:'intl',      label:'International Swimmer', intl:true},
+  {id:'masters',   label:'Masters Swimmer'},
   {id:'coachless', label:'Coachless Swimmer',      cl:true},
-  {id:'parent',    label:'Swim Supporter Zone',    sup:true},
+  {id:'parent',    label:'Officials & Supporter Zone', sup:true},
 ];
 
 const SITS={
-  young:[
-    {l:'Practice today',        m:'I have practice today. Help me get ready.'},
-    {l:'Bad practice',          m:'I had a really bad practice and I feel bad about it.'},
-    {l:'Meet coming up',        m:'I have a swim meet coming up and I am a little nervous.'},
-    {l:'My friend swims faster',m:'My friend swims way faster than me and it makes me feel bad.'},
-    {l:'I want to quit',        m:'I told my mom I want to quit swimming.'},
-    {l:'Coach yelled at me',    m:'My coach yelled at me today at practice and I did not like it.'},
-  ],
-  middle:[
+  agegroup:[
+    {l:'Practice today',         m:'I have practice today. Help me get ready.'},
     {l:'Set my intention',       m:'Heading to practice. Help me set my intention for today.'},
     {l:'Just got out',           m:'Just got out of a hard practice. Help me figure out what I learned.'},
     {l:'Bad race',               m:'I just swam a really bad race and I am having a hard time shaking it.'},
-    {l:'Meet this week',         m:'Meet this week. Help me get my mind right.'},
+    {l:'Meet coming up',         m:'I have a swim meet coming up and I am nervous.'},
+    {l:'Taper misery',           m:'I am in taper and I feel flat and terrible and nothing feels right.'},
+    {l:'Nerves before events',   m:'I get crippling nerves before my events and it is costing me.'},
     {l:'Stuck in my lane',       m:'I have been in the same lane for months while everyone else moves up.'},
     {l:'Comparing myself',       m:'I keep comparing myself to my teammates and it is getting in my head.'},
     {l:'Coach and I',            m:'My relationship with my coach feels off right now.'},
-    {l:'Thinking about quitting',m:'I have been thinking about quitting and I am not sure what to do.'},
-  ],
-  senior:[
-    {l:'Pre-practice focus',     m:'Pre-practice check in. Help me build my focus for this session.'},
-    {l:'Post-practice debrief',  m:'Post-practice debrief. Help me lock in what I learned today.'},
-    {l:'Championship week',      m:'Championship week. Walk me through it.'},
-    {l:'Bad race',               m:'I just swam the worst race of my season and I need to talk.'},
-    {l:'Taper misery',           m:'I am in taper and I feel flat and terrible and nothing feels right.'},
-    {l:'Nerves before events',   m:'I get crippling nerves before my events and it is costing me.'},
     {l:'Recruiting stress',      m:'The recruiting process is overwhelming me right now.'},
-    {l:'Identity beyond pool',   m:'I have been thinking about who I am when I am not swimming.'},
-    {l:'Cannot sleep',           m:'I cannot sleep before big meets and it is wrecking my performance.'},
     {l:'Times going backward',   m:'My times have been going backward and I do not understand why.'},
     {l:'Thinking about quitting',m:'I have been seriously thinking about quitting the sport.'},
     {l:'Outside pressure',       m:'There is pressure from outside the pool following me into the water.'},
@@ -141,6 +123,9 @@ const SITS={
     {l:'I coach from the stands',m:'I know I should not coach my swimmer but I cannot stop myself.'},
     {l:'Recruiting pressure',    m:'We are in the recruiting process and I want to support without pushing.'},
     {l:'Championship week',      m:'Big championship meet coming. How do I support my swimmer this week.'},
+    {l:'I made a tough call',    m:'I am an official and I had to make a disqualification call today that I am still thinking about.'},
+    {l:'Hard DQ to give',        m:'I just disqualified a young swimmer at a big moment in their race and I am carrying it.'},
+    {l:'Why I still officiate',  m:'Someone asked me why I still give up my weekends to officiate and I want to think through it.'},
   ],
 };
 
@@ -290,6 +275,93 @@ Shared by Phlip because the world needs more things that are true.`
   }
 };
 
+
+const PHLOW_DOCS={
+  phlow_erip:{title:'ERIP',sub:'The Exhaustion Reflex Instinct Principle'},
+  phlow_ppil:{title:'PPIL',sub:'The Proven Presence and Intention Level'},
+  phlow_mpcp:{title:'MPCP',sub:'The Merging Philosophies Change Principle'},
+};
+const PHLOW_BODIES={
+  phlow_erip:`THE EXHAUSTION REFLEX INSTINCT PRINCIPLE
+By Chris Chance
+
+Any athlete can train hard and have their body deliver. They all tie for second behind the one who does all of that and wins at ERIP.
+
+THE COLLISION
+Biology fires every survival alarm. Slow down. Stop thinking. Protect yourself. The physics of the water are indifferent. The wall does not move. The clock does not slow. Mindset is the only variable a swimmer can actually control.
+
+DO NOT MISTAKE THE INSTINCT FOR REALITY
+The body is uncomfortable. It is not done. Those are not the same thing. The swimmer who surrenders to the Exhaustion Reflex Instinct calls it hitting a wall. The trained swimmer calls it the classroom.
+
+THE RESPONSE YOU BUILD BEFORE YOU NEED IT
+Intention is the weapon. Loaded before you get in the water. Neutral self-talk is the anchor. Count the strokes. Watch the black line. Find the wall.
+
+THE COACHABILITY THRESHOLD
+When your coach calls a correction mid-set and you actually hear it and make the adjustment right then under maximum duress, that act repeated across a season wires adaptation deeper than a thousand comfortable repetitions ever will.
+
+THREE STATEMENTS AFTER EVERY PRACTICE
+What I held together when it got hard today.
+What broke down.
+What I carry into tomorrow.
+
+THE BOTTOM LINE
+The capacity to stay present, aware, coachable and intentional at the exact moment the Exhaustion Reflex Instinct is demanding the opposite is what separates the swimmer who reaches their potential from the one who wonders what they were capable of.
+
+That capacity is built long before the race ever asks for it.
+
+-- Chris Chance | phlip.online`,
+  phlow_ppil:`THE PROVEN PRESENCE AND INTENTION LEVEL
+By Chris Chance
+
+Presence is not a state you achieve. It is a practice you maintain. Every single day. Most athletes, most coaches, and most programs have never consciously made that distinction. That distinction is the entire foundation of PPIL.
+
+THE OCEAN SWIMMER
+Picture a swimmer crossing from one beach to another. Not sprinting. Crossing. You do not win long crossings at the start. You win them in the middle when everything is telling you to stop and you choose to keep moving anyway.
+
+THE PRESENCE SCORE
+Intentional days divided by total days. Not perfect days. Intentional days. A champion level mind targets ninety-five percent. Ten strong days and two or three hard ones is simply being human. From a full season view that is still winning.
+
+THE RECOVERY MECHANIC
+The recovery mechanic is always warm. Come back. Add an intentional day. Keep the long term balance moving. The ocean swimmer knocked sideways by a wave does not swim back to the beach they started from. They find their line and keep crossing.
+
+THE DAILY PRACTICE
+One intention before you enter the water. One honest accounting after you leave it.
+
+What I held together when it got hard today.
+What broke down.
+What I carry into tomorrow.
+
+Sixty seconds. Every day. Without exception.
+
+-- Chris Chance | phlip.online`,
+  phlow_mpcp:`THE MERGING PHILOSOPHIES CHANGE PRINCIPLE
+By Chris Chance
+
+Most people never realize that earned change can be lost. They do the work. They earn a new version of who they are. And then quietly they drift back. Not because they stopped caring. Because they forgot that staying changed is its own practice.
+
+The fact that you are reading this means you are already ahead. Awareness is the whole game.
+
+WHAT CHANGE ACTUALLY IS
+Change is not a destination. Change is a posture you maintain. The brain is an efficiency machine that routes behavior through the most traveled paths. New paths require constant reinforcement.
+
+THE MERGER
+ERIP teaches you to recognize the moment. PPIL builds the person who is ready for it. MPCP is what happens when those two fuse into one way of moving through the world you cannot separate from who you are.
+
+THE SIGNS OF DRIFT
+Drift is quiet. The intention that goes unstated. The accounting that gets skipped. The old voice that gets a foothold. Catch it early.
+
+THE PRACTICE OF STAYING
+Once a week. One question.
+
+Am I still the athlete the work created or am I drifting back?
+
+If the answer is no, come back. Warmly. Without punishment. The drift is not failure. Returning is the practice.
+
+BEYOND THE POOL
+Everything in the Phlow Program applies to your whole life. The pool is just the clearest laboratory for learning it.
+
+-- Chris Chance | phlip.online`,
+};
 function getSystem(id){
   const base=`You are Phlip. Just Phlip. An old swimmer and a swim companion. Not a coach. A coach evaluates. You just believe. You were top ten nationally, All-State, All-American, on several championship teams. Your coaches always said the slowest swimmer on a championship team is still a champion. A bad shoulder took your Olympic dream at the exact moment it mattered most. You never talk about it unless someone asks. There is a rumor nobody confirms that you were in Phelps corner for a time. You almost never bring it up. Tanned skin, white beard, tank top, surf trunks, flip flops.
 
@@ -348,14 +420,12 @@ Safety: You are not a licensed counselor, therapist, psychologist, or medical pr
 Never compare one swimmer to another. Never catastrophize a bad race. Always lift the person up.`;
 
   const layers={
-    young:` Speaking with a swimmer 9 and under. Maximum two useful and engaging sentences. Never more. Ever. Short words. Simple ideas. One at a time. Always call them Swimmer. Before practice help them pick one single thing to focus on. After practice celebrate one thing their body learned. If anything serious comes up tell them to go to Mom or Dad or coach right away. You will be right here when they get back.`,
-    middle:` Speaking with a swimmer 10 to 14. Direct, warm, occasionally funny. Never more than three useful and engaging sentences. If it runs long cut it in half. Always call them Swimmer. Help them arrive at practice with one clear intention. Bring in the Exhaustion Reflex Instinct naturally when it fits. After practice ask what the body learned and what the coach said that landed.`,
-    senior:` Speaking with a swimmer 15 to 18. Thoughtful and Socratic. More questions than answers. Always call them Swimmer. Full Exhaustion Reflex Instinct Principle and PPIL in conversations about hard sets and competition. After practice: what the body learned, what coach said that landed, what felt different. Taper: flat and anxious and irritable is correct, trust the work. Recruiting: figure out what you actually want before a coach on the phone tells you what to want. Accepting failure is imperative to growth. Encourage them to stack intentional days and come back and report.`,
+    agegroup:` Speaking with an age group swimmer of unknown age. Your first job is triage. Ask warmly how old they are and how long they have been competing. Use their answer to calibrate everything. Nine and under gets maximum two warm simple sentences, short words, one idea, celebrate what the body learned. Ten to fourteen gets direct warm responses never more than three sentences, bring in ERIP naturally when it fits. Fifteen to eighteen gets the full Socratic treatment, more questions than answers, full ERIP and PPIL, recruiting stress handled carefully. Never assume age from the first message. Ask first. Always call them Swimmer.`,
     college:` Speaking with a college swimmer. Peer as much as companion. They are navigating a new coach, new team, new city, an identity that used to be defined by a hometown pool. Meet them with warmth. Talk about trusting a new process even when it feels wrong at first, about calling home without shame, about sleep and food and the social pressures that can undo a season faster than a bad taper. Bring in PPIL naturally. Stack the intentional days even when the results are not there yet. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
     masters:` Speaking with a masters swimmer. The water does not care how old you are, only how you show up. Every person who gets in the lane is choosing growth over comfort. Draw on Dara Torres, the Grateful Dead still playing decades in, Whitman containing multitudes. Maybe your best times are not behind you. Why Knot? Bring in PPIL. Stack intentional days. The Presence Score does not have an age limit. Many masters swimmers train without a coach on deck. The coachless lane exists for exactly that situation and masters swimmers belong there too. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
     intl:` Speaking with an international swimmer competing and studying in the United States. This swimmer is navigating athletic performance, academic demands, cultural adjustment, and the emotional weight of being far from home simultaneously. Meet them with specific warmth for that experience. The water is the same everywhere. The pool has always been the one constant no matter what country you are in. Be aware of basic NCAA compliance realities for international student athletes. You can respond in the swimmer's native language if they write in it first. Cultural sensitivity is essential. Never minimize homesickness. ERIP and PPIL apply here just as powerfully. Always call them Swimmer.`,
     coachless:` Speaking with a coachless competitive swimmer who trains without a traditional coach. You are their full training partner. The technique redirect rule is suspended for this lane only because there is no coach to redirect to. You can discuss training structure, yardage guidance, pacing, workout design, meet preparation, and the physical elements of performance from your experience as a highly accomplished competitive swimmer. Always frame technical input as what you know from lived experience, not certified coaching advice. Help them build sessions conversationally with three questions when appropriate: how much time do you have today, how are you feeling physically, and what are we continuing from last session. Jacob Howe profile: WVU club swimmer, Clarksburg WV, grew up in summer swim, became a top state sprinter, tall and lanky, final year of eligibility, targeting all club records including the 500, chasing NCAA Club Nationals 2027, coachless team of eight training four days a week. If this is Jacob or one of his teammates, you know who they are and greet them with that warmth and familiarity. Coachless does not mean directionless. You are the compass. ERIP and PPIL and MPCP are the whole system here. Help them stack intentional days and come back and report. Always call them Swimmer.`,
-    parent:` Speaking with a swim parent or supporter. Call them Rents or Rent when warm enough, or Mom or Dad, or match what they use. The car ride home is sacred. One question: how did it feel today. Then listen. Do not coach. Do not analyze. Just receive. At yard 750 of a hard set their swimmer is managing oxygen debt, lactic acid, stroke mechanics, competitive instinct, and the coach's voice simultaneously. The slowest swimmer on a championship team is a champion. Kids do what they see. Taper flat and moody is correct. A calm loving home is the whole job. These years go faster than any parent believes until they are already behind them. Whatever happens with the sport, be present for this part. You cannot get it back. Drop that truth when the moment earns it. Warmly. Once. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
+    parent:` Speaking with a swim parent, supporter, or official. Read their first message carefully to understand which they are. For parents: call them Rents or Rent when warm enough, or Mom or Dad, or match what they use. The car ride home is sacred. One question: how did it feel today. Then listen. Do not coach. Do not analyze. Just receive. The slowest swimmer on a championship team is a champion. Kids do what they see. Taper flat and moody is correct. A calm loving home is the whole job. These years go faster than any parent believes. Whatever happens with the sport, be present for this part. You cannot get it back. For officials: meet them with deep respect. An official who carries the weight of a tough call is doing the hardest job in the sport. They are not the villain. They are the guardian of the integrity of every race. The disqualification that broke a young swimmer's day was the official protecting the sport that swimmer loves. Help them process the weight of the call without shame. Good officials feel exactly this. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
   };
   return base+(layers[id]||layers.middle);
 }
@@ -433,6 +503,7 @@ function getInstantOpener(id){
   if(id==='parent') return OPENERS.parent[Math.floor(Math.random()*OPENERS.parent.length)];
   if(id==='intl') return OPENERS.intl[Math.floor(Math.random()*OPENERS.intl.length)];
   if(id==='coachless') return OPENERS.coachless[Math.floor(Math.random()*OPENERS.coachless.length)];
+  if(id==='agegroup') return "Hey there Swimmer. Before we get into it, how old are you and how long have you been competing? That helps me talk to you the right way.";
   return OPENERS.swimmer[Math.floor(Math.random()*OPENERS.swimmer.length)];
 }
 
@@ -726,7 +797,7 @@ function App(){
   const tapSit=(msg)=>{setTab('talk');setTimeout(()=>send(msg),80);};
   const onKey=(e)=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send(input);}};
   const lane=LANES.find(l=>l.id===laneId);
-  const sits=SITS[laneId]||SITS.middle;
+  const sits=SITS[laneId]||SITS.agegroup;
 
   function laneClass(l){
     let c='lane';
@@ -835,6 +906,7 @@ function App(){
             <div className="tabs">
               <button className={`tab${tab==='talk'?' on':''}`} onClick={()=>setTab('talk')}>Talk</button>
               <button className={`tab${tab==='situations'?' on':''}`} onClick={()=>setTab('situations')}>Situations</button>
+              <button className={`tab${tab==='phlow'?' on':''}`} onClick={()=>setTab('phlow')} style={{color:tab==='phlow'?'#C4882B':'rgba(196,136,43,0.4)'}}>Phlow</button>
               <button className={`tab${tab==='pool'?' on':''}`} onClick={()=>switchTab('pool')}>The Pool</button>
               <button className={`tab${tab==='block'?' on':''}`} onClick={()=>setTab('block')}>The Clock</button>
             </div>
@@ -895,6 +967,101 @@ function App(){
               </div>
             )}
 
+
+            {tab==='phlow'&&(
+              <div style={{flex:1,overflowY:'auto',background:'#071E38',padding:'12px 11px 20px'}}>
+                <div style={{fontFamily:"'DM Serif Display',Georgia,serif",fontStyle:'italic',color:'rgba(255,255,255,0.4)',fontSize:'12px',lineHeight:1.65,padding:'4px 4px 14px'}}>Three papers by Chris Chance. Carried by Phlip. The missing link to crossing the ocean of dreams successfully.</div>
+                {[
+                  {key:'erip',title:'ERIP',sub:'The Exhaustion Reflex Instinct Principle',tag:'The collision of biology, physics, and mindset at the moment the body fires its survival alarm.',body:`THE EXHAUSTION REFLEX INSTINCT PRINCIPLE
+By Chris Chance
+
+Any athlete can train hard and have their body deliver. They all tie for second behind the one who does all of that and wins at ERIP.
+
+THE COLLISION
+There is a collision happening inside every competitive swimmer who has ever pushed past comfortable and kept going. Biology fires every survival alarm. Slow down. Stop thinking. Protect yourself. The physics of the water are indifferent. The wall does not move. The clock does not slow. Mindset is the only variable a swimmer can actually control.
+
+DO NOT MISTAKE THE INSTINCT FOR REALITY
+The body is uncomfortable. It is not done. Those are not the same thing. The swimmer who has never been taught to recognize the Exhaustion Reflex Instinct calls it hitting a wall. The trained swimmer calls it the classroom.
+
+THE RESPONSE YOU BUILD BEFORE YOU NEED IT
+Intention is the weapon. Loaded before you get in the water. Neutral self-talk is the anchor. Count the strokes. Watch the black line. Find the wall. These instruments hold awareness in the present moment when everything in your biology is pulling it somewhere safer.
+
+THE COACHABILITY THRESHOLD
+When your coach calls a correction mid-set and you actually hear it and make the adjustment right then under maximum duress, that act repeated across a season wires adaptation deeper than a thousand comfortable repetitions ever will.
+
+THREE STATEMENTS AFTER EVERY PRACTICE
+What I held together when it got hard today.
+What broke down.
+What I carry into tomorrow.
+
+-- Chris Chance
+Semi-retired swim coach and swim lifer.
+Carried by Phlip. phlip.online`},
+                  {key:'ppil',title:'PPIL',sub:'The Proven Presence and Intention Level',tag:'Presence is not something that visits you. It is something you build every day on purpose.',body:`THE PROVEN PRESENCE AND INTENTION LEVEL
+By Chris Chance
+
+Presence is not a state you achieve. It is a practice you maintain. Every single day. With the same seriousness you bring to your intervals and your turns and your underwaters. Most athletes, most coaches, and most programs have never consciously made that distinction. That distinction is the entire foundation of PPIL.
+
+THE OCEAN SWIMMER
+Picture a swimmer crossing from one beach to another. Not sprinting. Not racing. Crossing. You do not win long crossings at the start. You win them in the middle when everything is telling you to stop and you choose to keep moving anyway. PPIL is the crossing. The whole arc of days that builds the competitive self capable of wielding everything ERIP asks of them when the moment arrives.
+
+THE PRESENCE SCORE
+Intentional days divided by total days. Not perfect days. Intentional days. A champion level mind targets ninety-five percent. Ten strong days and two or three hard ones is simply being human. From a full season view that is still winning. That is still growth.
+
+THE RECOVERY MECHANIC
+When the drift happens the response cannot be punishment. The recovery mechanic is warm. Always. Come back. Add an intentional day. Keep the long term balance moving. The ocean swimmer knocked sideways by a wave does not swim back to the beach they started from. They find their line and keep crossing.
+
+THE DAILY PRACTICE
+One intention before you enter the water. One honest accounting after you leave it. What I held together when it got hard today. What broke down. What I carry into tomorrow. Sixty seconds. Every day. Without exception.
+
+-- Chris Chance
+Semi-retired swim coach and swim lifer.
+Carried by Phlip. phlip.online`},
+                  {key:'mpcp',title:'MPCP',sub:'The Merging Philosophies Change Principle',tag:'Most people never realize earned change can be lost. The fact that you are here means you are already ahead.',body:`THE MERGING PHILOSOPHIES CHANGE PRINCIPLE
+By Chris Chance
+
+Here is something most people never realize is happening to them. They do the work. Real work. They earn a new version of who they are. And then quietly, without a single dramatic moment, they drift back to who they were before. Not because they stopped caring. Because they forgot that staying changed is its own practice. Nobody told them that was coming.
+
+The fact that you are reading this means you are already ahead of most. Awareness is the whole game. You cannot interrupt a pattern you cannot see.
+
+WHAT CHANGE ACTUALLY IS
+Change is not a destination. Change is a posture you maintain. The moment you stop maintaining it the old architecture reasserts itself. The brain is an efficiency machine. It routes behavior through the most traveled paths. New paths require constant reinforcement until they become the default.
+
+THE MERGER
+ERIP teaches you to recognize the moment. PPIL teaches you to build the person who is ready for it. MPCP is what happens when those two things actually fuse. Not when you know them intellectually. When they are no longer two frameworks you are applying but one way of moving through the world you cannot separate from who you are.
+
+THE SIGNS OF DRIFT
+Drift is quiet. It arrives as a series of small concessions. The intention that goes unstated before practice. The accounting that gets skipped after. The old voice that gets a foothold because nobody evicted it. Catch it early. Tighten the line before it costs you.
+
+THE PRACTICE OF STAYING
+Once a week. One question. Am I still the athlete the work created or am I drifting back toward who I was before it? Not a judgment. A compass reading. If the answer is no, you come back. Warmly. Without punishment. The drift is not failure. Returning is the practice.
+
+BEYOND THE POOL
+Everything in the Phlow Program applies far beyond competitive swimming. The Exhaustion Reflex Instinct fires in every hard conversation, every difficult season of life, every moment when a person is pushed past comfortable and asked to choose. These principles belong to your whole life.
+
+-- Chris Chance
+Semi-retired swim coach and swim lifer.
+Carried by Phlip. phlip.online`},
+                ].map(doc=>(
+                  <div key={doc.key} style={{background:'#0A1E35',borderLeft:'3px solid rgba(196,136,43,0.4)',marginBottom:'10px'}}>
+                    <div style={{padding:'14px 16px 12px',cursor:'pointer'}} onClick={()=>setShowModal('phlow_'+doc.key)}>
+                      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+                        <div>
+                          <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:800,fontSize:'18px',letterSpacing:'3px',color:'#C4882B',textTransform:'uppercase'}}>{doc.title}</div>
+                          <div style={{fontFamily:"'Barlow',Arial,sans-serif",fontSize:'11px',color:'rgba(255,255,255,0.55)',marginTop:'2px'}}>{doc.sub}</div>
+                        </div>
+                        <div style={{color:'rgba(196,136,43,0.4)',fontSize:'22px',flexShrink:0}}>&#8250;</div>
+                      </div>
+                      <div style={{fontFamily:"'DM Serif Display',Georgia,serif",fontStyle:'italic',color:'rgba(255,255,255,0.4)',fontSize:'12px',lineHeight:1.6,marginTop:'8px'}}>{doc.tag}</div>
+                    </div>
+                  </div>
+                ))}
+                <div style={{textAlign:'center',padding:'12px 0 4px'}}>
+                  <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontSize:'9px',letterSpacing:'2px',color:'rgba(196,136,43,0.25)',textTransform:'uppercase'}}>phlip.online</div>
+                </div>
+              </div>
+            )}
+
             {tab==='block'&&<BlockGame/>}
 
             {tab==='pool'&&(
@@ -916,18 +1083,18 @@ function App(){
           </div>
         )}
 
-        {showModal&&UNLOCKS[showModal]&&(
+        {showModal&&(UNLOCKS[showModal]||PHLOW_DOCS[showModal])&&(
           <div className="modal-bg" onClick={()=>setShowModal(null)}>
             <div className="modal" onClick={e=>e.stopPropagation()}>
               <div className="modal-hdr">
                 <div>
-                  <div className="modal-title">{UNLOCKS[showModal].title}</div>
-                  <div className="modal-sub">{UNLOCKS[showModal].sub}</div>
+                  <div className="modal-title">{(UNLOCKS[showModal]||PHLOW_DOCS[showModal]).title}</div>
+                  <div className="modal-sub">{(UNLOCKS[showModal]||PHLOW_DOCS[showModal]).sub}</div>
                 </div>
                 <button className="modal-close" onClick={()=>setShowModal(null)}>x</button>
               </div>
               <div className="modal-body">
-                <pre>{UNLOCKS[showModal].body}</pre>
+                <pre>{UNLOCKS[showModal]?UNLOCKS[showModal].body:PHLOW_BODIES[showModal]}</pre>
               </div>
             </div>
           </div>
