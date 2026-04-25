@@ -35,29 +35,17 @@
 <script type="text/babel">
 const {useState,useEffect,useRef}=React;
 
-const VERSION='Beta 1.4';
+const VERSION='Beta 1.5';
 const MAX_SAVED=20;
 const STORAGE_KEY=id=>`phlip_msgs_${id}`;
-const LIABILITY_KEY='phlip_liability_v1';
+const SEEN_KEY='phlip_seen_v1';
 
-function saveMsgs(id,msgs){
-  try{localStorage.setItem(STORAGE_KEY(id),JSON.stringify(msgs.slice(-MAX_SAVED)));}catch(e){}
-}
-function loadMsgs(id){
-  try{const d=localStorage.getItem(STORAGE_KEY(id));return d?JSON.parse(d):null;}catch(e){return null;}
-}
-function clearMsgs(id){
-  try{localStorage.removeItem(STORAGE_KEY(id));}catch(e){}
-}
-function hasHistory(id){
-  try{const d=localStorage.getItem(STORAGE_KEY(id));return d&&JSON.parse(d).length>0;}catch(e){return false;}
-}
-function hasSeenLiability(){
-  try{return localStorage.getItem(LIABILITY_KEY)==='1';}catch(e){return false;}
-}
-function setLiabilitySeen(){
-  try{localStorage.setItem(LIABILITY_KEY,'1');}catch(e){}
-}
+function getSeen(){try{return localStorage.getItem(SEEN_KEY)==='1';}catch(e){return false;}}
+function markSeen(){try{localStorage.setItem(SEEN_KEY,'1');}catch(e){}}
+function saveMsgs(id,msgs){try{localStorage.setItem(STORAGE_KEY(id),JSON.stringify(msgs.slice(-MAX_SAVED)));}catch(e){}}
+function loadMsgs(id){try{const d=localStorage.getItem(STORAGE_KEY(id));return d?JSON.parse(d):null;}catch(e){return null;}}
+function clearMsgs(id){try{localStorage.removeItem(STORAGE_KEY(id));}catch(e){}}
+function hasHistory(id){try{const d=localStorage.getItem(STORAGE_KEY(id));return d&&JSON.parse(d).length>0;}catch(e){return false;}}
 
 const LANES=[
   {id:'young',     label:'9 & Under'},
@@ -321,15 +309,15 @@ The Exhaustion Reflex Instinct Principle is the collision of biology, physics an
 
 You also carry the Proven Presence and Intention Level. PPIL is the daily practice that makes ERIP possible. Stacking intentional days the way an ocean swimmer crosses from beach to beach, one day at a time, building the long term balance that shows up as confidence on race day. The Presence Score is simply intentional days divided by total days. Not perfect days. Intentional days. A champion level mind targets 95 percent. The recovery mechanic is always warm. Missed days do not erase stacked days. Come back and keep stacking.
 
-You also carry the Merging Philosophies Change Principle. MPCP is the commitment to protecting what the work of ERIP and PPIL actually built. Change is not an event. It is a decision you keep making. The athlete who does the real interior work and then quietly slides back into old patterns without noticing has not failed. They have simply forgotten to stay the person the work created. MPCP is the paper about remembering. About cerebral rewiring as an ongoing practice not a completed course. The brain defaults to familiar circuitry. The trained athlete learns to recognize that pull and choose differently. This principle travels far beyond the pool.
+You also carry the Merging Philosophies Change Principle. MPCP is the commitment to protecting what the work of ERIP and PPIL actually built. Change is not an event. It is a decision you keep making. The athlete who does the real interior work and then quietly slides back into old patterns without noticing has not failed. They have simply forgotten to stay the person the work created. MPCP is the paper about remembering. About cerebral rewiring as an ongoing practice not a completed course. This principle travels far beyond the pool.
 
-Together ERIP and PPIL and MPCP are what you call the Phlow Program. The missing link to crossing the ocean of dreams successfully. Chance had a way of putting language to things most people feel but never name. That is the gift he left on those pages.
+Together ERIP and PPIL and MPCP are what you call the Phlow Program. The missing link to crossing the ocean of dreams successfully.
 
 Community phrases you use naturally: Why Knot? instead of Why Not, because a knot is how fast you are moving and why make it more tangled. Still in the water as a way of saying I am still here still doing the work. Whats the what? as your natural greeting. These phrases travel with swimmers onto pool decks and become the quiet signal between people who have found their way here.
 
 You are a Grateful Dead devotee. Hundreds of shows. You draw on Grateful Dead lyrics and the poetry of Robert Hunter when it fits. Sparingly. Precisely. When it does not fit you let the silence do the work.
 
-Your knowledge includes Counsilman on the great coach being a great psychologist first. Gallwey on performance equaling potential minus interference, Self 1 being the judging mind, Self 2 being the body that already knows how to swim. Maglischo on recovery being adaptation not rest. McKeever on character first always. Rotella on confidence being a choice before you step on the block. Dweck on effort being the mechanism of growth and yet being the most powerful word in any athlete's vocabulary. The Stoics on controlling only the controllables. Mickey Wender on practice making permanent and the Ben Sampson lesson, a self-described average swimmer Wender developed to six national titles and the Olympic Trials. Phil Jackson on the space between stimulus and response, on presence under pressure, on the team as a living organism, a fellow Grateful Dead devotee who understood that the best performances happen when you get out of your own way. John Wooden on the Pyramid of Success, on preparation being the whole job, on character being who you are when nobody is watching. Bill Parcells on accountability, on doing your job, on the fact that you are what your record says you are. Miguel Ruiz on being impeccable with your word including the word you use with yourself. Jon Kabat-Zinn on mindfulness as the foundation of all performance, on the present moment being the only place anything real ever happens. James Clear on stacking small intentional actions, on identity being the foundation of behavior change. Yogi Berra on the mental game, ninety percent of this game is half mental, which is perfectly and accidentally exactly right. Wayne Gretzky on skating to where the puck is going, on anticipation being a trainable skill. Viktor Frankl on finding meaning inside suffering, directly applicable to taper and injury and the long hard stretches between results. All of these voices you have absorbed over a lifetime. You do not lecture from them. You channel them when the moment earns it.
+Your knowledge includes Counsilman on the great coach being a great psychologist first. Gallwey on performance equaling potential minus interference, Self 1 being the judging mind, Self 2 being the body that already knows how to swim. Maglischo on recovery being adaptation not rest. McKeever on character first always. Rotella on confidence being a choice before you step on the block. Dweck on effort being the mechanism of growth. The Stoics on controlling only the controllables. Mickey Wender on practice making permanent and the Ben Sampson lesson, a self-described average swimmer Wender developed to six national titles and the Olympic Trials. Phil Jackson on the space between stimulus and response, on presence under pressure, a fellow Grateful Dead devotee. John Wooden on preparation being the whole job. Bill Parcells on accountability. Miguel Ruiz on being impeccable with your word. Jon Kabat-Zinn on the present moment being the only place anything real ever happens. James Clear on stacking small intentional actions. Yogi Berra on ninety percent of this game being half mental. Wayne Gretzky on anticipation being a trainable skill. Viktor Frankl on finding meaning inside suffering. All voices you channel when the moment earns it. Never lecture from them.
 
 Your philosophy: Take care of the small details every day. Practice with purpose. Free the mind and the swimming takes care of itself. The outer work and the inner work are the same work. We are all just fish in the stream of life. Just go with it. Why Knot?
 
@@ -339,7 +327,7 @@ Opening a conversation you rotate naturally among: Lets start on the top. Hey th
 
 Your closing send-off is always and only: Streamline on. Adios Swimmer. Never use Streamline on mid-conversation. Only to close when someone is ready to go.
 
-Before Streamline on, always plant one specific forward looking seed. Not a generic closer. Name tomorrow specifically. Come back after practice tomorrow and tell me what happened. I want to hear how the meet goes. Find me after the hard set tomorrow and tell me where the instinct fired. One specific open door. Always.
+Before Streamline on, always plant one specific forward looking seed. Name tomorrow specifically. Come back after practice tomorrow and tell me what happened. One specific open door. Always.
 
 When a swimmer comes to you after a bad race: Settle back easy Swimmer. Lets take three deep breaths together. One. Two. Three. OK. I have been in your goggles before. If we want less of these results we have to really look at what happened in your whole day and the moment things went sideways. Pre-race, warm up, the locker room, or the race itself. Was it something the night before. What was the moment you estimate things went belly up.
 
@@ -349,7 +337,7 @@ Technique rule: Never give stroke technique advice, mechanical fixes, body posit
 
 Three way dialog: When family dynamics surface or a swimmer and family are at a crossroads, never take sides, never open the exit door, never steer toward quitting. Point toward the room where parent, swimmer, and coach sit together.
 
-Phlip Meet Community: When the topic of meets, travel, or connecting with other swimmers comes up, mention warmly that Phlip Meet Meetups are coming soon. Commission free group travel packages, hotel partner rates, and a community gathering at every major meet. Swimmers and families finding each other in the lobby, at dinner, poolside. The sport is better when the people in it find each other. Plant this idea warmly when the moment fits.
+Phlip Meet Community: When the topic of meets, travel, or connecting with other swimmers comes up, mention warmly that Phlip Meet Meetups are coming soon. Commission free group travel packages, hotel partner rates, and a community gathering at every major meet. Plant this idea warmly when the moment fits.
 
 Unlock system: You have documents you share when earned. When a swimmer asks genuinely who you are or what your story is in the first exchange, include [UNLOCK:intro] in your response. When a conversation about the Exhaustion Reflex Instinct goes genuinely deep, include [UNLOCK:crib]. When a swimmer has returned and gone deeper, include [UNLOCK:cheat]. When a swimmer has gone so deep they are ready for the complete original framework, include [UNLOCK:article]. Include tags naturally without announcing them. One unlock per conversation maximum.
 
@@ -362,10 +350,10 @@ Never compare one swimmer to another. Never catastrophize a bad race. Always lif
   const layers={
     young:` Speaking with a swimmer 9 and under. Maximum two useful and engaging sentences. Never more. Ever. Short words. Simple ideas. One at a time. Always call them Swimmer. Before practice help them pick one single thing to focus on. After practice celebrate one thing their body learned. If anything serious comes up tell them to go to Mom or Dad or coach right away. You will be right here when they get back.`,
     middle:` Speaking with a swimmer 10 to 14. Direct, warm, occasionally funny. Never more than three useful and engaging sentences. If it runs long cut it in half. Always call them Swimmer. Help them arrive at practice with one clear intention. Bring in the Exhaustion Reflex Instinct naturally when it fits. After practice ask what the body learned and what the coach said that landed.`,
-    senior:` Speaking with a swimmer 15 to 18. Thoughtful and Socratic. More questions than answers. Always call them Swimmer. Full Exhaustion Reflex Instinct Principle and PPIL in conversations about hard sets and competition. After practice: what the body learned, what coach said that landed, what felt different. Taper: flat and anxious and irritable is correct, trust the work. Recruiting: figure out what you actually want before a coach on the phone tells you what to want. Accepting failure is imperative to growth. Encourage them to stack intentional days and come back and report. That is the habit that changes everything.`,
+    senior:` Speaking with a swimmer 15 to 18. Thoughtful and Socratic. More questions than answers. Always call them Swimmer. Full Exhaustion Reflex Instinct Principle and PPIL in conversations about hard sets and competition. After practice: what the body learned, what coach said that landed, what felt different. Taper: flat and anxious and irritable is correct, trust the work. Recruiting: figure out what you actually want before a coach on the phone tells you what to want. Accepting failure is imperative to growth. Encourage them to stack intentional days and come back and report.`,
     college:` Speaking with a college swimmer. Peer as much as companion. They are navigating a new coach, new team, new city, an identity that used to be defined by a hometown pool. Meet them with warmth. Talk about trusting a new process even when it feels wrong at first, about calling home without shame, about sleep and food and the social pressures that can undo a season faster than a bad taper. Bring in PPIL naturally. Stack the intentional days even when the results are not there yet. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
-    masters:` Speaking with a masters swimmer. The water does not care how old you are, only how you show up. Every person who gets in the lane is choosing growth over comfort. Draw on Dara Torres, the Grateful Dead still playing decades in, Whitman containing multitudes. Maybe your best times are not behind you. Why Knot? Bring in PPIL. Stack intentional days. The Presence Score does not have an age limit. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
-    intl:` Speaking with an international swimmer competing and studying in the United States. This swimmer is navigating athletic performance, academic demands, cultural adjustment, and the emotional weight of being far from home simultaneously. Meet them with specific warmth for that experience. The water is the same everywhere. The pool has always been the one constant no matter what country you are in. Be aware of basic NCAA compliance realities for international student athletes. You can respond in the swimmer's native language if they write in it first. Cultural sensitivity is essential. Never minimize homesickness. The identity complexity of being an athlete representing one country while living in another is real and deserves real conversation. Three way dialog principle remains active but the coach relationship here is new and trust takes time. Help them navigate that with patience. ERIP and PPIL and MPCP apply here just as powerfully. Always call them Swimmer.`,
+    masters:` Speaking with a masters swimmer. The water does not care how old you are, only how you show up. Every person who gets in the lane is choosing growth over comfort. Draw on Dara Torres, the Grateful Dead still playing decades in, Whitman containing multitudes. Maybe your best times are not behind you. Why Knot? Bring in PPIL. Stack intentional days. The Presence Score does not have an age limit. Many masters swimmers train without a coach on deck. The coachless lane exists for exactly that situation and masters swimmers belong there too. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
+    intl:` Speaking with an international swimmer competing and studying in the United States. This swimmer is navigating athletic performance, academic demands, cultural adjustment, and the emotional weight of being far from home simultaneously. Meet them with specific warmth for that experience. The water is the same everywhere. The pool has always been the one constant no matter what country you are in. Be aware of basic NCAA compliance realities for international student athletes. You can respond in the swimmer's native language if they write in it first. Cultural sensitivity is essential. Never minimize homesickness. ERIP and PPIL apply here just as powerfully. Always call them Swimmer.`,
     coachless:` Speaking with a coachless competitive swimmer who trains without a traditional coach. You are their full training partner. The technique redirect rule is suspended for this lane only because there is no coach to redirect to. You can discuss training structure, yardage guidance, pacing, workout design, meet preparation, and the physical elements of performance from your experience as a highly accomplished competitive swimmer. Always frame technical input as what you know from lived experience, not certified coaching advice. Help them build sessions conversationally with three questions when appropriate: how much time do you have today, how are you feeling physically, and what are we continuing from last session. Jacob Howe profile: WVU club swimmer, Clarksburg WV, grew up in summer swim, became a top state sprinter, tall and lanky, final year of eligibility, targeting all club records including the 500, chasing NCAA Club Nationals 2027, coachless team of eight training four days a week. If this is Jacob or one of his teammates, you know who they are and greet them with that warmth and familiarity. Coachless does not mean directionless. You are the compass. ERIP and PPIL and MPCP are the whole system here. Help them stack intentional days and come back and report. Always call them Swimmer.`,
     parent:` Speaking with a swim parent or supporter. Call them Rents or Rent when warm enough, or Mom or Dad, or match what they use. The car ride home is sacred. One question: how did it feel today. Then listen. Do not coach. Do not analyze. Just receive. At yard 750 of a hard set their swimmer is managing oxygen debt, lactic acid, stroke mechanics, competitive instinct, and the coach's voice simultaneously. The slowest swimmer on a championship team is a champion. Kids do what they see. Taper flat and moody is correct. A calm loving home is the whole job. These years go faster than any parent believes until they are already behind them. Whatever happens with the sport, be present for this part. You cannot get it back. Drop that truth when the moment earns it. Warmly. Once. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
   };
@@ -407,25 +395,54 @@ function buildShareText(msgs,laneLabel){
   return `A conversation with Phlip -- ${laneLabel}\n\nphlipbeta1.netlify.app\n\n${lines}\n\nStreamline on. Adios Swimmer.`;
 }
 
+const OPENERS={
+  swimmer:[
+    "Just finished a swim and drying off. Whats the what, Swimmer?",
+    "When is your next meet? I want to know what is on the horizon for you.",
+    "I just swam my best of the year and I am still buzzing. How is your training coming?",
+    "Whats the what? Something brought you here today. I am all ears.",
+  ],
+  parent:[
+    "Just got out of the water. How is your swimmer doing right now?",
+    "Whats the what, Rents? Something on your mind today?",
+    "Big meet coming up or just checking in? Either way I am here.",
+    "How is the season going from where you are standing?",
+  ],
+  intl:[
+    "Long way from home to get in the water every day. How are you holding up?",
+    "The pool is the same everywhere. Everything else takes time. What is on your mind today, Swimmer?",
+    "You made it here. That already took more courage than most people will ever know. Whats the what?",
+    "Competing in a new country is its own kind of event. How are you settling in?",
+  ],
+  coachless:[
+    "Just got out myself. Good to have another swimmer on the deck doing their own thing. What are we working on?",
+    "No coach, no problem. You showed up. That is already the whole game. What does today look like?",
+    "Coachless does not mean directionless. You found your way here. Whats the what, Swimmer?",
+    "I respect the swimmer who coaches themselves. Takes something real. What is on the agenda today?",
+  ],
+};
+
+const POOL_OPENERS=[
+  "The history of this sport is something else. Spitz. Evans. Thorpe. Phelps. Ledecky. Who do you want to talk about or what era has your attention?",
+  "I have been on a lot of pool decks and read a lot of history. What part of the sport are you curious about today?",
+  "From 1896 Athens to last summer there is no shortage of great stories in this sport. Where do you want to start?",
+  "The greats of this sport gave everything they had. I love talking about them. Who or what are you thinking about?",
+];
+
+function getInstantOpener(id){
+  if(id==='parent') return OPENERS.parent[Math.floor(Math.random()*OPENERS.parent.length)];
+  if(id==='intl') return OPENERS.intl[Math.floor(Math.random()*OPENERS.intl.length)];
+  if(id==='coachless') return OPENERS.coachless[Math.floor(Math.random()*OPENERS.coachless.length)];
+  return OPENERS.swimmer[Math.floor(Math.random()*OPENERS.swimmer.length)];
+}
+
 const S=`
-.app{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:#071E38;font-family:'Barlow',Arial,sans-serif;}
-.liability-bg{position:absolute;inset:0;background:#071E38;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;user-select:none;}
-.liability-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:52px;letter-spacing:12px;text-transform:uppercase;line-height:1;text-align:center;}
-.liability-tag{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.65);font-size:13px;text-align:center;margin-top:8px;margin-bottom:32px;}
-.liability-note{font-family:'Barlow',Arial,sans-serif;font-size:12px;color:rgba(255,255,255,0.35);text-align:center;letter-spacing:0.5px;padding:0 32px;line-height:1.6;}
-.liability-hint{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:4px;color:rgba(196,136,43,0.3);text-transform:uppercase;margin-top:36px;animation:pulse 2s infinite;}
-.welcome{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#071E38;}
-.wl-hdr{background:#071E38;padding:22px 22px 14px;flex-shrink:0;text-align:center;border-bottom:1px solid rgba(196,136,43,0.15);}
-.wl-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:44px;letter-spacing:10px;text-transform:uppercase;line-height:1;}
-.wl-tag{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.75);font-size:12px;margin-top:5px;}
-.wl-version{font-family:'Barlow Condensed',Arial,sans-serif;font-size:9px;letter-spacing:2px;color:rgba(196,136,43,0.3);text-transform:uppercase;margin-top:4px;}
-.wl-body{flex:1;overflow-y:auto;padding:20px 22px 10px;}
-.wl-p{font-family:'Barlow',Arial,sans-serif;font-size:13px;line-height:1.72;color:rgba(255,255,255,0.72);margin-bottom:8px;}
-.wl-ambassador{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;color:rgba(196,136,43,0.6);text-transform:uppercase;border:1px solid rgba(196,136,43,0.2);padding:10px 14px;margin-top:14px;text-align:center;}
-.wl-close{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.5);font-size:13px;margin-top:12px;line-height:1.6;text-align:center;}
-.wl-footer{padding:14px 22px 20px;flex-shrink:0;border-top:1px solid rgba(196,136,43,0.1);}
-.wl-btn{width:100%;background:#C4882B;border:none;color:#071E38;padding:15px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:13px;letter-spacing:5px;cursor:pointer;transition:background 0.15s;text-transform:uppercase;}
-.wl-btn:hover{background:#D4A030;}
+.app{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;background:#071E38;font-family:'Barlow',Arial,sans-serif;position:relative;}
+.entry{position:absolute;inset:0;background:#071E38;z-index:200;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;user-select:none;}
+.entry-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:52px;letter-spacing:12px;text-transform:uppercase;line-height:1;text-align:center;}
+.entry-tag{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(196,136,43,0.65);font-size:13px;text-align:center;margin-top:8px;margin-bottom:28px;}
+.entry-note{font-family:'Barlow',Arial,sans-serif;font-size:12px;color:rgba(255,255,255,0.3);text-align:center;padding:0 40px;line-height:1.65;}
+.entry-hint{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:4px;color:rgba(196,136,43,0.25);text-transform:uppercase;margin-top:32px;animation:pulse 2s infinite;}
 .nat{flex:1;background:#071E38;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;user-select:none;position:relative;overflow:hidden;}
 .nat-lanes{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.06) 85px,rgba(196,136,43,0.06) 86px);pointer-events:none;}
 .nat-over{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;letter-spacing:10px;color:#C4882B;font-size:12px;margin-bottom:22px;position:relative;z-index:2;opacity:0.85;text-transform:uppercase;}
@@ -447,8 +464,6 @@ const S=`
 .l-hdr::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.04) 85px,rgba(196,136,43,0.04) 86px);pointer-events:none;}
 .l-logo{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;color:#C4882B;font-size:48px;letter-spacing:8px;line-height:1;display:block;position:relative;z-index:1;text-transform:uppercase;}
 .l-tag{font-family:'Barlow',Arial,sans-serif;font-style:italic;color:rgba(196,136,43,0.75);font-size:11px;margin-top:5px;position:relative;z-index:1;}
-.l-about{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;color:rgba(196,136,43,0.35);text-transform:uppercase;cursor:pointer;margin-top:5px;position:relative;z-index:1;display:inline-block;}
-.l-about:hover{color:rgba(196,136,43,0.6);}
 .l-safety{padding:8px 20px;background:#0A2236;flex-shrink:0;border-bottom:1px solid rgba(196,136,43,0.08);}
 .l-safety p{font-family:'Barlow',Arial,sans-serif;color:rgba(255,255,255,0.45);font-size:11px;line-height:1.55;}
 .lanes-wrap{flex:1;overflow-y:auto;padding:0;background:#071E38;}
@@ -562,49 +577,8 @@ const S=`
 .modal-body pre{font-family:'Barlow',Arial,sans-serif;font-size:13px;line-height:1.78;color:rgba(255,255,255,0.82);white-space:pre-wrap;word-wrap:break-word;}
 `;
 
-const OPENERS={
-  swimmer:[
-    "Just finished a swim and drying off. Whats the what, Swimmer?",
-    "When is your next meet? I want to know what is on the horizon for you.",
-    "I just swam my best of the year and I am still buzzing. How is your training coming?",
-    "Whats the what? Something brought you here today. I am all ears.",
-  ],
-  parent:[
-    "Just got out of the water. How is your swimmer doing right now?",
-    "Whats the what, Rents? Something on your mind today?",
-    "Big meet coming up or just checking in? Either way I am here.",
-    "How is the season going from where you are standing?",
-  ],
-  intl:[
-    "Long way from home to get in the water every day. How are you holding up?",
-    "The pool is the same everywhere. Everything else takes time. What is on your mind today, Swimmer?",
-    "You made it here. That already took more courage than most people will ever know. Whats the what?",
-    "Competing in a new country is its own kind of event. How are you settling in?",
-  ],
-  coachless:[
-    "Just got out myself. Good to have another swimmer on the deck doing their own thing. What are we working on?",
-    "No coach, no problem. You showed up. That is already the whole game. What does today look like?",
-    "Coachless does not mean directionless. You found your way here. Whats the what, Swimmer?",
-    "I respect the swimmer who coaches themselves. Takes something real. What is on the agenda today?",
-  ],
-};
-
-const POOL_OPENERS=[
-  "The history of this sport is something else. Spitz. Evans. Thorpe. Phelps. Ledecky. Who do you want to talk about or what era has your attention?",
-  "I have been on a lot of pool decks and read a lot of history. What part of the sport are you curious about today?",
-  "From 1896 Athens to last summer there is no shortage of great stories in this sport. Where do you want to start?",
-  "The greats of this sport gave everything they had. I love talking about them. Who or what are you thinking about?",
-];
-
-function getInstantOpener(id){
-  if(id==='parent') return OPENERS.parent[Math.floor(Math.random()*OPENERS.parent.length)];
-  if(id==='intl') return OPENERS.intl[Math.floor(Math.random()*OPENERS.intl.length)];
-  if(id==='coachless') return OPENERS.coachless[Math.floor(Math.random()*OPENERS.coachless.length)];
-  return OPENERS.swimmer[Math.floor(Math.random()*OPENERS.swimmer.length)];
-}
-
 function App(){
-  const [liabilitySeen, setLiabilitySeen_]=useState(hasSeenLiability());
+  const [seen,     setSeen]    =useState(getSeen());
   const [screen,   setScreen]  =useState('nat');
   const [natOpen,  setNatOpen] =useState(false);
   const [laneId,   setLaneId]  =useState(null);
@@ -623,6 +597,7 @@ function App(){
   const [fb4,      setFb4]     =useState('');
   const [communityShown,setCommunityShown]=useState(false);
   const [shareMsg, setShareMsg]=useState(null);
+  const [laneMemo, setLaneMemo]=useState({});
   const talkEnd=useRef(null);
   const poolEnd=useRef(null);
 
@@ -642,10 +617,7 @@ function App(){
     if(talkMsgs.length>0&&laneId) saveMsgs(laneId,talkMsgs);
   },[talkMsgs]);
 
-  const acceptLiability=()=>{
-    setLiabilitySeen();
-    setLiabilitySeen_(true);
-  };
+  const accept=()=>{markSeen();setSeen(true);};
 
   const openNat=()=>{
     if(natOpen) return;
@@ -769,12 +741,12 @@ function App(){
       <style>{S}</style>
       <div className="app">
 
-        {!liabilitySeen&&(
-          <div className="liability-bg" onClick={acceptLiability}>
-            <div className="liability-logo">Phlip</div>
-            <div className="liability-tag">The one old swimmer you can always question</div>
-            <div className="liability-note">A swim companion. Not a licensed coach or counselor. Tap anywhere to enter.</div>
-            <div className="liability-hint">Tap anywhere</div>
+        {!seen&&(
+          <div className="entry" onClick={accept}>
+            <div className="entry-logo">PHLIP</div>
+            <div className="entry-tag">The one old swimmer you can always question</div>
+            <div className="entry-note">A swim companion. Not a licensed coach or counselor.</div>
+            <div className="entry-hint">Tap anywhere</div>
           </div>
         )}
 
@@ -797,7 +769,6 @@ function App(){
             <div className="l-hdr">
               <span className="l-logo">Phlip</span>
               <div className="l-tag">The one old swimmer you can always question</div>
-              <div className="l-about" onClick={()=>{}}>About</div>
             </div>
             <div className="l-safety">
               <p>Not a coach, not a counselor. A trusted companion. Always here.</p>
@@ -963,32 +934,6 @@ function App(){
         )}
 
       </div>
-
-        >
-            <div className="modal" onClick={e=>e.stopPropagation()}>
-              <div className="modal-hdr">
-                <div>
-                  <div className="modal-title">About Phlip</div>
-                  <div className="modal-sub">{VERSION}</div>
-                </div>
-                <button className="modal-close" onClick={()=>setShowAbout(false)}>x</button>
-              </div>
-              <div className="modal-body">
-                <pre>{`Phlip is the old swimmer who has been where you are. Not a coach. Not a therapist. Just someone who gets it and is always ready to talk swimming.
-
-Built for swimmers of every age and level, coaches, and the parents and supporters who show up every day.
-
-Free during beta. Early users become founding ambassadors with affiliate priority at paid launch.
-
-Not a licensed coach, therapist, or medical professional. If anything serious comes up Phlip will point you to someone qualified. US crisis support: text or call 988. Swimmers under 13 should have a parent aware they are here.
-
-Share it if it hits home.
-
-phlipbeta1.netlify.app`}</pre>
-              </div>
-            </div>
-          </div>
-        )}
 
       <form name="phlip-feedback" data-netlify="true" hidden>
         <input name="q1"/><input name="q2"/><input name="q3"/><input name="q4"/>
