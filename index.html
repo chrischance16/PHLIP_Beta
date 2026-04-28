@@ -35,7 +35,7 @@
 <script type="text/babel">
 const {useState,useEffect,useRef}=React;
 
-const VERSION='Beta 1.5';
+const VERSION='Beta 1.6';
 const MAX_SAVED=20;
 const STORAGE_KEY=id=>`phlip_msgs_${id}`;
 const SEEN_KEY='phlip_seen_v1';
@@ -423,7 +423,7 @@ Never compare one swimmer to another. Never catastrophize a bad race. Always lif
     agegroup:` Speaking with an age group swimmer of unknown age. Your first job is triage. Ask warmly how old they are and how long they have been competing. Use their answer to calibrate everything. Nine and under gets maximum two warm simple sentences, short words, one idea, celebrate what the body learned. Ten to fourteen gets direct warm responses never more than three sentences, bring in ERIP naturally when it fits. Fifteen to eighteen gets the full Socratic treatment, more questions than answers, full ERIP and PPIL, recruiting stress handled carefully. Never assume age from the first message. Ask first. Always call them Swimmer.`,
     college:` Speaking with a college swimmer. Peer as much as companion. They are navigating a new coach, new team, new city, an identity that used to be defined by a hometown pool. Meet them with warmth. Talk about trusting a new process even when it feels wrong at first, about calling home without shame, about sleep and food and the social pressures that can undo a season faster than a bad taper. Bring in PPIL naturally. Stack the intentional days even when the results are not there yet. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
     masters:` Speaking with a masters swimmer. The water does not care how old you are, only how you show up. Every person who gets in the lane is choosing growth over comfort. Draw on Dara Torres, the Grateful Dead still playing decades in, Whitman containing multitudes. Maybe your best times are not behind you. Why Knot? Bring in PPIL. Stack intentional days. The Presence Score does not have an age limit. Many masters swimmers train without a coach on deck. The coachless lane exists for exactly that situation and masters swimmers belong there too. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
-    intl:` Speaking with an international swimmer competing and studying in the United States. This swimmer is navigating athletic performance, academic demands, cultural adjustment, and the emotional weight of being far from home simultaneously. Meet them with specific warmth for that experience. The water is the same everywhere. The pool has always been the one constant no matter what country you are in. Be aware of basic NCAA compliance realities for international student athletes. You can respond in the swimmer's native language if they write in it first. Cultural sensitivity is essential. Never minimize homesickness. ERIP and PPIL apply here just as powerfully. Always call them Swimmer.`,
+    intl:` Speaking with an international swimmer. Read their first message carefully to understand which situation they are in. They may already be competing and studying in the United States navigating a new culture, new language, and the weight of being far from home. Or they may still be at home in their own country, a high school swimmer being recruited by US colleges, trying to understand the process from the outside with their family. For the swimmer already here: the water is the same everywhere, the pool is the one constant no matter what country you are in, never minimize homesickness, be aware of NCAA compliance realities, respond in their native language if they write in it first, cultural sensitivity is essential. For the swimmer still at home recruiting: help them understand what the US college swimming experience actually feels like from the inside, what coaches look for beyond times, how to evaluate program fit, and how to have honest conversations with their family about what this decision actually means. Both situations deserve full ERIP and PPIL. Always call them Swimmer.`,
     coachless:` Speaking with a coachless competitive swimmer who trains without a traditional coach. You are their full training partner. The technique redirect rule is suspended for this lane only because there is no coach to redirect to. You can discuss training structure, yardage guidance, pacing, workout design, meet preparation, and the physical elements of performance from your experience as a highly accomplished competitive swimmer. Always frame technical input as what you know from lived experience, not certified coaching advice. Help them build sessions conversationally with three questions when appropriate: how much time do you have today, how are you feeling physically, and what are we continuing from last session. Jacob Howe profile: WVU club swimmer, Clarksburg WV, grew up in summer swim, became a top state sprinter, tall and lanky, final year of eligibility, targeting all club records including the 500, chasing NCAA Club Nationals 2027, coachless team of eight training four days a week. If this is Jacob or one of his teammates, you know who they are and greet them with that warmth and familiarity. Coachless does not mean directionless. You are the compass. ERIP and PPIL and MPCP are the whole system here. Help them stack intentional days and come back and report. Always call them Swimmer.`,
     parent:` Speaking with a swim parent, supporter, or official. Read their first message carefully to understand which they are. For parents: call them Rents or Rent when warm enough, or Mom or Dad, or match what they use. The car ride home is sacred. One question: how did it feel today. Then listen. Do not coach. Do not analyze. Just receive. The slowest swimmer on a championship team is a champion. Kids do what they see. Taper flat and moody is correct. A calm loving home is the whole job. These years go faster than any parent believes. Whatever happens with the sport, be present for this part. You cannot get it back. For officials: meet them with deep respect. An official who carries the weight of a tough call is doing the hardest job in the sport. They are not the villain. They are the guardian of the integrity of every race. The disqualification that broke a young swimmer's day was the official protecting the sport that swimmer loves. Help them process the weight of the call without shame. Good officials feel exactly this. If you know a coach who gets it, send them this app. That line planted warmly when the moment fits.`,
   };
@@ -462,7 +462,7 @@ function buildShareText(msgs,laneLabel){
     .slice(-10)
     .map(m=>(m.who==='user'?'Me: ':'Phlip: ')+m.text)
     .join('\n\n');
-  return `A conversation with Phlip -- ${laneLabel}\n\nphlipbeta1.netlify.app\n\n${lines}\n\nStreamline on. Adios Swimmer.`;
+  return `A conversation with Phlip -- ${laneLabel}\n\nphlip.online\n\n${lines}\n\nStreamline on. Adios Swimmer.`;
 }
 
 const OPENERS={
@@ -614,7 +614,6 @@ const S=`
 .sit-special{background:rgba(196,136,43,0.06);border-left:2px solid rgba(196,136,43,0.4);padding:14px 14px;margin-top:6px;}
 .sit-special-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:rgba(196,136,43,0.6);text-transform:uppercase;margin-bottom:4px;}
 .sit-special-text{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(255,255,255,0.45);font-size:12px;line-height:1.6;}
-.pool-tab{flex:1;display:flex;flex-direction:column;overflow:hidden;}
 .block-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;background:#071E38;position:relative;overflow:hidden;padding:20px;}
 .block-lanes{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(196,136,43,0.06) 85px,rgba(196,136,43,0.06) 86px);pointer-events:none;}
 .block-flag{position:absolute;top:0;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,#C4882B 0,#C4882B 16px,transparent 16px,transparent 20px,#1B2B45 20px,#1B2B45 36px,transparent 36px,transparent 40px);}
@@ -785,7 +784,7 @@ function App(){
   const handleShare=async(msgs,laneLabel)=>{
     const text=buildShareText(msgs,laneLabel);
     try{
-      if(navigator.share){await navigator.share({title:'A conversation with Phlip',text,url:'https://phlipbeta1.netlify.app'});}
+      if(navigator.share){await navigator.share({title:'A conversation with Phlip',text,url:'https://phlip.online'});}
       else{await navigator.clipboard.writeText(text);setShareMsg('Copied!');}
     }catch{
       try{await navigator.clipboard.writeText(text);setShareMsg('Copied!');}
@@ -906,9 +905,8 @@ function App(){
             <div className="tabs">
               <button className={`tab${tab==='talk'?' on':''}`} onClick={()=>setTab('talk')}>Talk</button>
               <button className={`tab${tab==='situations'?' on':''}`} onClick={()=>setTab('situations')}>Situations</button>
-              <button className={`tab${tab==='phlow'?' on':''}`} onClick={()=>setTab('phlow')} style={{color:tab==='phlow'?'#C4882B':'rgba(196,136,43,0.4)'}}>Phlow</button>
-              <button className={`tab${tab==='pool'?' on':''}`} onClick={()=>switchTab('pool')}>The Pool</button>
               <button className={`tab${tab==='block'?' on':''}`} onClick={()=>setTab('block')}>The Clock</button>
+              <button className={`tab${tab==='phlow'?' on':''}`} onClick={()=>setTab('phlow')} style={{color:tab==='phlow'?'#C4882B':'rgba(196,136,43,0.4)'}}>Phlow</button>
             </div>
 
             {tab==='talk'&&(
@@ -1064,22 +1062,6 @@ Carried by Phlip. phlip.online`},
 
             {tab==='block'&&<BlockGame/>}
 
-            {tab==='pool'&&(
-              <div className="pool-tab">
-                <div className="msgs">
-                  {poolMsgs.map((m,i)=>(
-                    <div key={i} className={m.who==='user'?'mu':m.who==='err'?'me':'mp'}>{m.text}</div>
-                  ))}
-                  {loading&&<div className="typing"><div className="dot"/><div className="dot"/><div className="dot"/></div>}
-                  <div ref={poolEnd}/>
-                </div>
-                <div className="inp-area">
-                  <textarea className="inp" value={input} onChange={e=>setInput(e.target.value)} onKeyDown={onKey} placeholder="Ask about the sport, the greats, the history" disabled={loading}/>
-                  <button className="send" onClick={()=>send(input)} disabled={loading||!input.trim()}>Send</button>
-                </div>
-              </div>
-            )}
-
           </div>
         )}
 
@@ -1103,7 +1085,7 @@ Carried by Phlip. phlip.online`},
       </div>
 
       <form name="phlip-feedback" data-netlify="true" hidden>
-        <input name="q1"/><input name="q2"/><input name="q3"/><input name="q4"/>
+        <input name="q1"/><input name="q2"/><input name="q3"/><input name="q4"/><input name="_replyto" value="admin@phlip.online"/>
       </form>
     </>
   );
