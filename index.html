@@ -964,20 +964,12 @@ function IntentionLogger({deck,onLog}){
 
 // ─── THE DECK TAB ────────────────────────────────────────────────────────────
 function TheDeck({deck,onUpdate,onShowModal}){
-  if(!deck.setup){
-    return(
-      <DeckSetup onComplete={(days)=>{
-        const newDeck={...getDeckDefaults(),setup:true,goalDays:days,startDate:getTodayStr()};
-        onUpdate(newDeck);
-      }}/>
-    );
-  }
+  const [milestone,setMilestone]=useState(null);
 
   const stats=getDeckStats(deck);
   const today=getTodayStr();
   const todayLogged=!!deck.days[today];
   const dailyLine=getDailyLine(stats,todayLogged);
-  const [milestone,setMilestone]=useState(null);
 
   const colorLabel={red:'KEEP GOING',green:'YOU ARE WINNING',blue:'CHAMPION LEVEL',empty:'START YOUR CROSSING'};
   const colorSub={
@@ -993,6 +985,15 @@ function TheDeck({deck,onUpdate,onShowModal}){
     const ms=getMilestoneLine(newDeck.streak);
     if(ms) setMilestone(ms);
     onUpdate(newDeck);
+  }
+
+  if(!deck.setup){
+    return(
+      <DeckSetup onComplete={(days)=>{
+        const newDeck={...getDeckDefaults(),setup:true,goalDays:days,startDate:getTodayStr()};
+        onUpdate(newDeck);
+      }}/>
+    );
   }
 
   return(
@@ -1080,10 +1081,6 @@ function TheDeck({deck,onUpdate,onShowModal}){
           </button>
         ))}
       </div>
-
-      <div style={{height:'20px'}}/>
-    </div>
-  );
 
       <div style={{height:'20px'}}/>
     </div>
