@@ -1066,18 +1066,70 @@ function App(){
         {screen==='nat'&&(
           <div className="nat" onClick={openNat}>
             <div className="nat-lanes"/>
-            <div className="nat-over">PHLIP.ONLINE</div>
-            <div className="door-wrap">
+
+            {/* POOL SCENE VISIBLE BEHIND DOORS */}
+            <div style={{
+              position:'absolute',inset:0,
+              background:'linear-gradient(180deg,#B8D8E8 0%,#7FB8D4 30%,#5AA0C0 55%,#4A90B8 100%)',
+              zIndex:0,overflow:'hidden'
+            }}>
+              {/* Ceiling / overhead lighting strip */}
+              <div style={{position:'absolute',top:0,left:0,right:0,height:'18%',background:'linear-gradient(180deg,#E8F4F8 0%,#C8E4F0 100%)',opacity:0.9}}/>
+
+              {/* Water surface shimmer */}
+              <div style={{
+                position:'absolute',top:'28%',left:0,right:0,height:'6px',
+                background:'linear-gradient(90deg,transparent,rgba(255,255,255,0.6),transparent,rgba(255,255,255,0.4),transparent)',
+                animation:'shimmer 3s infinite'
+              }}/>
+              {/* Pool wall tiles suggestion */}
+              <div style={{
+                position:'absolute',bottom:0,left:0,right:0,height:'22%',
+                background:'linear-gradient(180deg,rgba(180,210,228,0.5),rgba(160,195,215,0.8))',
+                borderTop:'2px solid rgba(255,255,255,0.35)'
+              }}/>
+              {/* POOL text on back wall */}
+              <div style={{
+                position:'absolute',top:'8%',left:0,right:0,
+                textAlign:'center',
+                fontFamily:"'Barlow Condensed',Arial,sans-serif",
+                fontWeight:800,fontSize:'11px',letterSpacing:'8px',
+                color:'rgba(40,80,120,0.55)',textTransform:'uppercase'
+              }}>POOL</div>
+            </div>
+
+            <div className="nat-over" style={{position:'relative',zIndex:3}}>PHLIP.ONLINE</div>
+            <div className="door-wrap" style={{zIndex:3}}>
               <div className="door-cap"/>
               <div className={`dp dl${natOpen?' op':''}`}>
-                <div className="di"/><div className="dh"/>
+                <div className="di"/>
+                <div className="dh"/>
+                {/* POOL label on left door */}
+                <div style={{
+                  position:'absolute',top:'14%',left:0,right:0,
+                  textAlign:'center',
+                  fontFamily:"'Barlow Condensed',Arial,sans-serif",
+                  fontWeight:800,fontSize:'11px',letterSpacing:'5px',
+                  color:'rgba(196,136,43,0.6)',textTransform:'uppercase',
+                  userSelect:'none'
+                }}>POOL</div>
               </div>
               <div className={`dp dr${natOpen?' op':''}`}>
-                <div className="di"/><div className="dh"/>
+                <div className="di"/>
+                <div className="dh"/>
+                {/* POOL label on right door */}
+                <div style={{
+                  position:'absolute',top:'14%',left:0,right:0,
+                  textAlign:'center',
+                  fontFamily:"'Barlow Condensed',Arial,sans-serif",
+                  fontWeight:800,fontSize:'11px',letterSpacing:'5px',
+                  color:'rgba(196,136,43,0.6)',textTransform:'uppercase',
+                  userSelect:'none'
+                }}>POOL</div>
               </div>
             </div>
-            <div className="nat-glow"/>
-            <div className="nat-hint">tap to enter</div>
+            <div className="nat-glow" style={{zIndex:3}}/>
+            <div className="nat-hint" style={{position:'relative',zIndex:3}}>tap to enter</div>
           </div>
         )}
 
