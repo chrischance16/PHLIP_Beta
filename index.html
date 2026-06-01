@@ -865,9 +865,7 @@ function DeckSetup({onComplete}){
       <div className="setup-wrap">
         <div className="setup-title">The Deck</div>
         <div className="setup-sub">
-          The Deck is your daily practice tracker.{'\n\n'}
-          Every day you show up with intention counts as a green day. Every day you drift counts honestly as a red day. Your Presence Score is simply your green days divided by your total days. The goal is to keep it green. Blue means you are doing something most athletes never figure out.{'\n\n'}
-          Set your window. How long is your season, or how many days until your next big meet? That is your crossing. Pick a number and start tracking today.
+          {"WHAT IT IS\n\nThe Deck is a daily mental practice tracker built around one idea. The swimmer who shows up with intention every day, not perfectly, but consistently, is building something most athletes never build.\n\nHOW IT WORKS\n\nBefore practice you set one intention. One specific thing you are bringing to the water today. After practice you log whether the day was intentional or a drift day. That is the whole practice. Two taps. One before. One after.\n\nWHAT YOU GET\n\nYour Presence Score is your intentional days divided by your total days. Below 75 percent means you are in a drift period. Above 75 is green. Above 87 is blue, which is rare and worth chasing. The ocean crossing visual shows you how far across your season you have come.\n\nWHY IT MATTERS\n\nERIP, the framework Phlip carries, only works in competition if you have been practicing intentional presence every day in training. The Deck is how you build that. Set your crossing, pick how long your season is or how many days to your next big meet, and start today."}
         </div>
         <div className="setup-label">Season length or days to your big meet</div>
         <div className="setup-opts">
@@ -887,53 +885,79 @@ function DeckSetup({onComplete}){
 function IntentionLogger({deck,onLog}){
   const today=getTodayStr();
   const todayData=deck.days[today];
-  const [intention,setIntention]=useState('');
-  const [held,setHeld]=useState(null);
-  const [logType,setLogType]=useState(null);
+  const [intention,setIntention]=useState(todayData?.intentionSet||'');
+  const [held,setHeld]=useState(todayData?.intentionHeld||null);
+  const [logType,setLogType]=useState(todayData?(todayData.intentional?'intentional':'drift'):null);
 
-  if(todayData){
-    return(
-      <div className="intention-wrap">
-        <div className="int-title">Today logged</div>
-        <div style={{fontFamily:"'Barlow',Arial,sans-serif",fontSize:'12px',color:'rgba(40,30,10,0.5)',lineHeight:1.5}}>
-          {todayData.intentional?'Intentional day':'Drift day'}
-          {todayData.intentionSet&&` · "${todayData.intentionSet}"`}
-          {todayData.intentionHeld&&` · held: ${todayData.intentionHeld}`}
-        </div>
-      </div>
-    );
+  const alreadyLogged=!!todayData;
+
+  function handleLog(){
+    if(!logType) return;
+    onLog(today,logType==='intentional',intention.trim(),held);
   }
 
   return(
     <div className="intention-wrap">
-      <div className="int-title">Set your intention before practice. Check back after.</div>
+      <div className="int-title">
+        {alreadyLogged
+          ?logType==='intentional'?'Today · Intentional ✓':'Today · Drift day'
+          :'Set your intention. Log after practice.'}
+      </div>
+
+      {/* INTENTION TEXT - always visible, editable if not yet logged */}
       <textarea
         className="int-inp"
         rows={2}
         placeholder="One thing you are bringing to practice today..."
         value={intention}
-        onChange={e=>setIntention(e.target.value)}
+        readOnly={alreadyLogged&&!!todayData?.intentionSet}
+        onChange={e=>!alreadyLogged&&setIntention(e.target.value)}
+        style={{opacity:alreadyLogged?0.7:1}}
       />
-      {intention.trim()&&(
+
+      {/* DID INTENTION HOLD - show after intention is written, or if already logged */}
+      {(intention.trim()||alreadyLogged)&&(
         <>
-          <div className="int-title" style={{marginBottom:'6px'}}>Did the intention hold?</div>
+          <div className="int-title" style={{marginBottom:'6px'}}>
+            {alreadyLogged?'Intention held?':'Did the intention hold?'}
+          </div>
           <div className="int-row">
             {[['yes','Yes'],['partial','Mostly'],['no','Not today']].map(([v,l])=>(
-              <button key={v} className={`int-opt${held===v?' '+(v==='yes'?'green-sel':v==='no'?'red-sel':'sel'):''}`}
-                onClick={()=>setHeld(v)}>{l}</button>
+              <button key={v}
+                className={`int-opt${held===v?' '+(v==='yes'?'green-sel':v==='no'?'red-sel':'sel'):''}`}
+                onClick={()=>{
+                  setHeld(v);
+                  if(alreadyLogged) onLog(today,logType==='intentional',intention.trim(),v);
+                }}>{l}</button>
             ))}
           </div>
         </>
       )}
+
+      {/* LOG TYPE - always visible */}
       <div className="int-title" style={{marginBottom:'6px'}}>Log today as</div>
       <div className="int-row">
-        <button className={`int-opt${logType==='intentional'?' green-sel':''}`} onClick={()=>setLogType('intentional')}>Intentional</button>
-        <button className={`int-opt${logType==='drift'?' red-sel':''}`} onClick={()=>setLogType('drift')}>Drift</button>
+        <button
+          className={`int-opt${logType==='intentional'?' green-sel':''}`}
+          onClick={()=>setLogType('intentional')}>Intentional</button>
+        <button
+          className={`int-opt${logType==='drift'?' red-sel':''}`}
+          onClick={()=>setLogType('drift')}>Drift</button>
       </div>
-      <button className="int-log-btn" disabled={!logType}
-        onClick={()=>onLog(today,logType==='intentional',intention.trim(),held)}>
-        LOG THE DAY
+
+      {/* LOG BUTTON - shows Update if already logged */}
+      <button
+        className="int-log-btn"
+        disabled={!logType}
+        onClick={handleLog}>
+        {alreadyLogged?'UPDATE TODAY':'LOG THE DAY'}
       </button>
+
+      {alreadyLogged&&(
+        <div style={{fontFamily:"'Barlow',Arial,sans-serif",fontSize:'10px',color:'rgba(40,30,10,0.35)',marginTop:'8px',textAlign:'center',lineHeight:1.5}}>
+          You can update today any time before midnight.
+        </div>
+      )}
     </div>
   );
 }
