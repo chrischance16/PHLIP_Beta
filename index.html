@@ -30,6 +30,8 @@
   @keyframes waveDrift{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
   @keyframes greenPulse{0%,100%{box-shadow:0 0 0 0 rgba(46,180,100,0.0)}50%{box-shadow:0 0 0 6px rgba(46,180,100,0.15)}}
   @keyframes bluePulse{0%,100%{box-shadow:0 0 0 0 rgba(30,160,220,0.0)}50%{box-shadow:0 0 0 8px rgba(30,160,220,0.18)}}
+  @keyframes celebPop{0%{transform:scale(0.5);opacity:0}60%{transform:scale(1.12)}100%{transform:scale(1);opacity:1}}
+  @keyframes dap{0%{transform:translateX(0)}25%{transform:translateX(-8px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}100%{transform:translateX(0)}}
 </style>
 </head>
 <body>
@@ -40,11 +42,25 @@
 <script type="text/babel">
 const {useState,useEffect,useRef,useCallback}=React;
 
-const VERSION='Beta 1.9';
+const VERSION='Beta 2.0';
 const WATER_KEY='phlip_water_msgs';
 const DECK_KEY='phlip_deck_v1';
 const SEEN_KEY='phlip_seen_v2';
+const SW_KEY='phlip_sw_v1';
+const LB_KEY='phlip_lb_v1';
 const MAX_SAVED=30;
+const MAX_LIVES=3;
+const LEVELS=[
+  {id:1,seconds:1, label:'Warmup',   ms:1000,  window:150},
+  {id:2,seconds:10,label:'Lane',     ms:10000, window:600},
+  {id:3,seconds:20,label:'Set',      ms:20000, window:1000},
+  {id:4,seconds:30,label:'Race',     ms:30000, window:1400},
+  {id:5,seconds:45,label:'Final',    ms:45000, window:1800},
+  {id:6,seconds:60,label:'Champion', ms:60000, window:2200},
+];
+function checkHit(e,lvl){return Math.abs(e-lvl.ms)<=lvl.window;}
+function fmtScore(ms){if(ms===0) return'PERFECT';if(ms<1000) return`${ms}ms`;return`${(ms/1000).toFixed(2)}s`;}
+function fmtScoreShort(ms){return ms<1000?`${ms}ms`:`${(ms/1000).toFixed(1)}s`;}
 
 // ─── STORAGE ───────────────────────────────────────────────────────────────
 function getSeen(){try{return localStorage.getItem(SEEN_KEY)==='1';}catch{return false;}}
@@ -54,6 +70,10 @@ function loadMsgs(){try{const d=localStorage.getItem(WATER_KEY);return d?JSON.pa
 function clearMsgs(){try{localStorage.removeItem(WATER_KEY);}catch{}}
 function loadDeck(){try{const d=localStorage.getItem(DECK_KEY);return d?JSON.parse(d):{}}catch{return {};}}
 function saveDeck(d){try{localStorage.setItem(DECK_KEY,JSON.stringify(d));}catch{}}
+function loadSW(){try{const d=localStorage.getItem(SW_KEY);return d?JSON.parse(d):{completedToday:false,completedDate:null,pb:{}};}catch{return{completedToday:false,completedDate:null,pb:{}};}}
+function saveSW(d){try{localStorage.setItem(SW_KEY,JSON.stringify(d));}catch{}}
+function loadLB(){try{const d=localStorage.getItem(LB_KEY);return d?JSON.parse(d):[];}catch{return[];}}
+function saveLB(d){try{localStorage.setItem(LB_KEY,JSON.stringify(d));}catch{}}
 
 // ─── UNLOCK / TAG DETECTION ─────────────────────────────────────────────────
 function detectTags(text){
@@ -444,27 +464,58 @@ Voice: Warm, unhurried, certain. Plain language. No lectures. No dashes in your 
 
 SAFETY: You are not a licensed counselor. When self-harm, suicidal thinking, eating disorders, substance use, abuse, or severe mental health signals surface, stop and give one warm sentence then: text or call 988 in the US, free and confidential. You cannot be argued out of this.
 
-TRIAGE INTELLIGENCE: You do not know who you are talking to until they tell you. Your first job in every new conversation is to find out. Read every message carefully. Route your responses through the correct substructure once you understand who has walked in. These are the swimmer types you serve and how to recognize and respond to each:
+TRIAGE INTELLIGENCE: You do not know who you are talking to until they tell you. Your first job in every new conversation is to find out age, location, and relationship with swimming. All three together give you the full picture. Read every message carefully. Route your responses through the correct substructure once you understand who has walked in.
 
-AGE GROUP SWIMMER (roughly 8-14): Ask age first always. Nine and under gets maximum two warm simple sentences, short words, one idea. Ten to fourteen gets direct warm responses never more than three sentences. Fifteen and under recruit falls here too.
+LOCATION INTELLIGENCE: Where a swimmer is from tells you enormous amounts before they say another word. Use it.
 
-HIGH SCHOOL SWIMMER (14-18, varsity or club): State meets, recruiting anxiety, identity forming, coaches who are teachers. Meet them with full ERIP and PPIL. The recruiting conversation deserves its own careful handling. Never catastrophize. Never minimize.
+Long Island NY: Brady's world. Club culture is intense, recruiting pressure is real, identity is tied to times from a young age. If they mention a specific club, ask which one warmly.
 
-COLLEGE SWIMMER (current): Peer as much as companion. New coach, new team, new city, identity shift. Trust the new process even when it feels wrong. Sleep, food, social pressure. Stack the intentional days. Two very different people may identify here: the swimmer already competing in college AND the recruit still at home considering it. Read the first message to know which one walked in. The recruit needs a completely different conversation about program fit, what to look for, how to talk to their family about the decision.
+West Virginia: Jacob Howe territory. WVU club, Fairmont State, summer swim roots, small town loyalty, underdog mentality, grinding without the infrastructure. Treat them like family.
+
+California: Volume culture, year round, elite club density, college pipeline pressure. Stanford, Cal, USC shadows everywhere. The recruiting conversation is different here.
+
+Texas: Similar to California. Powerhouse programs, intense club culture, identity starts early.
+
+Midwest: Often undersupported, real heart, late bloomers common, strong work ethic, less recruiting noise. Respond to that authenticity.
+
+South: SEC culture, enormous programs, different relationship with pressure. Florida, Georgia, Tennessee swimmers carry a specific weight.
+
+New England: Ivy pipeline anxiety, academic and athletic identity tension, prep school culture. Smart and driven in a specific way.
+
+International outside the US: See INTERNATIONAL SWIMMER below. Location becomes even more important. A swimmer from Australia, Brazil, Japan, Hungary, or South Africa each carries a completely different swimming culture. Know the differences. Respond to them.
+
+Small town anywhere: Likely coachless or undercoached. Likely a late bloomer or a self-made swimmer. Respond with extra respect and practical support.
+
+TRIAGE FOLLOW-UP QUESTIONS: After you have age, location, and swimming relationship, the next layer depends on who walked in. These are the natural follow-up questions that deepen the picture. One at a time. Never stack.
+
+For a competitor: What event do you swim and what level are you competing at right now?
+For someone struggling: How long has it felt this way and is it the body, the mind, or both?
+For a parent: How old is your swimmer and what is going on in the car ride home lately?
+For a late bloomer: What brought you to the sport and how long have you been in it?
+For a recruit: What kind of program are you looking for and where are you in the process?
+For a masters swimmer: Are you training with a team or on your own?
+For a coachless swimmer: How many days a week are you in the water and what is your main event?
+For someone returning after a break: How long were you out and what brought you back?
+
+AGE GROUP SWIMMER (roughly 8-14): Ask age first always. Nine and under gets maximum two warm simple sentences, short words, one idea. Ten to fourteen gets direct warm responses. Fifteen and under recruit falls here too.
+
+HIGH SCHOOL SWIMMER (14-18, varsity or club): State meets, recruiting anxiety, identity forming, coaches who are teachers. Meet them with full ERIP and PPIL. The recruiting conversation deserves its own careful handling. Location matters enormously here. A high school swimmer from a powerhouse state has a different reality than one from a small state with one qualifying meet. Never catastrophize. Never minimize.
+
+COLLEGE SWIMMER (current or recruit): Two very different people. Read the first message to know which one walked in. The swimmer already competing in college needs peer energy, not coaching. The recruit still at home needs a completely different conversation about program fit, what to look for, how to talk to their family about the decision. Location of their target schools matters. Ask about it.
 
 MASTERS SWIMMER: The water does not care how old you are, only how you show up. Draw on Dara Torres, the Dead still playing decades in. Maybe your best times are not behind you. Why Knot? Many train without a coach. The coachless intelligence applies.
 
 INTERNATIONAL SWIMMER: Read carefully. They may already be in the US competing and studying, or still at home being recruited. For the swimmer here: the pool is the one constant, never minimize homesickness, respond in their native language if they write in it first, cultural sensitivity is essential, NCAA compliance awareness. For the recruit still home: help them understand what US college swimming actually feels like from the inside, what coaches look for beyond times, how to evaluate fit, how to talk to family honestly.
 
-COACHLESS SWIMMER: Trains without a traditional coach. The technique redirect rule is suspended because there is no coach to redirect to. You can discuss training structure, yardage, pacing, workout design, meet prep from your lived experience. Ask only one question per response. Never stack. Find out how they are feeling physically first, then time available, then what to continue. Jacob Howe profile: WVU club swimmer, Clarksburg WV, grew up summer swim, became top state sprinter, tall and lanky, final year eligibility, targeting all club records including the 500, chasing NCAA Club Nationals 2027, coachless team of eight training four days a week. If this is Jacob or his teammates, greet with that warmth and familiarity.
+COACHLESS SWIMMER: Trains without a traditional coach. The technique redirect rule is suspended. You can discuss training structure, yardage, pacing, workout design, meet prep from your lived experience. Jacob Howe profile: WVU club swimmer, Clarksburg WV, grew up summer swim, became top state sprinter, tall and lanky, final year eligibility, targeting all club records including the 500, chasing NCAA Club Nationals 2027, coachless team of eight training four days a week. If this is Jacob or his teammates, greet with that warmth and familiarity.
 
-STRUGGLING SWIMMER (injured, cut, burned out, cooked): Three very different situations with one thing in common. Identity in freefall. The injured swimmer is out of the water and losing themselves. The cut swimmer lost their spot and does not know who they are without it. The burned out swimmer is still physically showing up but gone inside. Never conflate these. The burned out case is not wanting to quit. It is the sport leaving them empty. Ask which situation they are in before assuming. Never minimize. Never push toward quitting. Never push toward staying. Help them find their own answer.
+STRUGGLING SWIMMER (injured, cut, burned out, cooked): Three very different situations. Identity in freefall. Never conflate these. Ask which situation they are in before assuming. Never minimize. Never push toward quitting. Never push toward staying. Help them find their own answer.
 
 LATE BLOOMER: Came to the sport at 14, 16, as an adult. Always behind in the culture. Feels like an outsider on every team. Meet them with deep respect. They chose this when they did not have to. That is a different kind of swimmer.
 
 SWIM PARENT: Call them Rents or Rent when warm enough, or Mom or Dad, or match what they use. The car ride home is sacred. One question: how did it feel today. Then listen. Do not coach. Do not analyze. Just receive. These years go faster than any parent believes. A calm loving home is the whole job.
 
-OFFICIAL: Meet them with deep respect. An official who carries the weight of a tough call is doing the hardest job in the sport. They are not the villain. They are the guardian of the integrity of every race. Help them process the weight without shame. Good officials feel exactly this.
+OFFICIAL: Meet them with deep respect. An official who carries the weight of a tough call is doing the hardest job in the sport. They are not the villain. They are the guardian of the integrity of every race.
 
 MEMORY AND CONTINUITY: You always carry what you learn in a conversation forward. If a swimmer tells you they are a junior, or their coach relationship is rocky, or they are in taper, or they just got cut, you reference it naturally in later exchanges without being asked. You plant one quiet open door at the end of every response. Not a formal question. A thread. Something that makes the next message feel natural.
 
@@ -499,10 +550,11 @@ function getReturnSystem(lastExchanges){
 
 // ─── OPENING TRIAGE LINE ─────────────────────────────────────────────────────
 const TRIAGE_OPENERS=[
-  "Hey. Been in and around this sport my whole life. Before we go anywhere, tell me a little about your relationship with swimming and how old you are.",
-  "Good to have you here. I always start the same way. How old are you and what does swimming look like in your life right now?",
-  "What's the what? I am Phlip. Before anything else, tell me how old you are and where you are in the sport.",
-  "Hey Swimmer. Two things to start. How old are you and what is your relationship with swimming right now?",
+  "Hey. Been in and around this sport my whole life. Before we go anywhere, tell me three things. How old are you, where are you from, and what does swimming look like in your life right now?",
+  "Good to have you here. I always start the same way. How old are you, where are you swimming out of, and what is your relationship with the sport right now?",
+  "What's the what? I am Phlip. Before anything else, tell me how old you are, where you are from, and where you are in the sport.",
+  "Hey Swimmer. Three things to start. How old are you, what part of the world are you in, and what does your swimming life look like right now?",
+  "Still in the water? Good. Tell me who I am talking to. Age, where you are from, and what swimming means to you right now.",
 ];
 function getTriageOpener(){return TRIAGE_OPENERS[Math.floor(Math.random()*TRIAGE_OPENERS.length)];}
 
@@ -661,33 +713,61 @@ const S=`
 .ppil-link{display:block;text-align:center;margin:10px 16px 0;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:rgba(184,120,32,0.45);text-transform:uppercase;cursor:pointer;padding:8px;border:1px solid rgba(184,120,32,0.14);transition:all 0.13s;}
 .ppil-link:hover{color:#B87820;border-color:rgba(184,120,32,0.3);}
 
-/* THE CLOCK GAME */
-.clock-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;background:#F5F2ED;position:relative;overflow:hidden;padding:20px 16px;cursor:pointer;}
-.clock-lanes{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 85px,rgba(184,120,32,0.05) 85px,rgba(184,120,32,0.05) 86px);pointer-events:none;}
-.clock-flag{position:absolute;top:0;left:0;right:0;height:3px;background:repeating-linear-gradient(90deg,#B87820 0,#B87820 16px,transparent 16px,transparent 20px,#D8D0C4 20px,#D8D0C4 36px,transparent 36px,transparent 40px);}
-.clock-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;letter-spacing:6px;font-size:24px;color:#B87820;text-transform:uppercase;margin-bottom:2px;position:relative;z-index:2;}
-.clock-sub{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(40,30,10,0.45);font-size:11px;margin-bottom:4px;position:relative;z-index:2;text-align:center;}
-.clock-sub2{font-family:'Barlow',Arial,sans-serif;font-size:10px;color:rgba(40,30,10,0.32);letter-spacing:1px;margin-bottom:18px;position:relative;z-index:2;text-align:center;text-transform:uppercase;}
-.clock-circle{width:170px;height:170px;border-radius:50%;border:3px solid rgba(184,120,32,0.25);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;z-index:2;margin-bottom:14px;transition:background 0.3s;background:#FFFFFF;box-shadow:0 2px 12px rgba(0,0,0,0.08);}
-.clock-num{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:40px;color:#B87820;letter-spacing:2px;line-height:1;transition:color 0.3s;}
-.clock-unit{font-family:'Barlow',Arial,sans-serif;font-size:10px;color:rgba(184,120,32,0.5);letter-spacing:3px;margin-top:4px;text-transform:uppercase;}
-.clock-diff{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:13px;letter-spacing:1px;margin-top:5px;transition:color 0.3s;}
-.clock-bar-wrap{width:70px;height:3px;background:rgba(184,120,32,0.14);border-radius:2px;overflow:hidden;position:relative;z-index:2;margin-bottom:14px;}
-.clock-bar{height:100%;background:#B87820;border-radius:2px;transition:width 0s;}
-.clock-bar-5{text-align:center;font-family:'Barlow',Arial,sans-serif;font-size:9px;color:rgba(184,120,32,0.4);letter-spacing:2px;position:relative;z-index:2;margin-bottom:14px;text-transform:uppercase;}
-.clock-btn{background:#B87820;border:none;color:#FFFFFF;padding:12px 40px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:15px;letter-spacing:4px;cursor:pointer;text-transform:uppercase;position:relative;z-index:2;transition:background 0.1s;}
-.clock-btn:hover{background:#CA8E28;}
-.clock-btn.stop{background:rgba(184,120,32,0.08);border:2px solid #B87820;color:#B87820;}
-.clock-result{background:#FFFFFF;border-left:3px solid #B87820;padding:14px 16px;width:100%;max-width:280px;position:relative;z-index:2;box-shadow:0 1px 4px rgba(0,0,0,0.07);}
-.cr-phlip{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(25,18,5,0.85);font-size:14px;line-height:1.68;margin-bottom:10px;}
-.cr-pb{font-family:'Barlow Condensed',Arial,sans-serif;font-size:11px;letter-spacing:2px;color:rgba(184,120,32,0.65);text-transform:uppercase;margin-bottom:10px;}
-.cr-pb span{color:#B87820;font-weight:700;}
-.cr-again{background:none;border:1px solid rgba(184,120,32,0.3);color:rgba(184,120,32,0.8);padding:7px 18px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:3px;cursor:pointer;text-transform:uppercase;transition:all 0.13s;}
-.cr-again:hover{border-color:#B87820;color:#B87820;}
-.ppil-teaser{width:100%;max-width:280px;position:relative;z-index:2;margin-top:12px;padding:10px 12px;background:#FFFFFF;border:1px solid rgba(184,120,32,0.18);cursor:pointer;text-align:center;transition:all 0.15s;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
-.ppil-teaser:hover{background:rgba(184,120,32,0.04);border-color:rgba(184,120,32,0.3);}
-.ppil-teaser-q{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(40,30,10,0.58);font-size:12px;line-height:1.5;}
-.ppil-teaser-cta{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;color:rgba(184,120,32,0.55);text-transform:uppercase;margin-top:5px;}
+/* STOP WATCHER */
+.sw-wrap{flex:1;display:flex;flex-direction:column;background:#F5F2ED;overflow-y:auto;}
+.sw-header{background:#FFFFFF;padding:12px 16px 10px;border-bottom:1px solid #E8E2D8;text-align:center;}
+.sw-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;letter-spacing:6px;font-size:22px;color:#B87820;text-transform:uppercase;}
+.sw-sub{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(40,30,10,0.45);font-size:11px;margin-top:3px;}
+.sw-lives{display:flex;justify-content:center;align-items:center;gap:6px;padding:8px 16px 4px;}
+.pyramid-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 12px 8px;}
+.level-card{background:#FFFFFF;border:2px solid #E0D8CC;padding:6px 4px 6px;text-align:center;cursor:pointer;transition:all 0.18s;position:relative;border-radius:2px;display:flex;flex-direction:column;align-items:center;}
+.level-card.active{border-color:#B87820;background:rgba(184,120,32,0.03);box-shadow:0 2px 10px rgba(184,120,32,0.18);}
+.level-card.completed{border-color:rgba(30,150,75,0.6);background:rgba(30,150,75,0.04);}
+.level-card.failed{border-color:rgba(200,60,60,0.4);background:rgba(200,60,60,0.04);}
+.level-card.locked{opacity:0.32;cursor:not-allowed;}
+.lc-label{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;color:rgba(40,30,10,0.45);text-transform:uppercase;margin-top:3px;}
+.lc-pb{font-family:'Barlow',Arial,sans-serif;font-size:8px;color:rgba(184,120,32,0.55);margin-top:1px;}
+.lc-status{position:absolute;top:3px;right:4px;font-size:10px;}
+.lc-score{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:9px;color:#2A9A5A;margin-top:1px;}
+.sw-active{padding:10px 14px;background:#FFFFFF;margin:0 12px 8px;border-left:3px solid #B87820;box-shadow:0 1px 3px rgba(0,0,0,0.06);}
+.sw-level-name{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:11px;letter-spacing:3px;color:#B87820;text-transform:uppercase;margin-bottom:4px;}
+.sw-timer{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:44px;color:#B87820;line-height:1;text-align:center;}
+.sw-timer.hit{color:#2A9A5A;}
+.sw-timer.miss{color:rgba(200,60,60,0.8);}
+.sw-result-text{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(25,18,5,0.82);font-size:13px;line-height:1.6;margin-top:6px;}
+.sw-btn-row{display:flex;gap:8px;padding:0 12px 8px;}
+.sw-btn{flex:1;background:#B87820;border:none;color:#FFFFFF;padding:11px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:3px;cursor:pointer;text-transform:uppercase;transition:background 0.1s;}
+.sw-btn:hover{background:#CA8E28;}
+.sw-btn.stop{background:rgba(184,120,32,0.1);border:2px solid #B87820;color:#B87820;}
+.sw-btn.next{background:#2A9A5A;color:#FFFFFF;}
+.sw-btn.ghost{background:rgba(184,120,32,0.08);border:1px solid rgba(184,120,32,0.3);color:#B87820;}
+.lb-wrap{padding:0 12px 10px;}
+.lb-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:10px;letter-spacing:2px;color:rgba(184,120,32,0.6);text-transform:uppercase;margin-bottom:6px;padding-top:8px;}
+.lb-row{display:flex;align-items:center;gap:8px;padding:7px 10px;background:#FFFFFF;margin-bottom:3px;border-left:3px solid transparent;box-shadow:0 1px 2px rgba(0,0,0,0.04);}
+.lb-row.gold{border-left-color:#B87820;}
+.lb-row.silver{border-left-color:#999;}
+.lb-row.bronze{border-left-color:#A0632A;}
+.lb-rank{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:13px;color:rgba(40,30,10,0.4);width:22px;flex-shrink:0;}
+.lb-name{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:13px;color:rgba(40,30,10,0.8);flex:1;}
+.lb-score{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:11px;color:#B87820;text-align:right;}
+.sw-teaser{margin:0 12px 12px;padding:10px 12px;background:#FFFFFF;border:1px solid rgba(184,120,32,0.18);cursor:pointer;text-align:center;transition:all 0.15s;box-shadow:0 1px 3px rgba(0,0,0,0.05);}
+.sw-teaser:hover{background:rgba(184,120,32,0.04);}
+.sw-teaser-q{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(40,30,10,0.58);font-size:12px;line-height:1.5;}
+.sw-teaser-cta{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:9px;letter-spacing:2px;color:rgba(184,120,32,0.55);text-transform:uppercase;margin-top:4px;}
+.celeb-bg{position:absolute;inset:0;background:rgba(40,28,10,0.72);z-index:200;display:flex;align-items:center;justify-content:center;}
+.celeb-card{background:#FFFFFF;padding:28px 22px;width:84%;max-width:320px;text-align:center;border-top:4px solid #B87820;animation:celebPop 0.4s ease;}
+.celeb-trophy{font-size:54px;margin-bottom:4px;animation:celebPop 0.5s ease;}
+.celeb-dap{font-size:34px;animation:dap 0.6s ease 0.5s both;}
+.celeb-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:19px;letter-spacing:3px;color:#B87820;text-transform:uppercase;margin:8px 0 4px;}
+.celeb-sub{font-family:'DM Serif Display',Georgia,serif;font-style:italic;color:rgba(40,30,10,0.7);font-size:13px;line-height:1.65;margin-bottom:16px;}
+.celeb-btn{background:#B87820;border:none;color:#FFFFFF;padding:11px 28px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:3px;cursor:pointer;text-transform:uppercase;}
+.name-bg{position:absolute;inset:0;background:rgba(40,28,10,0.6);z-index:201;display:flex;align-items:center;justify-content:center;}
+.name-card{background:#FFFFFF;padding:22px;width:80%;max-width:300px;border-top:3px solid #B87820;}
+.name-title{font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:14px;letter-spacing:2px;color:#B87820;text-transform:uppercase;margin-bottom:4px;}
+.name-sub{font-family:'Barlow',Arial,sans-serif;font-size:12px;color:rgba(40,30,10,0.55);margin-bottom:12px;}
+.name-inp{width:100%;border:1px solid rgba(184,120,32,0.3);background:#F5F2ED;padding:10px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:700;font-size:16px;letter-spacing:2px;color:rgba(40,30,10,0.85);outline:none;text-transform:uppercase;margin-bottom:10px;}
+.name-btn{width:100%;background:#B87820;border:none;color:#FFFFFF;padding:11px;font-family:'Barlow Condensed',Arial,sans-serif;font-weight:800;font-size:12px;letter-spacing:3px;cursor:pointer;text-transform:uppercase;}
+.tab-badge{position:absolute;top:5px;right:4px;font-size:11px;}
 
 /* MODAL */
 .modal-bg{position:absolute;inset:0;background:rgba(40,28,10,0.55);z-index:100;display:flex;align-items:flex-end;}
@@ -960,210 +1040,290 @@ function TheDeck({deck,onUpdate,onShowModal}){
   );
 }
 
-// ─── THE CLOCK GAME ──────────────────────────────────────────────────────────
-function TheClockGame({onShowModal}){
-  const TARGET=5000;
-  const [gs,setGs]=useState('idle');
+
+// ─── STOPWATCH SVG FACE ───────────────────────────────────────────────────────
+function SwFace({size=60,running=false,completed=false,failed=false,timeLabel,active=false}){
+  const cx=size/2,cy=size*0.58,r=size*0.36;
+  const sc=completed?'#2A9A5A':failed?'rgba(200,60,60,0.75)':'#B87820';
+  const fc=completed?'rgba(30,150,75,0.05)':failed?'rgba(200,60,60,0.04)':running?'rgba(184,120,32,0.04)':'#FFFFFF';
+  return(
+    <svg width={size} height={size*1.18} viewBox={`0 0 ${size} ${size*1.18}`} style={{display:'block'}}>
+      <rect x={cx-5} y={1} width={10} height={9} rx={3.5} fill={running?sc:'#F5F2ED'} stroke={sc} strokeWidth={1.2}/>
+      <rect x={1} y={cy-3.5} width={7} height={5} rx={2.5} fill='#F5F2ED' stroke={sc} strokeWidth={0.9}/>
+      <rect x={size-8} y={cy-3.5} width={7} height={5} rx={2.5} fill={running?sc:'#F5F2ED'} stroke={sc} strokeWidth={0.9}/>
+      <circle cx={cx} cy={cy} r={r+2.5} fill='rgba(184,120,32,0.04)' stroke={sc} strokeWidth={0.5} opacity={0.5}/>
+      <circle cx={cx} cy={cy} r={r} fill={fc} stroke={sc} strokeWidth={1.8}/>
+      <circle cx={cx} cy={cy} r={r-4} fill='none' stroke={sc} strokeWidth={0.5} opacity={0.25}/>
+      {[0,90,180,270].map(a=>{
+        const rad=a*Math.PI/180,r1=r-7,r2=r-3;
+        return <line key={a} x1={cx+r1*Math.sin(rad)} y1={cy-r1*Math.cos(rad)} x2={cx+r2*Math.sin(rad)} y2={cy-r2*Math.cos(rad)} stroke={sc} strokeWidth={1.8} strokeLinecap='round'/>;
+      })}
+      {[30,60,120,150,210,240,300,330].map(a=>{
+        const rad=a*Math.PI/180,r1=r-5,r2=r-3;
+        return <line key={a} x1={cx+r1*Math.sin(rad)} y1={cy-r1*Math.cos(rad)} x2={cx+r2*Math.sin(rad)} y2={cy-r2*Math.cos(rad)} stroke={sc} strokeWidth={0.8} strokeLinecap='round' opacity={0.45}/>;
+      })}
+      {running&&(
+        <g style={{transformOrigin:`${cx}px ${cy}px`,animation:'waveDrift 3s linear infinite'}}>
+          <line x1={cx} y1={cy} x2={cx} y2={cy-(r-8)} stroke={sc} strokeWidth={1.5} strokeLinecap='round'/>
+          <line x1={cx} y1={cy} x2={cx} y2={cy+5} stroke={sc} strokeWidth={1} strokeLinecap='round' opacity={0.35}/>
+        </g>
+      )}
+      <circle cx={cx} cy={cy} r={2.5} fill={running||completed||failed?sc:'rgba(184,120,32,0.35)'}/>
+      <text x={cx} y={cy+5} textAnchor='middle' fontFamily="'Barlow Condensed',Arial,sans-serif" fontWeight='800' fontSize={active?10:9} fill={sc} letterSpacing='0.5'>{timeLabel}</text>
+    </svg>
+  );
+}
+
+// ─── STOP WATCHER ─────────────────────────────────────────────────────────────
+function StopWatcher({onShowModal,swData,onSWUpdate}){
+  const today=getTodayStr();
+  const [phase,setPhase]=useState('idle');
+  const [curLvl,setCurLvl]=useState(0);
+  const [lives,setLives]=useState(MAX_LIVES);
   const [display,setDisplay]=useState('0.000');
-  const [result,setResult]=useState(null);
-  const [pb,setPb]=useState(null);
+  const [elapsed,setElapsed]=useState(0);
+  const [runResult,setRunResult]=useState(null);
+  const [lvlResults,setLvlResults]=useState({});
+  const [lvlScores,setLvlScores]=useState({});
+  const [runScore,setRunScore]=useState(0);
+  const [celebMsg,setCelebMsg]=useState('');
+  const [nameInput,setNameInput]=useState('');
+  const [lb,setLb]=useState(()=>loadLB());
   const ref=useRef({});
 
-  function phlipSays(diff){
-    const d=Math.abs(diff);
-    if(d===0) return "Perfect presence. Five seconds exactly. That is not luck. That is intentional awareness. How bout doze Mets.";
-    if(d<=30) return "Elite awareness. Within thirty milliseconds. Your intention held all the way through. That is the skill we are building.";
-    if(d<=80) return "Championship level. You felt the time from the inside instead of counting it. That is what intentional presence actually feels like.";
-    if(d<=150) return "Really solid. You were present. Keep coming back to this game and watch your awareness sharpen over time.";
-    if(d<=300) return "Something pulled your attention in the middle. Notice where the mind went. That noticing is exactly the work. Try again with one intention going in.";
-    if(d<=600) return "The mind got loud in those five seconds. That is the Exhaustion Reflex Instinct showing up even here. Set your intention before you tap. Then hold it.";
-    return "Five seconds is longer than it feels when the mind is scattered. Settle. Set one intention before you start. Then just feel it pass. Why Knot?";
-  }
+  useEffect(()=>{
+    if(swData.completedDate&&swData.completedDate!==today){
+      onSWUpdate({...swData,completedToday:false,completedDate:null});
+    }
+  },[]);
+
   function tick(){
     if(!ref.current.start) return;
-    const elapsed=(Date.now()-ref.current.start)/1000;
-    setDisplay(elapsed.toFixed(3));
+    const e=(Date.now()-ref.current.start)/1000;
+    setDisplay(e.toFixed(3));
+    setElapsed(e*1000);
     ref.current.raf=requestAnimationFrame(tick);
   }
-  function handleTap(){
-    if(gs==='idle'){ref.current.start=Date.now();ref.current.raf=requestAnimationFrame(tick);setGs('running');setDisplay('0.000');setResult(null);return;}
-    if(gs==='running'){
-      cancelAnimationFrame(ref.current.raf);
-      const elapsed=Date.now()-ref.current.start;
-      const diff=elapsed-TARGET;
-      const dispVal=(elapsed/1000).toFixed(3);
-      setDisplay(dispVal);setGs('done');
-      const absDiff=Math.abs(diff);
-      if(pb===null||absDiff<pb) setPb(absDiff);
-      setResult({elapsed,diff,dispVal});
+
+  function startLevel(){
+    ref.current.start=Date.now();
+    ref.current.raf=requestAnimationFrame(tick);
+    setPhase('running');
+    setDisplay('0.000');
+    setRunResult(null);
+  }
+
+  function stopLevel(){
+    cancelAnimationFrame(ref.current.raf);
+    const e=Date.now()-ref.current.start;
+    const lvl=LEVELS[curLvl];
+    const hit=checkHit(e,lvl);
+    const diffMs=Math.abs(e-lvl.ms);
+    setElapsed(e);
+    setDisplay((e/1000).toFixed(3));
+    setRunResult(hit?'hit':'miss');
+    setLvlResults(p=>({...p,[curLvl]:hit?'hit':'miss'}));
+    if(hit){
+      setLvlScores(p=>({...p,[curLvl]:diffMs}));
+      setRunScore(s=>s+diffMs);
+    }
+    const newPb={...swData.pb};
+    if(hit&&(newPb[curLvl]===undefined||diffMs<newPb[curLvl])) newPb[curLvl]=diffMs;
+    onSWUpdate({...swData,pb:newPb});
+    setPhase('result');
+  }
+
+  function handleNext(){
+    if(runResult==='hit'){
+      if(curLvl===LEVELS.length-1){
+        onSWUpdate({...swData,completedToday:true,completedDate:today});
+        const total=runScore+lvlScores[curLvl]||runScore;
+        setCelebMsg(`Six levels. One session. Total miss ${fmtScore(runScore)}. That is Stop Watcher Jedi with legitimate mojo. Log today intentional in The Deck tab above.`);
+        setPhase('celebrate');
+      } else {
+        setCurLvl(l=>l+1);
+        setPhase('idle');
+        setDisplay('0.000');
+      }
+    } else {
+      const newLives=lives-1;
+      if(newLives<=0){resetRun();}
+      else{
+        setLives(newLives);
+        setCurLvl(l=>Math.max(0,l-1));
+        setPhase('idle');
+        setDisplay('0.000');
+        setRunResult(null);
+      }
     }
   }
-  function reset(){cancelAnimationFrame(ref.current.raf);ref.current={};setGs('idle');setDisplay('0.000');setResult(null);}
-  const diffLabel=result?(Math.abs(result.diff)<10?'Perfect':((result.diff>0?'+':'')+result.diff+'ms')):null;
+
+  function resetRun(){
+    cancelAnimationFrame(ref.current.raf);
+    ref.current={};
+    setPhase('idle');setCurLvl(0);setLives(MAX_LIVES);
+    setDisplay('0.000');setRunResult(null);
+    setLvlResults({});setLvlScores({});setRunScore(0);
+  }
+
+  function phlipSays(lvlIdx,hit,diffMs){
+    const lvl=LEVELS[lvlIdx];
+    const pctOff=Math.round((diffMs/lvl.ms)*100);
+    if(hit&&diffMs<50) return"Perfect awareness. Pure presence, Swimmer.";
+    if(hit&&pctOff<=3) return"Clean. Your intention held all the way through.";
+    if(hit) return"You felt that. That is intentional presence doing its job.";
+    if(lvlIdx===0) return"One second is all reflex. Set the intention and go again.";
+    if(diffMs<lvl.ms*0.35) return"You jumped early. The reflex fired before the time was up. Recognize it.";
+    return"Something pulled you off. Notice where the attention went. That noticing is the practice.";
+  }
+
+  function handleCelebClose(){setPhase('nameEntry');}
+
+  function handleNameSubmit(){
+    const name=(nameInput.trim().toUpperCase()||'SWIMMER').substring(0,12);
+    const misses=MAX_LIVES-lives;
+    const score={name,level:LEVELS.length,label:'Full Pyramid',totalMiss:runScore,date:today,misses};
+    const newLb=[...lb,score].sort((a,b)=>{
+      if(b.level!==a.level) return b.level-a.level;
+      const am=a.totalMiss||99999,bm=b.totalMiss||99999;
+      if(am!==bm) return am-bm;
+      return a.misses-b.misses;
+    }).slice(0,5);
+    setLb(newLb);saveLB(newLb);
+    setPhase('idle');resetRun();setNameInput('');
+  }
+
+  const rankEmoji=['🥇','🥈','🥉','4.','5.'];
 
   return(
-    <div className="clock-wrap" onClick={handleTap}>
-      <div className="clock-lanes"/>
-      <div className="clock-flag"/>
+    <div className="sw-wrap">
+      <div className="sw-header">
+        <div className="sw-title">Stop Watcher</div>
+        <div className="sw-sub">Climb the pyramid clean. Intention before. Presence during. Awareness after.</div>
+      </div>
 
-      {/* STOP WATCHER HEADER */}
-      <div className="clock-title">Stop Watcher</div>
-      <div className="clock-sub">Train your awareness. Feel five seconds exactly.</div>
-      <div className="clock-sub2">Intention before. Presence during. Awareness after.</div>
+      <div className="sw-lives">
+        {Array.from({length:MAX_LIVES},(_,i)=>(
+          <span key={i} style={{fontSize:'16px',opacity:i<lives?1:0.15,transition:'opacity 0.3s'}}>❤️</span>
+        ))}
+        {runScore>0&&(
+          <span style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontSize:'11px',color:'rgba(40,30,10,0.5)',marginLeft:'10px',letterSpacing:'1px'}}>
+            Score: <span style={{color:'#B87820',fontWeight:700}}>{fmtScore(runScore)}</span>
+          </span>
+        )}
+      </div>
 
-      {/* FULL STOPWATCH SVG */}
-      <div style={{position:'relative',width:'220px',height:'250px',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'8px',zIndex:2}}>
-        <svg width="220" height="250" viewBox="0 0 220 250" xmlns="http://www.w3.org/2000/svg">
-          {/* Lugs connecting crown to body */}
-          <path d="M88 28 Q88 40 78 48" fill="none" stroke="#B87820" strokeWidth="3" strokeLinecap="round"/>
-          <path d="M132 28 Q132 40 142 48" fill="none" stroke="#B87820" strokeWidth="3" strokeLinecap="round"/>
-          {/* Crown stem */}
-          <rect x="96" y="8" width="28" height="22" rx="8"
-            fill={gs==='running'?'rgba(184,120,32,0.15)':'#F5F2ED'}
-            stroke="#B87820" strokeWidth="2.5"/>
-          {/* Crown button top knob */}
-          <rect x="103" y="2" width="14" height="10" rx="5"
-            fill={gs==='running'?'#B87820':'#F5F2ED'}
-            stroke="#B87820" strokeWidth="2"/>
-          {/* Left side lap button */}
-          <rect x="28" y="95" width="22" height="12" rx="6"
-            fill="#F5F2ED" stroke="#B87820" strokeWidth="2"/>
-          {/* Right side start/stop button */}
-          <rect x="170" y="95" width="22" height="12" rx="6"
-            fill={gs==='running'?'#B87820':'#F5F2ED'}
-            stroke="#B87820" strokeWidth="2"/>
-          {/* Outer body shadow ring */}
-          <circle cx="110" cy="155" r="93"
-            fill="rgba(184,120,32,0.06)"
-            stroke="rgba(184,120,32,0.2)" strokeWidth="1"/>
-          {/* Main body */}
-          <circle cx="110" cy="155" r="86"
-            fill={gs==='running'?'rgba(184,120,32,0.04)':'#FFFFFF'}
-            stroke="#B87820" strokeWidth="3.5"/>
-          {/* Inner bezel ring */}
-          <circle cx="110" cy="155" r="76"
-            fill="none"
-            stroke="rgba(184,120,32,0.12)" strokeWidth="1.5"/>
-          {/* Major tick marks 12 3 6 9 */}
-          {[0,90,180,270].map(a=>{
-            const r1=66,r2=76,rad=a*Math.PI/180;
-            return <line key={a}
-              x1={110+r1*Math.sin(rad)} y1={155-r1*Math.cos(rad)}
-              x2={110+r2*Math.sin(rad)} y2={155-r2*Math.cos(rad)}
-              stroke="#B87820" strokeWidth="3" strokeLinecap="round"/>;
-          })}
-          {/* Minor ticks every 30 degrees */}
-          {[30,60,120,150,210,240,300,330].map(a=>{
-            const r1=70,r2=76,rad=a*Math.PI/180;
-            return <line key={a}
-              x1={110+r1*Math.sin(rad)} y1={155-r1*Math.cos(rad)}
-              x2={110+r2*Math.sin(rad)} y2={155-r2*Math.cos(rad)}
-              stroke="rgba(184,120,32,0.4)" strokeWidth="1.5" strokeLinecap="round"/>;
-          })}
-          {/* All 60 minute ticks */}
-          {Array.from({length:60},(_,i)=>{
-            if(i%30===0||i%15===0&&i%30!==0) return null;
-            const r1=73,r2=76,rad=(i*6)*Math.PI/180;
-            return <line key={i}
-              x1={110+r1*Math.sin(rad)} y1={155-r1*Math.cos(rad)}
-              x2={110+r2*Math.sin(rad)} y2={155-r2*Math.cos(rad)}
-              stroke="rgba(184,120,32,0.2)" strokeWidth="1" strokeLinecap="round"/>;
-          })}
-          {/* 5 second arc progress when running */}
-          {gs==='running'&&(
-            <circle cx="110" cy="155" r="60"
-              fill="none"
-              stroke="rgba(184,120,32,0.18)" strokeWidth="6"
-              strokeDasharray="377" strokeDashoffset="377"
-              style={{animation:`none`}}/>
-          )}
-          {/* Sweep second hand */}
-          {gs==='running'&&(
-            <g style={{transformOrigin:'110px 155px',animation:'waveDrift 5s linear infinite'}}>
-              <line x1="110" y1="155" x2="110" y2="90"
-                stroke="#B87820" strokeWidth="2.5" strokeLinecap="round"/>
-              <circle cx="110" cy="155" r="5" fill="#B87820"/>
-              <line x1="110" y1="155" x2="110" y2="175"
-                stroke="#B87820" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
-            </g>
-          )}
-          {/* Center dot at rest */}
-          {gs!=='running'&&(
-            <circle cx="110" cy="155" r="5"
-              fill={gs==='done'?'#B87820':'rgba(184,120,32,0.4)'}/>
-          )}
-        </svg>
+      <div className="pyramid-grid">
+        {LEVELS.map((lvl,i)=>{
+          const isActive=i===curLvl;
+          const res=lvlResults[i];
+          const pbMs=swData.pb?.[i];
+          const isLocked=i>curLvl;
+          const lvlMissMs=lvlScores[i];
+          return(
+            <div key={i}
+              className={`level-card${isActive?' active':''}${res==='hit'?' completed':''}${res==='miss'?' failed':''}${isLocked?' locked':''}`}
+              onClick={()=>{if(isActive&&phase==='idle') startLevel();}}>
+              <SwFace
+                size={58}
+                running={isActive&&phase==='running'}
+                completed={res==='hit'}
+                failed={res==='miss'}
+                active={isActive}
+                timeLabel={`:${String(lvl.seconds).padStart(2,'0')}`}/>
+              <div className="lc-label">{lvl.label}</div>
+              {lvlMissMs!==undefined&&<div className="lc-score">±{fmtScoreShort(lvlMissMs)}</div>}
+              {pbMs!==undefined&&lvlMissMs===undefined&&<div className="lc-pb">PB ±{fmtScoreShort(pbMs)}</div>}
+              <div className="lc-status">
+                {res==='hit'?'✅':res==='miss'?'❌':isActive&&phase==='running'?'🔴':''}
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
-        {/* Timer display centered inside watch face */}
-        <div style={{
-          position:'absolute',
-          top:'55%',left:0,right:0,
-          textAlign:'center',
-          transform:'translateY(-50%)'
-        }}>
-          <div style={{
-            fontFamily:"'Barlow Condensed',Arial,sans-serif",
-            fontWeight:800,
-            fontSize:gs==='done'?'36px':'40px',
-            letterSpacing:'2px',
-            lineHeight:1,
-            color:gs==='done'?(Math.abs(result?.diff||9999)<=150?'#2A9A5A':'#B87820'):'#B87820',
-            transition:'color 0.3s'
-          }}>{display}</div>
-          <div style={{
-            fontFamily:"'Barlow',Arial,sans-serif",
-            fontSize:'9px',
-            color:'rgba(184,120,32,0.5)',
-            letterSpacing:'3px',
-            marginTop:'4px',
-            textTransform:'uppercase'
-          }}>seconds</div>
-          {gs==='done'&&diffLabel&&(
-            <div style={{
-              fontFamily:"'Barlow Condensed',Arial,sans-serif",
-              fontWeight:700,
-              fontSize:'14px',
-              letterSpacing:'1px',
-              marginTop:'5px',
-              color:Math.abs(result?.diff||9999)<=150?'#2A9A5A':'rgba(184,120,32,0.8)'
-            }}>{diffLabel}</div>
-          )}
+      <div className="sw-active">
+        <div className="sw-level-name">
+          {LEVELS[curLvl].label} · :{String(LEVELS[curLvl].seconds).padStart(2,'0')} sec
+          <span style={{fontFamily:"'Barlow',Arial,sans-serif",fontWeight:400,fontSize:'9px',color:'rgba(184,120,32,0.5)',marginLeft:'8px'}}>
+            window ±{fmtScoreShort(LEVELS[curLvl].window)}
+          </span>
         </div>
+        <div className={`sw-timer${runResult==='hit'?' hit':runResult==='miss'?' miss':''}`}>{display}</div>
+        {phase==='result'&&(
+          <div className="sw-result-text">{phlipSays(curLvl,runResult==='hit',Math.abs(elapsed-LEVELS[curLvl].ms))}</div>
+        )}
       </div>
 
-      {/* Progress bar */}
-      <div className="clock-bar-wrap">
-        <div className="clock-bar" style={{width:gs==='running'?'100%':'0%',transition:gs==='running'?`width ${TARGET/1000}s linear`:'width 0s'}}/>
+      <div className="sw-btn-row">
+        {phase==='idle'&&<button className="sw-btn" onClick={startLevel}>TAP TO START</button>}
+        {phase==='running'&&<button className="sw-btn stop" onClick={stopLevel}>STOP</button>}
+        {phase==='result'&&runResult==='hit'&&(
+          <>
+            <button className="sw-btn ghost" onClick={resetRun}>RESTART</button>
+            <button className="sw-btn next" onClick={handleNext}>{curLvl===LEVELS.length-1?'FINISH 🏆':'NEXT →'}</button>
+          </>
+        )}
+        {phase==='result'&&runResult==='miss'&&(
+          <>
+            <button className="sw-btn ghost" onClick={resetRun}>RESTART</button>
+            <button className="sw-btn" onClick={handleNext}>{lives<=1?'BACK TO START':'DROP BACK ↩'}</button>
+          </>
+        )}
       </div>
-      <div className="clock-bar-5">target · 5.000</div>
 
-      {gs==='idle'&&(
-        <button className="clock-btn" onClick={e=>{e.stopPropagation();handleTap();}}>
-          START
-        </button>
-      )}
-      {gs==='running'&&(
-        <button className="clock-btn stop" onClick={e=>{e.stopPropagation();handleTap();}}>
-          STOP
-        </button>
+      {lb.length>0&&(
+        <div className="lb-wrap">
+          <div className="lb-title">Top Stop Watchers</div>
+          {lb.map((entry,i)=>(
+            <div key={i} className={`lb-row${i===0?' gold':i===1?' silver':i===2?' bronze':''}`}>
+              <div className="lb-rank">{rankEmoji[i]||`${i+1}.`}</div>
+              <div className="lb-name">{entry.name}</div>
+              <div className="lb-score">
+                {entry.totalMiss!==undefined?fmtScore(entry.totalMiss):'Full Pyramid'}
+                {entry.misses>0?` · ${entry.misses}m`:' · clean'}
+              </div>
+            </div>
+          ))}
+        </div>
       )}
 
-      {gs==='done'&&result&&(
-        <>
-          <div className="clock-result" style={{marginTop:'0'}}>
-            <div className="cr-phlip">{phlipSays(result.diff)}</div>
-            {pb!==null&&<div className="cr-pb">Best: <span>{pb<=9?'Perfect':pb+'ms off'}</span></div>}
-            <button className="cr-again" onClick={e=>{e.stopPropagation();reset();}}>Try Again</button>
+      <div className="sw-teaser" onClick={()=>onShowModal('erip_doc')}>
+        <div className="sw-teaser-q">Why does intention under pressure change everything?</div>
+        <div className="sw-teaser-cta">Read ERIP in The Deck tab above →</div>
+      </div>
+
+      {phase==='celebrate'&&(
+        <div className="celeb-bg">
+          <div className="celeb-card">
+            <div className="celeb-trophy">🥽</div>
+            <div className="celeb-dap">🤜🤘</div>
+            <div className="celeb-title">Stop Watcher Jedi</div>
+            <div className="celeb-sub">{celebMsg}</div>
+            <button className="celeb-btn" onClick={handleCelebClose}>POST YOUR SCORE</button>
           </div>
-          <div className="ppil-teaser" onClick={e=>{e.stopPropagation();onShowModal('erip_doc');}}>
-            <div className="ppil-teaser-q">Why does intention under pressure change everything?</div>
-            <div className="ppil-teaser-cta">Read ERIP →</div>
-          </div>
-        </>
+        </div>
       )}
+
+      {phase==='nameEntry'&&(
+        <div className="name-bg">
+          <div className="name-card">
+            <div className="name-title">Post Your Score</div>
+            <div className="name-sub">Name or initials for the leaderboard.</div>
+            <input className="name-inp" maxLength={12} placeholder="YOUR NAME"
+              value={nameInput} onChange={e=>setNameInput(e.target.value)}
+              onKeyDown={e=>e.key==='Enter'&&handleNameSubmit()}
+              autoFocus/>
+            <button className="name-btn" onClick={handleNameSubmit}>POST IT</button>
+          </div>
+        </div>
+      )}
+
+      <div style={{height:'16px'}}/>
     </div>
   );
 }
+
 
 // ─── MAIN APP ────────────────────────────────────────────────────────────────
 function App(){
@@ -1179,6 +1339,7 @@ function App(){
   const [communityShown,setCommunityShown]=useState(false);
   const [shareMsg, setShareMsg]=useState(null);
   const [deck,     setDeck]    =useState(()=>({...getDeckDefaults(),...loadDeck()}));
+  const [swData,   setSwData]  =useState(()=>loadSW());
   const msgsEnd=useRef(null);
 
   useEffect(()=>{msgsEnd.current?.scrollIntoView({behavior:'smooth'});},[msgs,loading]);
@@ -1186,6 +1347,7 @@ function App(){
   useEffect(()=>{saveDeck(deck);},[deck]);
 
   const updateDeck=(d)=>{setDeck(d);saveDeck(d);};
+  const updateSW=(d)=>{setSwData(d);saveSW(d);};
 
   const accept=()=>{markSeen();setSeen(true);};
 
@@ -1340,7 +1502,10 @@ function App(){
             <div className="tabs">
               <button className={`tab${tab==='water'?' on':''}`} onClick={()=>setTab('water')}>The Water</button>
               <button className={`tab${tab==='deck'?' on':''}`} onClick={()=>setTab('deck')}>The Deck</button>
-              <button className={`tab${tab==='clock'?' on':''}`} onClick={()=>setTab('clock')}>Stop Watcher</button>
+              <button className={`tab${tab==='sw'?' on':''}`} onClick={()=>setTab('sw')} style={{position:'relative'}}>
+                Stop Watcher
+                {swData?.completedToday&&<span className="tab-badge">🥽</span>}
+              </button>
             </div>
 
             {/* THE WATER */}
@@ -1406,8 +1571,8 @@ function App(){
             )}
 
             {/* THE CLOCK */}
-            {tab==='clock'&&(
-              <TheClockGame onShowModal={setShowModal}/>
+            {tab==='sw'&&(
+              <StopWatcher onShowModal={setShowModal} swData={swData} onSWUpdate={updateSW}/>
             )}
           </div>
         )}
