@@ -68,7 +68,7 @@ async function callPhlip(system,msgs){
   const res=await fetch('/api/chat',{
     method:'POST',
     headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:900,system,messages:msgs}),
+    body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:900,system,messages:msgs}),
   });
   const json=await res.json();
   if(!res.ok) throw new Error(json.error?.message||'error');
@@ -137,7 +137,7 @@ function updateStreak(deck,dateStr,intentional){
 
 // ─── PHLIP DAILY LINES ──────────────────────────────────────────────────────
 function getDailyLine(stats,todayLogged){
-  if(!stats||stats.color==='empty') return "The water is waiting. What does today look like?";
+  if(!stats||stats.color==='empty') return "Set your season window on The Deck and start tracking today.";
   if(todayLogged&&stats.color==='blue') return`Day ${stats.streak}. That blue means something. Most athletes never see it.`;
   if(todayLogged&&stats.color==='green') return`Day ${stats.streak} on the crossing. The shore is closer than yesterday.`;
   if(todayLogged&&stats.color==='red') return"Came back. That is the whole practice.";
@@ -210,24 +210,61 @@ Bad juju equals bad splits. Simple.
   },
   cheat:{
     title:"The Phlipsophy",
-    sub:"ERIP and PPIL: Your Cheat Sheet",
-    body:`THE EXHAUSTION REFLEX INSTINCT PRINCIPLE
-Your Phlipsophy Cheat Sheet
+    sub:"ERIP, PPIL and MPCP: Your Complete Cheat Sheet",
+    body:`THE PHLOW PROGRAM
+Your Complete Cheat Sheet
 
-WHAT IT IS
-The Exhaustion Reflex Instinct is your biology firing every survival alarm it has when you push past comfortable. The reflex is automatic. The instinct it produces feels like reality. It is not reality.
+THREE FRAMEWORKS. ONE WAY OF COMPETING.
 
-DO NOT MISTAKE THE INSTINCT FOR REALITY
-Your body is uncomfortable. It is not done. The swimmer who never learns to recognize the Exhaustion Reflex Instinct calls it hitting a wall. The trained swimmer calls it the classroom.
+THE EXHAUSTION REFLEX INSTINCT PRINCIPLE (ERIP)
+What it is: The framework for the hard moment. When biology fires survival alarms at the edge of comfortable, ERIP names what is happening and gives you a trained response instead of a survival response.
 
-THE RESPONSE YOU BUILD BEFORE YOU NEED IT
-Intention is the weapon. Loaded before you get in the water. Neutral self-talk is the anchor. Count strokes. Watch the black line. Find the wall.
+The core truth: The body is uncomfortable. It is not done. Those are not the same thing.
 
-THE PROVEN PRESENCE AND INTENTION LEVEL
-PPIL is the daily practice that makes ERIP possible. Stack intentional days the way an ocean swimmer crosses from beach to beach. One day at a time. The Presence Score is simply intentional days divided by total days. Not perfect days. Intentional days. A champion level mind targets 95 percent.
+Your pre-practice weapon: ONE intention. Loaded before you get in the water. Not a mood. One specific thing.
+
+When the void opens: Count strokes. Watch the black line. Find the wall. Come back to the physical.
+
+Your 60 second debrief after every practice:
+  What I held together when it got hard.
+  What broke down.
+  What I work on tomorrow.
+
+The bottom line: A swimmer must learn to be mentally and technically proficient while under intense physical duress to achieve any real greatness in this sport.
+
+---
+
+THE PROVEN PRESENCE AND INTENTION LEVEL (PPIL)
+What it is: The daily accountability practice that builds the person ERIP requires. You cannot suddenly be present in a championship if you have not been practicing presence every day for months.
+
+The Presence Score: Intentional days divided by total days. Not perfect days. Intentional days.
+  Below 75%  - Drift period. Come back. No punishment.
+  75 to 87%  - GREEN. You are winning. Hold it.
+  87.5%+     - BLUE. Most athletes never see it. You are building something real.
+
+The two tap ritual:
+  Before practice: Set one intention. Name it.
+  After practice: Did it hold? Log it honestly. Yes. Mostly. Not today.
+
+The ocean crossing: Stack days the way a swimmer crosses from beach to beach. One day at a time. Drift is physics not failure. Returning is the practice.
+
+Target: 95 percent over a season. Most athletes never decide to try.
+
+---
+
+THE MERGING PHILOSOPHIES CHANGE PRINCIPLE (MPCP)
+What it is: The long game. The practice of protecting what ERIP and PPIL actually built. Change is not an event. It is a posture you maintain.
+
+The weekly question: Once a week. One question. Am I still the athlete the work created or am I drifting back?
+
+If the answer is no: Come back. Warmly. Without punishment. One intention. One logged day. The drift is physics. Returning is the practice.
+
+The full circle: ERIP gives you the framework. PPIL gives you the daily tool. MPCP gives you the long game. Together they are not a system. They are a way of thinking about what competitive performance actually requires.
+
+---
 
 THE BOTTOM LINE
-A swimmer must learn to be mentally and technically proficient while under intense physical duress to achieve any real greatness in this sport.
+The athlete who keeps coming back, keeps showing up with intention, and keeps asking the honest weekly question is the most dangerous competitor in any pool.
 
 -- The Phlipsophy, shared by Phlip`
   },
@@ -266,57 +303,113 @@ A swimmer must learn to be mentally and technically proficient while under inten
 
 const PHLOW_BODIES={
   erip:`THE EXHAUSTION REFLEX INSTINCT PRINCIPLE
+A 360 Introduction
 
-Any athlete can train hard and have their body deliver. They all tie for second behind the one who does all of that and wins at ERIP.
+WHAT IS ERIP?
+The Exhaustion Reflex Instinct Principle is the framework for understanding what happens inside a competitive swimmer when biology and mindset collide at the edge of comfortable. Every swimmer experiences it. Most never learn to name it. The ones who do have a permanent advantage.
 
 THE COLLISION
-Biology fires every survival alarm. Slow down. Stop thinking. Protect yourself. The physics of the water are indifferent. The wall does not move. The clock does not slow. Mindset is the only variable a swimmer can actually control.
+When oxygen debt climbs and the muscles are burning, your biology fires every survival alarm it has. Slow down. Stop thinking. Abandon what you know. Protect yourself. This is the Exhaustion Reflex Instinct. It is not weakness. It is your ancient survival machinery doing exactly what it was built to do. The problem is that the water does not care about your survival machinery. The wall does not move. The clock does not slow. The physics are indifferent.
 
 DO NOT MISTAKE THE INSTINCT FOR REALITY
-The body is uncomfortable. It is not done. The swimmer who surrenders calls it hitting a wall. The trained swimmer calls it the classroom.
+This is the single most important sentence in the whole framework. The body is uncomfortable. It is not done. Those are not the same thing. The swimmer who never learns to separate those two states calls it hitting a wall. The trained swimmer calls it the classroom. That moment, the moment the instinct fires and the familiar voice says enough, is not the end of the race. It is the beginning of the real work.
+
+THE THREE FORCES IN COLLISION
+Biology wants to protect you. Physics demands that you hold form. Mindset is the only variable you actually control. ERIP lives in that gap between what the body demands and what the trained mind chooses to do instead.
 
 THE RESPONSE YOU BUILD BEFORE YOU NEED IT
-Intention is the weapon. Loaded before you get in the water. Neutral self-talk is the anchor. Count the strokes. Watch the black line. Find the wall.
+You cannot build this response mid-race. It has to already be there. That means training it before you need it, every single practice, every time it gets hard and you choose to stay anyway.
 
-THREE STATEMENTS AFTER EVERY PRACTICE
-What I held together when it got hard today.
-What broke down.
-What I work on tomorrow.
+  1  Arrive with ONE intention. Not a mood. Not a vibe. One specific technical or mental thing you are working on today.
+  2  When the void opens and the instinct fires, count strokes. Watch the black line. Find the wall. Come back to the physical.
+  3  When your coach calls a correction mid-set, hear it and do it immediately. That coachability under duress is a trainable skill.
+  4  When the result does not come, keep going. The work is permanent even when the result is not visible yet.
+
+THE 60 SECOND DEBRIEF
+After every practice, before you leave the building, three statements. Write them if you can.
+  What I held together when it got hard today.
+  What broke down.
+  What I work on tomorrow.
+
+This debrief is not optional. It is how the lesson transfers from today's pain into tomorrow's tool.
+
+THE COACHABILITY THRESHOLD
+One of the least discussed performance skills in swimming is the ability to receive and execute a correction while under physical stress. Most swimmers can absorb coaching when they are rested. The difference maker is the swimmer who can hear a correction at yard 175 of a 200 and apply it immediately. That is a skill. Train it deliberately.
+
+THE BOTTOM LINE
+A swimmer must learn to be mentally and technically proficient while under intense physical duress to achieve any real greatness in this sport. That capacity is built long before the race ever asks for it. ERIP is the map.
 
 -- Chris Chance`,
 
   ppil:`THE PROVEN PRESENCE AND INTENTION LEVEL
+A 360 Introduction
 
-PPIL is the daily practice that makes ERIP possible.
+WHAT IS PPIL?
+The Proven Presence and Intention Level is the daily accountability practice that makes ERIP possible in competition. If ERIP is the framework for understanding the hard moment, PPIL is the daily training that builds the person who is ready for it. You cannot arrive at a championship and suddenly be mentally present if you have not been practicing presence every day for months. PPIL is how you practice it.
+
+THE CORE IDEA
+Stack intentional days the way an ocean swimmer crosses from beach to beach. One day at a time. The crossing is not dramatic. It is just water. But every day you show up with intention, you move forward. Every day you drift, the current pulls you sideways. The question is never whether you will drift. The question is how quickly you return.
 
 THE PRESENCE SCORE
-Intentional days divided by total days. Not perfect days. Intentional days. A champion level mind targets 95 percent. The recovery mechanic is always warm. Missed days do not erase stacked days. Come back and keep stacking.
+Your Presence Score is intentional days divided by total days. Not perfect days. Not days when everything went right. Intentional days. Days when you arrived with a purpose, held it as long as you could, and reflected honestly after. A champion level mind targets 95 percent. Most athletes never get there not because they lack talent but because they never decide to try.
 
-THE OCEAN CROSSING
-Stack intentional days the way an ocean swimmer crosses from beach to beach. One day at a time. Drift is real. It is not failure. Returning is the practice.
+WHAT THE COLORS MEAN
+  Below 75% : You are in a drift period. The score is honest, not punishing. Come back.
+  75 to 87%  : GREEN. You are winning. This is the target zone. Hold it.
+  87.5%+     : BLUE. This is rare. Most athletes never sustain it. You are building something real.
 
-GREEN means you are winning.
-BLUE means you are doing something most athletes never figure out.
+THE TWO TAP RITUAL
+Before practice: Set one intention. Not a goal for the season. One specific thing for today. Write it if you can. Say it out loud if you want. It just needs to be named before you get in the water.
 
-The long term balance always wins.
+After practice: Did the intention hold? Yes. Mostly. Not today. Log it honestly. The honesty is the whole game. A logged red day is more valuable than a skipped green one because it tells the truth.
+
+INTENTION ACCOUNTABILITY RATE
+This is the percentage of times you set an intention and then reported back on whether it held. It is a separate metric from your Presence Score and in some ways more important. A swimmer who sets intentions and tracks them is practicing ERIP whether they know it or not.
+
+DRIFT IS NOT FAILURE
+This cannot be said enough. Drift is physics. It is what happens when you stop actively swimming. The practice is not avoiding drift. The practice is recognizing it early and returning without punishment. The swimmer who comes back after three red days is doing the exact work that PPIL is designed to build.
+
+THE STREAK
+Consecutive intentional days. Momentum made visible. But the streak is not the point. The Presence Score is the point. A swimmer can have a broken streak and still be green. That is a swimmer who came back.
+
+THE LONG VIEW
+PPIL is not a season tool. It is a career tool. The swimmer who tracks intentional presence across years develops a baseline self-awareness that cannot be taught in a practice session. They know when they are drifting before their coach does. That is the whole competitive advantage.
 
 -- Chris Chance`,
 
   mpcp:`THE MERGING PHILOSOPHIES CHANGE PRINCIPLE
+A 360 Introduction
 
-Earned change can be lost. You do the work. You earn a new version of who you are. And then quietly you drift back. Not because you stopped caring. Because you forgot that staying changed is its own practice.
+WHAT IS MPCP?
+The Merging Philosophies Change Principle is the third document in the Phlow Program. Where ERIP names the hard moment and PPIL builds the daily practice, MPCP addresses the thing that undoes both of them over time: the quiet drift back to who you were before the work. MPCP is about protecting what you built.
+
+THE PROBLEM IT SOLVES
+Most athletes who do real mental performance work experience a version of this. They commit. They build. They genuinely change. And then six months later they notice they are back to their old habits. Not dramatically. Not all at once. Just slowly, quietly, like a swimmer who stops pulling and starts drifting with the current. They did not decide to go backwards. They just forgot that staying forward is its own active choice.
+
+EARNED CHANGE CAN BE LOST
+This is the central insight of MPCP. Change is not an event. It is not a switch that flips and stays. It is more like a muscle. Stop training it and it weakens. The swimmer who does the hard mental work in October and then stops checking in will drift back by January. Not because the work was not real. Because maintaining the new version requires the same kind of intention that built it.
 
 WHAT CHANGE ACTUALLY IS
-Change is not a destination. Change is a posture you maintain.
+Change is a posture you maintain. It is not a destination you arrive at. The athlete who truly understands MPCP never asks are we there yet. They ask am I still doing the thing that got me here.
 
 THE MERGER
-ERIP teaches you to recognize the moment. PPIL builds the person who is ready for it. MPCP is what happens when those two fuse into one way of moving through the world.
+ERIP teaches you to recognize the hard moment and choose a trained response instead of a survival response. PPIL builds the daily intentional practice that makes that trained response automatic. MPCP is what happens when those two merge into a single way of showing up, not just in the pool but everywhere. The athlete who has internalized all three does not think about mental performance as a separate thing. It is just how they move through the world.
 
-THE PRACTICE OF STAYING
-Once a week. One question.
-Am I still the athlete the work created or am I drifting back?
+THE WEEKLY CHECK-IN
+The MPCP practice is simple. Once a week, one question.
 
-If the answer is no, come back. Warmly. Without punishment. The drift is not failure. Returning is the practice.
+Am I still the athlete that the work created, or am I drifting back?
+
+That is the whole practice. The question is not intended to create anxiety. It is intended to create awareness. Most athletes who ask it honestly already know the answer within three seconds. The question is just the invitation to be honest.
+
+IF THE ANSWER IS NO
+Come back. That is the entire instruction. Not with shame. Not with a lecture. Not with a dramatic recommitment ceremony. Just come back. Warmly. Without punishment. Set one intention and log one day. The drift is not a character flaw. It is physics. Returning is the practice.
+
+THE FULL CIRCLE
+ERIP gives you the framework. PPIL gives you the daily tool. MPCP gives you the long game. Together they are the Phlow Program. Not a system. Not a curriculum. A way of thinking about what competitive performance actually requires at the level that separates good from great.
+
+THE BOTTOM LINE
+The athlete who keeps coming back, keeps showing up with intention, and keeps asking the honest weekly question is the most dangerous competitor in any pool. Not because of what they can do in practice. Because of who they have become.
 
 -- Chris Chance`,
 };
@@ -341,7 +434,7 @@ The Merging Philosophies Change Principle is the commitment to protecting what t
 
 Together ERIP and PPIL and MPCP are what you call the Phlow Program.
 
-Community phrases: Why Knot? Still in the water. Whats the what?
+Community phrases: Why Knot? Still in the water. What's the what?
 
 You are a Grateful Dead devotee. Hundreds of shows. You draw on Grateful Dead lyrics and Robert Hunter when it fits. Sparingly. Precisely.
 
@@ -408,7 +501,7 @@ function getReturnSystem(lastExchanges){
 const TRIAGE_OPENERS=[
   "Hey. Been in and around this sport my whole life. Before we go anywhere, tell me a little about your relationship with swimming and how old you are.",
   "Good to have you here. I always start the same way. How old are you and what does swimming look like in your life right now?",
-  "Whats the what. I am Phlip. Before anything else, tell me how old you are and where you are in the sport.",
+  "What's the what? I am Phlip. Before anything else, tell me how old you are and where you are in the sport.",
   "Hey Swimmer. Two things to start. How old are you and what is your relationship with swimming right now?",
 ];
 function getTriageOpener(){return TRIAGE_OPENERS[Math.floor(Math.random()*TRIAGE_OPENERS.length)];}
@@ -691,18 +784,18 @@ function DeckSetup({onComplete}){
       <div className="setup-wrap">
         <div className="setup-title">The Deck</div>
         <div className="setup-sub">
-          Before we go anywhere, let me show you something I think you are going to want.{'\n\n'}
-          Set your crossing. How many days do you want to track your intentional practice? Every day you show up and choose this work is a day of forward motion. Every day you drift is honest water you account for and return from.{'\n\n'}
-          Pick your distance and start crossing.
+          The Deck is your daily practice tracker.{'\n\n'}
+          Every day you show up with intention counts as a green day. Every day you drift counts honestly as a red day. Your Presence Score is simply your green days divided by your total days. The goal is to keep it green. Blue means you are doing something most athletes never figure out.{'\n\n'}
+          Set your window. How long is your season, or how many days until your next big meet? That is your crossing. Pick a number and start tracking today.
         </div>
-        <div className="setup-label">How many days is your crossing?</div>
+        <div className="setup-label">Season length or days to your big meet</div>
         <div className="setup-opts">
           {opts.map(o=>(
             <button key={o} className={`setup-opt${goalDays===o?' sel':''}`} onClick={()=>setGoalDays(o)}>{o} days</button>
           ))}
         </div>
         <button className="setup-go" disabled={!goalDays} onClick={()=>onComplete(goalDays)}>
-          START THE CROSSING
+          START TRACKING
         </button>
       </div>
     </div>
@@ -732,7 +825,7 @@ function IntentionLogger({deck,onLog}){
 
   return(
     <div className="intention-wrap">
-      <div className="int-title">Today's Intention</div>
+      <div className="int-title">Set your intention before practice. Check back after.</div>
       <textarea
         className="int-inp"
         rows={2}
@@ -786,7 +879,7 @@ function TheDeck({deck,onUpdate,onShowModal}){
     red:`${stats.score}% presence · drift period · come back warm`,
     green:`${stats.score}% presence · ${stats.intentional} intentional of ${stats.total} days`,
     blue:`${stats.score}% presence · that blue means something most athletes never see`,
-    empty:'Set your intention and start crossing'
+    empty:'Log your first day to start your Presence Score',
   };
 
   function handleLog(dateStr,intentional,intentionSet,intentionHeld){
@@ -877,13 +970,13 @@ function TheClockGame({onShowModal}){
 
   function phlipSays(diff){
     const d=Math.abs(diff);
-    if(d===0) return "Perfect. Five seconds exactly. That is not luck. That is presence. How bout doze Mets.";
-    if(d<=30) return "That is elite focus Swimmer. Within thirty milliseconds of five seconds. Your mind was completely in the moment.";
-    if(d<=80) return "Championship level awareness. Within eighty milliseconds. You felt the time instead of counting it. That is the skill.";
-    if(d<=150) return "Solid. Really solid. You are learning to feel time from the inside. Keep coming back to this one.";
-    if(d<=300) return "You are getting there Swimmer. Something pulled your attention in the middle. Notice where the mind went. That is the work.";
-    if(d<=600) return "The mind got loud somewhere in those five seconds. That is the Exhaustion Reflex Instinct showing up even here. Recognize it. Come back to the present. Try again.";
-    return "Five seconds is longer than it feels when you are waiting for something. Settle in. No counting. Just feel the time passing. Why Knot?";
+    if(d===0) return "Perfect presence. Five seconds exactly. That is not luck. That is intentional awareness. How bout doze Mets.";
+    if(d<=30) return "Elite awareness. Within thirty milliseconds. Your intention held all the way through. That is the skill we are building.";
+    if(d<=80) return "Championship level. You felt the time from the inside instead of counting it. That is what intentional presence actually feels like.";
+    if(d<=150) return "Really solid. You were present. Keep coming back to this game and watch your awareness sharpen over time.";
+    if(d<=300) return "Something pulled your attention in the middle. Notice where the mind went. That noticing is exactly the work. Try again with one intention going in.";
+    if(d<=600) return "The mind got loud in those five seconds. That is the Exhaustion Reflex Instinct showing up even here. Set your intention before you tap. Then hold it.";
+    return "Five seconds is longer than it feels when the mind is scattered. Settle. Set one intention before you start. Then just feel it pass. Why Knot?";
   }
   function tick(){
     if(!ref.current.start) return;
@@ -911,22 +1004,149 @@ function TheClockGame({onShowModal}){
     <div className="clock-wrap" onClick={handleTap}>
       <div className="clock-lanes"/>
       <div className="clock-flag"/>
-      <div className="clock-title">The Clock</div>
-      <div className="clock-sub">Start it. Stop it at exactly 5 seconds.</div>
-      <div className="clock-sub2">No counting. Just feel it.</div>
-      <div className="clock-circle" style={{background:gs==='running'?'rgba(184,120,32,0.05)':'#FFFFFF'}}>
-        <div className="clock-num" style={{color:gs==='done'?(Math.abs(result?.diff||9999)<=150?'#2A9A5A':'#B87820'):'#B87820'}}>{display}</div>
-        <div className="clock-unit">seconds</div>
-        {gs==='done'&&diffLabel&&(
-          <div className="clock-diff" style={{color:Math.abs(result.diff)<=150?'#2A9A5A':'rgba(184,120,32,0.75)'}}>{diffLabel}</div>
-        )}
+
+      {/* STOP WATCHER HEADER */}
+      <div className="clock-title">Stop Watcher</div>
+      <div className="clock-sub">Train your awareness. Feel five seconds exactly.</div>
+      <div className="clock-sub2">Intention before. Presence during. Awareness after.</div>
+
+      {/* FULL STOPWATCH SVG */}
+      <div style={{position:'relative',width:'220px',height:'250px',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'8px',zIndex:2}}>
+        <svg width="220" height="250" viewBox="0 0 220 250" xmlns="http://www.w3.org/2000/svg">
+          {/* Lugs connecting crown to body */}
+          <path d="M88 28 Q88 40 78 48" fill="none" stroke="#B87820" strokeWidth="3" strokeLinecap="round"/>
+          <path d="M132 28 Q132 40 142 48" fill="none" stroke="#B87820" strokeWidth="3" strokeLinecap="round"/>
+          {/* Crown stem */}
+          <rect x="96" y="8" width="28" height="22" rx="8"
+            fill={gs==='running'?'rgba(184,120,32,0.15)':'#F5F2ED'}
+            stroke="#B87820" strokeWidth="2.5"/>
+          {/* Crown button top knob */}
+          <rect x="103" y="2" width="14" height="10" rx="5"
+            fill={gs==='running'?'#B87820':'#F5F2ED'}
+            stroke="#B87820" strokeWidth="2"/>
+          {/* Left side lap button */}
+          <rect x="28" y="95" width="22" height="12" rx="6"
+            fill="#F5F2ED" stroke="#B87820" strokeWidth="2"/>
+          {/* Right side start/stop button */}
+          <rect x="170" y="95" width="22" height="12" rx="6"
+            fill={gs==='running'?'#B87820':'#F5F2ED'}
+            stroke="#B87820" strokeWidth="2"/>
+          {/* Outer body shadow ring */}
+          <circle cx="110" cy="155" r="93"
+            fill="rgba(184,120,32,0.06)"
+            stroke="rgba(184,120,32,0.2)" strokeWidth="1"/>
+          {/* Main body */}
+          <circle cx="110" cy="155" r="86"
+            fill={gs==='running'?'rgba(184,120,32,0.04)':'#FFFFFF'}
+            stroke="#B87820" strokeWidth="3.5"/>
+          {/* Inner bezel ring */}
+          <circle cx="110" cy="155" r="76"
+            fill="none"
+            stroke="rgba(184,120,32,0.12)" strokeWidth="1.5"/>
+          {/* Major tick marks 12 3 6 9 */}
+          {[0,90,180,270].map(a=>{
+            const r1=66,r2=76,rad=a*Math.PI/180;
+            return <line key={a}
+              x1={110+r1*Math.sin(rad)} y1={155-r1*Math.cos(rad)}
+              x2={110+r2*Math.sin(rad)} y2={155-r2*Math.cos(rad)}
+              stroke="#B87820" strokeWidth="3" strokeLinecap="round"/>;
+          })}
+          {/* Minor ticks every 30 degrees */}
+          {[30,60,120,150,210,240,300,330].map(a=>{
+            const r1=70,r2=76,rad=a*Math.PI/180;
+            return <line key={a}
+              x1={110+r1*Math.sin(rad)} y1={155-r1*Math.cos(rad)}
+              x2={110+r2*Math.sin(rad)} y2={155-r2*Math.cos(rad)}
+              stroke="rgba(184,120,32,0.4)" strokeWidth="1.5" strokeLinecap="round"/>;
+          })}
+          {/* All 60 minute ticks */}
+          {Array.from({length:60},(_,i)=>{
+            if(i%30===0||i%15===0&&i%30!==0) return null;
+            const r1=73,r2=76,rad=(i*6)*Math.PI/180;
+            return <line key={i}
+              x1={110+r1*Math.sin(rad)} y1={155-r1*Math.cos(rad)}
+              x2={110+r2*Math.sin(rad)} y2={155-r2*Math.cos(rad)}
+              stroke="rgba(184,120,32,0.2)" strokeWidth="1" strokeLinecap="round"/>;
+          })}
+          {/* 5 second arc progress when running */}
+          {gs==='running'&&(
+            <circle cx="110" cy="155" r="60"
+              fill="none"
+              stroke="rgba(184,120,32,0.18)" strokeWidth="6"
+              strokeDasharray="377" strokeDashoffset="377"
+              style={{animation:`none`}}/>
+          )}
+          {/* Sweep second hand */}
+          {gs==='running'&&(
+            <g style={{transformOrigin:'110px 155px',animation:'waveDrift 5s linear infinite'}}>
+              <line x1="110" y1="155" x2="110" y2="90"
+                stroke="#B87820" strokeWidth="2.5" strokeLinecap="round"/>
+              <circle cx="110" cy="155" r="5" fill="#B87820"/>
+              <line x1="110" y1="155" x2="110" y2="175"
+                stroke="#B87820" strokeWidth="2" strokeLinecap="round" opacity="0.5"/>
+            </g>
+          )}
+          {/* Center dot at rest */}
+          {gs!=='running'&&(
+            <circle cx="110" cy="155" r="5"
+              fill={gs==='done'?'#B87820':'rgba(184,120,32,0.4)'}/>
+          )}
+        </svg>
+
+        {/* Timer display centered inside watch face */}
+        <div style={{
+          position:'absolute',
+          top:'55%',left:0,right:0,
+          textAlign:'center',
+          transform:'translateY(-50%)'
+        }}>
+          <div style={{
+            fontFamily:"'Barlow Condensed',Arial,sans-serif",
+            fontWeight:800,
+            fontSize:gs==='done'?'36px':'40px',
+            letterSpacing:'2px',
+            lineHeight:1,
+            color:gs==='done'?(Math.abs(result?.diff||9999)<=150?'#2A9A5A':'#B87820'):'#B87820',
+            transition:'color 0.3s'
+          }}>{display}</div>
+          <div style={{
+            fontFamily:"'Barlow',Arial,sans-serif",
+            fontSize:'9px',
+            color:'rgba(184,120,32,0.5)',
+            letterSpacing:'3px',
+            marginTop:'4px',
+            textTransform:'uppercase'
+          }}>seconds</div>
+          {gs==='done'&&diffLabel&&(
+            <div style={{
+              fontFamily:"'Barlow Condensed',Arial,sans-serif",
+              fontWeight:700,
+              fontSize:'14px',
+              letterSpacing:'1px',
+              marginTop:'5px',
+              color:Math.abs(result?.diff||9999)<=150?'#2A9A5A':'rgba(184,120,32,0.8)'
+            }}>{diffLabel}</div>
+          )}
+        </div>
       </div>
+
+      {/* Progress bar */}
       <div className="clock-bar-wrap">
         <div className="clock-bar" style={{width:gs==='running'?'100%':'0%',transition:gs==='running'?`width ${TARGET/1000}s linear`:'width 0s'}}/>
       </div>
-      <div className="clock-bar-5">5.000</div>
-      {gs==='idle'&&<button className="clock-btn" onClick={e=>{e.stopPropagation();handleTap();}}>START</button>}
-      {gs==='running'&&<button className="clock-btn stop" onClick={e=>{e.stopPropagation();handleTap();}}>STOP</button>}
+      <div className="clock-bar-5">target · 5.000</div>
+
+      {gs==='idle'&&(
+        <button className="clock-btn" onClick={e=>{e.stopPropagation();handleTap();}}>
+          START
+        </button>
+      )}
+      {gs==='running'&&(
+        <button className="clock-btn stop" onClick={e=>{e.stopPropagation();handleTap();}}>
+          STOP
+        </button>
+      )}
+
       {gs==='done'&&result&&(
         <>
           <div className="clock-result" style={{marginTop:'0'}}>
@@ -1124,7 +1344,7 @@ function App(){
             <div className="tabs">
               <button className={`tab${tab==='water'?' on':''}`} onClick={()=>setTab('water')}>The Water</button>
               <button className={`tab${tab==='deck'?' on':''}`} onClick={()=>setTab('deck')}>The Deck</button>
-              <button className={`tab${tab==='clock'?' on':''}`} onClick={()=>setTab('clock')}>The Clock</button>
+              <button className={`tab${tab==='clock'?' on':''}`} onClick={()=>setTab('clock')}>Stop Watcher</button>
             </div>
 
             {/* THE WATER */}
