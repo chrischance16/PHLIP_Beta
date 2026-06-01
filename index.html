@@ -999,12 +999,32 @@ function TheDeck({deck,onUpdate,onShowModal}){
     <div className="deck">
       <div className="deck-daily-line">{dailyLine}</div>
 
+      {milestone&&(
+        <div className="int-milestone" onClick={()=>setMilestone(null)}>{milestone}</div>
+      )}
+
+      {/* ── SECTION 1: TODAY ── */}
+      <div style={{padding:'10px 16px 4px',background:'#FFFFFF',borderBottom:'1px solid #E8E2D8'}}>
+        <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:700,fontSize:'9px',letterSpacing:'3px',color:'rgba(184,120,32,0.5)',textTransform:'uppercase',marginBottom:'8px'}}>
+          TODAY
+        </div>
+      </div>
+      <IntentionLogger deck={deck} onLog={handleLog}/>
+
+      {/* ── SECTION 2: YOUR CROSSING ── */}
+      <div style={{padding:'10px 16px 4px',background:'#FFFFFF',borderBottom:'1px solid #E8E2D8',borderTop:'3px solid #E8E2D8',marginTop:'8px'}}>
+        <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:700,fontSize:'9px',letterSpacing:'3px',color:'rgba(184,120,32,0.5)',textTransform:'uppercase',marginBottom:'8px'}}>
+          YOUR CROSSING
+          <span style={{fontFamily:"'Barlow',Arial,sans-serif",fontWeight:400,fontSize:'9px',letterSpacing:'1px',color:'rgba(40,30,10,0.3)',marginLeft:'8px',textTransform:'none'}}>
+            {deck.goalDays} day season
+          </span>
+        </div>
+      </div>
+
       <div className="score-wrap">
         <div className={`score-circle ${stats.color}`}>
           <div className="score-num">{stats.color==='empty'?'--':`${stats.score}`}</div>
-          <div className="score-pct" style={{color:stats.color==='empty'?'rgba(184,120,32,0.35)':'rgba(40,30,10,0.45)'}}>
-            {stats.color==='empty'?'%':'%'}
-          </div>
+          <div className="score-pct" style={{color:stats.color==='empty'?'rgba(184,120,32,0.35)':'rgba(40,30,10,0.45)'}}>%</div>
         </div>
         <div className="score-meta">
           <div className={`score-label ${stats.color}`}>{colorLabel[stats.color]}</div>
@@ -1029,35 +1049,41 @@ function TheDeck({deck,onUpdate,onShowModal}){
       </div>
 
       <OceanCrossing stats={stats} goalDays={deck.goalDays}/>
-
-      {milestone&&(
-        <div className="int-milestone" onClick={()=>setMilestone(null)}>
-          {milestone}
-        </div>
-      )}
-
-      <IntentionLogger deck={deck} onLog={handleLog}/>
-
       <DayGrid deck={deck} goalDays={deck.goalDays} onTapDay={()=>{}}/>
 
-      <div style={{padding:'0 16px 8px',display:'flex',gap:'8px'}}>
+      {/* ── SECTION 3: THE PHLOW PROGRAM ── */}
+      <div style={{padding:'10px 16px 4px',background:'#FFFFFF',borderBottom:'1px solid #E8E2D8',borderTop:'3px solid #E8E2D8',marginTop:'8px'}}>
+        <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:700,fontSize:'9px',letterSpacing:'3px',color:'rgba(184,120,32,0.5)',textTransform:'uppercase',marginBottom:'2px'}}>
+          THE PHLOW PROGRAM
+        </div>
+        <div style={{fontFamily:"'DM Serif Display',Georgia,serif",fontStyle:'italic',color:'rgba(40,30,10,0.38)',fontSize:'11px',paddingBottom:'8px'}}>
+          Three frameworks. One way of competing.
+        </div>
+      </div>
+
+      <div style={{padding:'8px 16px 4px',display:'flex',flexDirection:'column',gap:'6px'}}>
         {[
-          {key:'erip_doc',label:'ERIP',sub:'The framework. What happens when it gets hard.'},
-          {key:'ppil_doc',label:'PPIL',sub:'The daily practice. Your Presence Score.'},
+          {key:'erip_doc',label:'ERIP',sub:'The framework. What happens when it gets hard and how to respond.'},
+          {key:'ppil_doc',label:'PPIL',sub:'The daily practice. Your Presence Score and the ocean crossing.'},
+          {key:'mpcp_doc',label:'MPCP',sub:'The long game. Protecting what the work actually built.'},
         ].map(({key,label,sub})=>(
-          <button key={key} style={{flex:1,background:'#FFFFFF',border:'1px solid rgba(184,120,32,0.18)',padding:'10px 8px',cursor:'pointer',textAlign:'left',transition:'all 0.13s',boxShadow:'0 1px 3px rgba(0,0,0,0.05)'}}
+          <button key={key}
+            style={{width:'100%',background:'#FFFFFF',border:'1px solid rgba(184,120,32,0.18)',padding:'12px 14px',cursor:'pointer',textAlign:'left',transition:'all 0.13s',boxShadow:'0 1px 3px rgba(0,0,0,0.05)',display:'flex',alignItems:'center',gap:'14px'}}
             onClick={()=>onShowModal(key)}
-            onMouseEnter={e=>{e.currentTarget.style.background='rgba(184,120,32,0.05)';}}
-            onMouseLeave={e=>{e.currentTarget.style.background='#FFFFFF';}}>
-            <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:800,fontSize:'12px',letterSpacing:'2px',color:'#B87820',textTransform:'uppercase'}}>{label}</div>
-            <div style={{fontFamily:"'DM Serif Display',Georgia,serif",fontStyle:'italic',color:'rgba(40,30,10,0.45)',fontSize:'11px',lineHeight:1.5,marginTop:'4px'}}>{sub}</div>
+            onMouseEnter={e=>{e.currentTarget.style.background='rgba(184,120,32,0.04)';e.currentTarget.style.borderColor='rgba(184,120,32,0.35)';}}
+            onMouseLeave={e=>{e.currentTarget.style.background='#FFFFFF';e.currentTarget.style.borderColor='rgba(184,120,32,0.18)';}}>
+            <div style={{fontFamily:"'Barlow Condensed',Arial,sans-serif",fontWeight:800,fontSize:'15px',letterSpacing:'3px',color:'#B87820',textTransform:'uppercase',flexShrink:0,width:'52px'}}>{label}</div>
+            <div style={{borderLeft:'1px solid rgba(184,120,32,0.2)',paddingLeft:'12px',flex:1}}>
+              <div style={{fontFamily:"'DM Serif Display',Georgia,serif",fontStyle:'italic',color:'rgba(40,30,10,0.55)',fontSize:'12px',lineHeight:1.5}}>{sub}</div>
+            </div>
+            <div style={{color:'rgba(184,120,32,0.4)',fontSize:'14px',flexShrink:0}}>→</div>
           </button>
         ))}
       </div>
 
-      <button className="ppil-link" onClick={()=>onShowModal('mpcp_doc')}>
-        MPCP · The practice of staying changed →
-      </button>
+      <div style={{height:'20px'}}/>
+    </div>
+  );
 
       <div style={{height:'20px'}}/>
     </div>
